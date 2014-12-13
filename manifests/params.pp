@@ -20,5 +20,13 @@ class site_hadoop::params {
     debian => '/usr/lib/mc/mc',
   }
 
+  $packages_autoupdate = $::osfamily ? {
+    debian => ['cron-apt'],
+    redhat => ['yum-autoupdate'],
+  }
+
+  # every night at 5:00
+  $time_autoupdate = '0 5 * * *'
+
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 }
