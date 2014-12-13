@@ -23,5 +23,11 @@ class site_hadoop::config {
       path    => $site_hadoop::path,
       creates => '/etc/apt/sources.list.d/cloudera.list',
     }
+    ~>
+    exec { 'apt-get-update':
+      command     => 'apt-get update',
+      refreshonly => true,
+      path        => $site_hadoop::path,
+    }
   }
 }
