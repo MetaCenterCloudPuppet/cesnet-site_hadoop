@@ -11,6 +11,7 @@ class site_hadoop::config {
   }
 
   if $::osfamily == 'Debian' {
+    # cloudera repo
     exec { 'key-cloudera':
       command => 'apt-key adv --fetch-key http://archive.cloudera.com/cdh5/debian/wheezy/amd64/cdh/archive.key',
       path    => $site_hadoop::path,
