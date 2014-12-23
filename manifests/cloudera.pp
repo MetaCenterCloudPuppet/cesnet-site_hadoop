@@ -8,7 +8,7 @@ class site_hadoop::cloudera {
     }
     ->
     exec { 'wget-cloudera':
-      command => 'wget -P /etc/apt/sources.list.d/ http://archive.cloudera.com/cdh5/debian/wheezy/amd64/cdh/cloudera.list',
+      command => 'wget -P /etc/apt/sources.list.d/ http://archive.cloudera.com/cdh5/debian/wheezy/amd64/cdh/cloudera.list && sed -i /etc/apt/sources.list.d/cloudera.list -e "s/\\(deb\\|deb-src\\) http/\\1 [arch=amd64] http/"',
       path    => $site_hadoop::path,
       creates => '/etc/apt/sources.list.d/cloudera.list',
     }
