@@ -18,5 +18,9 @@ class site_hadoop::cloudera {
       refreshonly => true,
       path        => $site_hadoop::path,
     }
+
+    file {'/etc/apt/preferences.d/10_cloudera.pref':
+      source => 'puppet:///modules/site_hadoop/10_cloudera.pref',
+    }
   }
 }
