@@ -10,6 +10,7 @@ class site_hadoop::params {
         }
       }
     }
+    default: {}
   }
     
   $packages = $::osfamily ? {
@@ -18,6 +19,7 @@ class site_hadoop::params {
   }
   $mc_setup = $::osfamily ? {
     debian => '/usr/lib/mc/mc',
+    default => undef,
   }
 
   $packages_autoupdate = $::osfamily ? {
