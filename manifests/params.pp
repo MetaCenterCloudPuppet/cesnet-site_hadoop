@@ -31,4 +31,10 @@ class site_hadoop::params {
   $time_autoupdate = '0 5 * * *'
 
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
+
+  $mirror = 'cloudera'
+  $mirrors = {
+    'cloudera' => 'http://archive.cloudera.com/cdh5/debian/wheezy/amd64/cdh',
+    'scientific' => 'http://scientific.zcu.cz/repos/hadoop',
+  }
 }

@@ -2,7 +2,9 @@
 #
 # Basic system configurations for Hadoop cluster on Meta.
 #
-class site_hadoop inherits site_hadoop::params {
+class site_hadoop (
+  $mirror = $site_hadoop::params::mirror,
+) inherits site_hadoop::params {
   include 'site_hadoop::install'
   include 'site_hadoop::config'
   include 'site_hadoop::cloudera'
