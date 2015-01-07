@@ -16,6 +16,8 @@ class site_hadoop::kdc::config {
   exec { 'kdb5_util-create':
     command => "kdb5_util create -s -P ${site_hadoop::kdc::master_password}",
     path    => '/sbin:/usr/sbin:/bin:/usr/bin',
+    # reading /dev/random
+    timeout => 0,
     creates => "${site_hadoop::kdc::kdc_dir}/principal",
   }
   File['/etc/krb5.conf'] -> Exec['kdb5_util-create']
