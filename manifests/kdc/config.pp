@@ -8,7 +8,7 @@ class site_hadoop::kdc::config {
     content => template('site_hadoop/krb5.conf.erb'),
   }
 
-  file { '/var/kerberos/krb5kdc/kdc.conf':
+  file { "${site_hadoop::kdc::kdc_dir}/kdc.conf":
     mode    => '0600',
     content => template('site_hadoop/kdc.conf.erb'),
   }
@@ -16,8 +16,8 @@ class site_hadoop::kdc::config {
   exec { 'kdb5_util-create':
     command => "kdb5_util create -s -P ${site_hadoop::kdc::master_password}",
     path    => '/sbin:/usr/sbin:/bin:/usr/bin',
-    creates => '/var/kerberos/krb5kdc/principal',
+    creates => "${site_hadoop::kdc::kdc_dir}/principal",
   }
   File['/etc/krb5.conf'] -> Exec['kdb5_util-create']
-  File['/var/kerberos/krb5kdc/kdc.conf'] -> Exec['kdb5_util-create']
+  File["${site_hadoop::kdc::kdc_dir}/kdc.conf"] -> Exec['kdb5_util-create']
 }

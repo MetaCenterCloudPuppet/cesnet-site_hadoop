@@ -1,8 +1,8 @@
 class site_hadoop::kdc::service {
-  service{'kadmin':
+  service{$site_hadoop::kdc::daemons['kadmin']:
     ensure => running,
   }
-  service{'krb5kdc':
+  service{$site_hadoop::kdc::daemons['kdc']:
     ensure => running,
   }
 }
