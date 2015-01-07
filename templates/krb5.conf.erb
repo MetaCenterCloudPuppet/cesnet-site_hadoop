@@ -1,0 +1,17 @@
+[libdefaults]
+  default_realm = <%= @realm %>
+
+  dns_lookup_kdc = no
+  dns_lookup_realm = no
+  dns_fallback = no
+
+[realms]
+  <%= @realm %> = {
+    kdc = <%= @kdcserver -%>:88
+    admin_server = <%= @kdcserver -%>:749
+    default_domain = <%= @domain %>
+  }
+
+[domain_realm]
+  .<%= @domain %> = <%= @realm %>
+  <%= @domain %> = <%= @realm %>
