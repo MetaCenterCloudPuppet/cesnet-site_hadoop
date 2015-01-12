@@ -6,6 +6,8 @@ class site_hadoop::kdc::client {
   #ensure_packages($site_hadoop::kdc::packages['client'])
 
   file { '/etc/krb5.conf':
+    owner   => 'root',
+    group   => 'root',
     mode    => '0644',
     content => template('site_hadoop/krb5.conf.erb'),
   }

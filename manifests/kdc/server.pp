@@ -10,6 +10,8 @@ class site_hadoop::kdc::server {
   $kdcconf = "${site_hadoop::kdc::kdc_conf_dir}/kdc.conf"
 
   file { $kdcconf:
+    owner   => 'root',
+    group   => 'root',
     mode    => '0600',
     content => template('site_hadoop/kdc.conf.erb'),
     require => Package[$site_hadoop::kdc::packages['server']],
