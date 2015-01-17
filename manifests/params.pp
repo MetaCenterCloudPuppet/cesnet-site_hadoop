@@ -1,4 +1,9 @@
 class site_hadoop::params {
+  $defaultconfdir = $::osfamily ? {
+    debian => '/etc/default',
+    redhat => '/etc/sysconfig',
+  }
+
   case $::osfamily {
     'Debian': {
       case $::lsbdistcodename {
