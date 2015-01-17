@@ -66,29 +66,22 @@ class site_hadoop::accounting(
   $db_password = undef,
   $email = undef,
   $hdfs  = undef,
+  $quota  = undef,
   $principal = undef,
 ) {
-  file {'/usr/local/bin/accounting-hdfs':
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-    content => template('site_hadoop/accounting/hdfs.sh.erb'),
-  }
-
+  # common
   file{'/usr/local/share/hadoop':
     ensure  => 'directory',
     owner => 'root',
     group => 'root',
     mode  => '0755',
   }
-  ->
-  file {'/usr/local/share/hadoop/accounting-hdfs.awk':
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-    source => 'puppet:///modules/site_hadoop/accounting/hdfs.awk',
+  file{"${site_hadoop::defaultconfdir}/hadoop-accounting":
+    owner  => 'hdfs',
+    group  => 'hdfs',
+    mode   => '0400',
+    content => template('site_hadoop/accounting/hadoop-accounting.erb'),
   }
-
   file{'/usr/local/share/hadoop/accounting.sql':
     owner => 'root',
     group => 'root',
@@ -96,13 +89,20 @@ class site_hadoop::accounting(
     source => 'puppet:///modules/site_hadoop/accounting/create.sql',
   }
 
-  file{"${site_hadoop::defaultconfdir}/hadoop-accounting":
-    owner  => 'hdfs',
-    group  => 'hdfs',
-    mode   => '0400',
-    content => template('site_hadoop/accounting/hadoop-accounting.erb'),
+  # hdfs data
+  file {'/usr/local/bin/accounting-hdfs':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    content => template('site_hadoop/accounting/hdfs.sh.erb'),
   }
-
+  file {'/usr/local/share/hadoop/accounting-hdfs.awk':
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    source => 'puppet:///modules/site_hadoop/accounting/hdfs.awk',
+    require => File['/usr/local/share/hadoop'],
+  }
   if $hdfs {
     file{'/etc/cron.d/accounting-hdfs':
       owner => 'root',
@@ -112,6 +112,33 @@ class site_hadoop::accounting(
     }
   } else {
     file{'/etc/cron.d/accounting-hdfs':
+      ensure => 'absent',
+    }
+  }
+
+  # user quota
+  file {'/usr/local/bin/accounting-quota':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    content => template('site_hadoop/accounting/quota.sh.erb'),
+  }
+  file {'/usr/local/share/hadoop/accounting-quota.awk':
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    source => 'puppet:///modules/site_hadoop/accounting/quota.awk',
+    require => File['/usr/local/share/hadoop'],
+  }
+  if $quota {
+    file{'/etc/cron.d/accounting-quota':
+      owner => 'root',
+      group => 'root',
+      mode  => '0644',
+      content => template('site_hadoop/accounting/cron-quota.erb'),
+    }
+  } else {
+    file{'/etc/cron.d/accounting-quota':
       ensure => 'absent',
     }
   }

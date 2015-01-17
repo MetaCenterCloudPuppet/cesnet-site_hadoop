@@ -122,5 +122,5 @@ DELIMITER ;
 
 CREATE VIEW view_measures AS SELECT m.* FROM measure m, statistic s WHERE s.last_id_measure = m.id_measure;
 CREATE VIEW view_hdfs AS SELECT m.seq, m.time, h.hostname, h.full, h.disk, h.disk_used, h.disk_free, h.block_under, h.block_corrupt, h.block_missing FROM hdfs h, measure m WHERE h.id_measure=m.id_measure;
-CREATE VIEW view_quotas AS SELECT m.seq, m.time, q.user, q.used FROM quota q, measure m WHERE q.id_measure=m.id_measure;
+CREATE VIEW view_quota AS SELECT m.seq, m.time, q.user, q.used FROM quota q, measure m WHERE q.id_measure=m.id_measure;
 CREATE VIEW view_jobstat AS SELECT m.seq, m.time, m.start, m.end, j.user, j.total, j.fails, j.wait_min, j.wait_avg, j.wait_max FROM jobstat j, measure m WHERE j.id_measure=m.id_measure;

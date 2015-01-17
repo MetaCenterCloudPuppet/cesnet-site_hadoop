@@ -1,0 +1,27 @@
+#! /bin/sh -e
+
+PREFIX='/usr/local'
+DEFAULTDIR='<%= scope.lookupvar('site_hadoop::defaultconfdir') -%>'
+export KRB5CCNAME='FILE:/tmp/krb5cc_hdfs_stat'
+KEYTAB='FILE:/etc/security/keytab/nn.service.keytab'
+PRINCIPAL="nn/`hostname -f`"
+MYSQL_DB='accounting'
+MYSQL_USER='accounting'
+MYSQL_PASSWORD=''
+
+if test -f ${DEFAULTDIR}/hadoop-accounting; then
+ . ${DEFAULTDIR}/hadoop-accounting
+fi
+
+if test -n "${PRINCIPAL}"; then
+  kinit -k -t ${KEYTAB} -l 5m ${PRINCIPAL}
+fi
+
+rm -f /tmp/accounting.quota.txt
+hdfs dfs -du -s '/user/*' >/tmp/accounting.quota.txt
+
+if test -n "${PRINCIPAL}"; then
+  kdestroy
+fi
+
+cat /tmp/accounting.quota.txt | awk -f ${PREFIX}/share/hadoop/accounting-quota.awk | mysql --user ${MYSQL_USER} --password=${MYSQL_PASSWORD} ${MYSQL_DB}
