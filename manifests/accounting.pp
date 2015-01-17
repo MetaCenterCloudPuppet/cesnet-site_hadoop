@@ -6,6 +6,18 @@
 #
 # For example using puppetlabs-mysql and cesnet-hadoop:
 #
+#    include stdlib
+#    
+#    class{'site_hadoop':
+#      db_password => 'accpass',
+#      email       => 'mail@example.com',
+#      stage       => 'setup',
+#    }
+#    
+#    class{'site_hadoop::accountig':
+#      hdfs        => '0,30 * * *',
+#    }
+#    
 #    mysql::db { 'accounting':
 #      user     => 'accounting',
 #      password => 'accpass',
@@ -19,16 +31,11 @@
 #
 # === Parameters
 #
-# [*email*] undef
-#
-# Email to send errors from cron.
-#
 # [*hdfs*] undef
 #
 # Enable storing global HDFS disk and data statistics. The value is time in the cron format. See *man 5 crontab*.
 #
 class site_hadoop::accounting(
-  $email = undef,
   $hdfs  = undef,
 ) {
   file {'/usr/local/bin/accounting-hdfs':
@@ -75,6 +82,7 @@ class site_hadoop::accounting(
     }
   }
 
+  $email = $site_hadoop::email
   if $hdfs {
     file{'/etc/cron.d/accounting-hdfs':
       owner => 'root',
