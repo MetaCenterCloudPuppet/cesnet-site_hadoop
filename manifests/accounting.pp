@@ -9,12 +9,12 @@
 #    include stdlib
 #    
 #    class{'site_hadoop':
-#      db_password => 'accpass',
-#      email       => 'mail@example.com',
 #      stage       => 'setup',
 #    }
 #    
 #    class{'site_hadoop::accountig':
+#      db_password => 'accpass',
+#      email       => 'mail@example.com',
 #      hdfs        => '0,30 * * *',
 #    }
 #    
@@ -31,12 +31,42 @@
 #
 # === Parameters
 #
+# ####`db_name`
+# = undef (system default is *accounting*)
+#
+# Database name for statistics.
+#
+# ####`db_user`
+# = undef (system default is *accounting*)
+#
+# Database user for statistics.
+#
+# ####`db_password`
+# = undef
+#
+# Database password for statistics.
+#
+# ####`email`
+# = undef
+#
+# Email address to send errors from cron.
+#
 # [*hdfs*] undef
 #
 # Enable storing global HDFS disk and data statistics. The value is time in the cron format. See *man 5 crontab*.
 #
+# ####`principal`
+# = undef
+#
+# Kerberos principal to access Hadoop.
+#
 class site_hadoop::accounting(
+  $db_name = undef,
+  $db_user = undef,
+  $db_password = undef,
+  $email = undef,
   $hdfs  = undef,
+  $principal = undef,
 ) {
   file {'/usr/local/bin/accounting-hdfs':
     owner  => 'root',
@@ -66,23 +96,13 @@ class site_hadoop::accounting(
     source => 'puppet:///modules/site_hadoop/accounting/create.sql',
   }
 
-  $db_name = $site_hadoop::db_name
-  $db_user = $site_hadoop::db_user
-  $db_password = $site_hadoop::db_password
-  if $db_name or $db_user or $db_password {
-    file{"${site_hadoop::defaultconfdir}/hadoop-accounting":
-      owner  => 'hdfs',
-      group  => 'hdfs',
-      mode   => '0400',
-      content => template('site_hadoop/accounting/hadoop-accounting.erb'),
-    }
-  } else {
-    file{"${site_hadoop::defaultconfdir}/hadoop-accounting":
-      ensure => 'absent',
-    }
+  file{"${site_hadoop::defaultconfdir}/hadoop-accounting":
+    owner  => 'hdfs',
+    group  => 'hdfs',
+    mode   => '0400',
+    content => template('site_hadoop/accounting/hadoop-accounting.erb'),
   }
 
-  $email = $site_hadoop::email
   if $hdfs {
     file{'/etc/cron.d/accounting-hdfs':
       owner => 'root',

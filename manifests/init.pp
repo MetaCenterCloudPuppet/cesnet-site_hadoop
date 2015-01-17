@@ -4,21 +4,6 @@
 #
 # ##Parameters
 #
-# ####`db_name`
-# = undef (system default is *accounting*)
-#
-# Database name for statistics.
-#
-# ####`db_user`
-# = undef (system default is *accounting*)
-#
-# Database user for statistics.
-#
-# ####`db_password`
-# = undef
-#
-# Database password for statistics.
-#
 # ####`email` = undef
 # = undef
 #
@@ -33,10 +18,9 @@
 # * **cloudera**
 # * **scientific**
 #
+# Kerberos realm to use. It needs to be specified, when security is enabled.
+#
 class site_hadoop (
-  $db_name = undef,
-  $db_user = undef,
-  $db_password = undef,
   $email = undef,
   $mirror = $site_hadoop::params::mirror,
 ) inherits site_hadoop::params {

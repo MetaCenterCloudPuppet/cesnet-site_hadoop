@@ -7,3 +7,6 @@ MYSQL_USER='<%= @db_user -%>'
 <% if @db_password -%>
 MYSQL_PASSWORD='<%= @db_password -%>'
 <% end -%>
+<% if @principal != nil -%>
+PRINCIPAL='<%= @principal -%>'
+<% end -%>
