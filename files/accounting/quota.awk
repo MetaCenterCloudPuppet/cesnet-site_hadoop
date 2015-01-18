@@ -19,8 +19,13 @@ BEGIN {
 	print "INSERT INTO measure (name) VALUES ('quota');";
 }
 
-{
+/^[0-9]+[ 	]+[0-9]+[ 	]+\/.*/ {
 	used=$1
 	user=$4
+	print "INSERT INTO quota (id_measure, user, used) VALUES (last_insert_id(), " dbstr(user) ", " dbi(used) ");"
+}
+/^[0-9]+[ 	]+\/.*/ {
+	used=$1
+	user=$3
 	print "INSERT INTO quota (id_measure, user, used) VALUES (last_insert_id(), " dbstr(user) ", " dbi(used) ");"
 }
