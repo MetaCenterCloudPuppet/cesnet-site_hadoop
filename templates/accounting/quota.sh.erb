@@ -2,7 +2,7 @@
 
 PREFIX='/usr/local'
 DEFAULTDIR='<%= scope.lookupvar('site_hadoop::defaultconfdir') -%>'
-export KRB5CCNAME='FILE:/tmp/krb5cc_hdfs_stat'
+export KRB5CCNAME='FILE:/tmp/krb5cc_accounting_quota'
 KEYTAB='FILE:/etc/security/keytab/nn.service.keytab'
 PRINCIPAL="nn/`hostname -f`"
 MYSQL_DB='accounting'
@@ -14,7 +14,7 @@ if test -f ${DEFAULTDIR}/hadoop-accounting; then
 fi
 
 if test -n "${PRINCIPAL}"; then
-  kinit -k -t ${KEYTAB} -l 5m ${PRINCIPAL}
+  kinit -k -t ${KEYTAB} -l 30m ${PRINCIPAL}
 fi
 
 rm -f /tmp/accounting.quota.txt

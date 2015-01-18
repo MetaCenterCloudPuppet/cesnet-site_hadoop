@@ -183,10 +183,17 @@ class site_hadoop::accounting(
     }
   }
   file {'/usr/local/bin/accounting-jobs':
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => template('site_hadoop/accounting/jobs.sh.erb'),
+  }
+  file {'/usr/local/share/hadoop/accounting-jobs.py':
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
-    content => template('site_hadoop/accounting/jobs.py.erb'),
+    source => 'puppet:///modules/site_hadoop/accounting/jobs.py',
+    require => File['/usr/local/share/hadoop'],
   }
   if $accounting_jobs {
     file{'/etc/cron.d/accounting-jobs':

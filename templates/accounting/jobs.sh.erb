@@ -2,7 +2,7 @@
 
 PREFIX='/usr/local'
 DEFAULTDIR='<%= scope.lookupvar('site_hadoop::defaultconfdir') -%>'
-export KRB5CCNAME='FILE:/tmp/krb5cc_accounting_hdfs'
+export KRB5CCNAME='FILE:/tmp/krb5cc_accounting_jobs'
 KEYTAB='FILE:/etc/security/keytab/nn.service.keytab'
 PRINCIPAL="nn/`hostname -f`"
 MYSQL_DB='accounting'
@@ -14,14 +14,14 @@ if test -f ${DEFAULTDIR}/hadoop-accounting; then
 fi
 
 if test -n "${PRINCIPAL}"; then
-  kinit -k -t ${KEYTAB} -l 5m ${PRINCIPAL}
+  kinit -k -t ${KEYTAB} -l 60m ${PRINCIPAL}
 fi
 
-rm -f /tmp/accounting.hdfs.txt
-hdfs dfsadmin -report >/tmp/accounting.hdfs.txt
+rm -f /tmp/accounting.jobs.sql
+${PREFIX}/share/hadoop/accounting-jobs.py --mapred-url '<%= @_mapred_url -%>' > /tmp/accounting.jobs.sql
 
 if test -n "${PRINCIPAL}"; then
   kdestroy
 fi
 
-cat /tmp/accounting.hdfs.txt | awk -f ${PREFIX}/share/hadoop/accounting-hdfs.awk | mysql --user ${MYSQL_USER} --password=${MYSQL_PASSWORD} ${MYSQL_DB}
+cat /tmp/accounting.jobs.sql | mysql --user ${MYSQL_USER} --password=${MYSQL_PASSWORD} ${MYSQL_DB}
