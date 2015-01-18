@@ -12,10 +12,10 @@
 #      stage       => 'setup',
 #    }
 #    
-#    class{'site_hadoop::accountig':
+#    class{'site_hadoop::accounting':
 #      db_password => 'accpass',
 #      email       => 'mail@example.com',
-#      hdfs        => '0,30 * * *',
+#      accounting_hdfs => '0,30 * * *',
 #    }
 #    
 #    mysql::db { 'accounting':
@@ -30,6 +30,21 @@
 #    Class['hadoop::nameserver::install'] -> Class['site_hadoop::accounting']
 #
 # === Parameters
+#
+# ####`accounting_hdfs`
+# = undef
+#
+# Enable storing global HDFS disk and data statistics. The value is time in the cron format. See *man 5 crontab*.
+#
+# ####`accounting_quota`
+# = undef
+#
+# Enable storing user data statistics. The value is time in the cron format. See *man 5 crontab*.
+#
+# ####`accounting_jobs`
+# = undef
+#
+# Enable storing user jobs statistics. The value is time in the cron format. See *man 5 crontab*.
 #
 # ####`db_name`
 # = undef (system default is *accounting*)
@@ -51,9 +66,15 @@
 #
 # Email address to send errors from cron.
 #
-# [*hdfs*] undef
+# ####`mapred_hostname`
+# = $::fqdn
 #
-# Enable storing global HDFS disk and data statistics. The value is time in the cron format. See *man 5 crontab*.
+# Hadoop Job History Node hostname for gathering user jobs statistics.
+#
+# ####`mapred_url`
+# = http://*mapred_hostname*:19888, https://*mapred_hostname*:19890
+#
+# HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It is derived from *mapred_hostname* and *principal*, but it may be needed to override it anyway (different hosts due to High Availability, non-defalt port, ...).
 #
 # ####`principal`
 # = undef
@@ -61,15 +82,23 @@
 # Kerberos principal to access Hadoop.
 #
 class site_hadoop::accounting(
+  $accounting_hdfs = undef,
+  $accounting_quota = undef,
+  $accounting_jobs = undef,
   $db_name = undef,
   $db_user = undef,
   $db_password = undef,
   $email = undef,
-  $hdfs  = undef,
-  $quota  = undef,
+  $mapred_hostname = $::fqdn,
+  $mapred_url = undef,
   $principal = undef,
 ) {
+  include stdlib
+
+  $packages = ['python-pycurl']
+
   # common
+  ensure_packages($packages)
   file{'/usr/local/share/hadoop':
     ensure  => 'directory',
     owner => 'root',
@@ -103,7 +132,7 @@ class site_hadoop::accounting(
     source => 'puppet:///modules/site_hadoop/accounting/hdfs.awk',
     require => File['/usr/local/share/hadoop'],
   }
-  if $hdfs {
+  if $accounting_hdfs {
     file{'/etc/cron.d/accounting-hdfs':
       owner => 'root',
       group => 'root',
@@ -130,7 +159,7 @@ class site_hadoop::accounting(
     source => 'puppet:///modules/site_hadoop/accounting/quota.awk',
     require => File['/usr/local/share/hadoop'],
   }
-  if $quota {
+  if $accounting_quota {
     file{'/etc/cron.d/accounting-quota':
       owner => 'root',
       group => 'root',
@@ -139,6 +168,35 @@ class site_hadoop::accounting(
     }
   } else {
     file{'/etc/cron.d/accounting-quota':
+      ensure => 'absent',
+    }
+  }
+
+  # user jobs
+  if $mapred_url {
+    $_mapred_url = $mapred_url
+  } else {
+    if $principal {
+      $_mapred_url = "https://${mapred_hostname}:19890"
+    } else {
+      $_mapred_url = "http://${mapred_hostname}:19888"
+    }
+  }
+  file {'/usr/local/bin/accounting-jobs':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    content => template('site_hadoop/accounting/jobs.py.erb'),
+  }
+  if $accounting_jobs {
+    file{'/etc/cron.d/accounting-jobs':
+      owner => 'root',
+      group => 'root',
+      mode  => '0644',
+      content => template('site_hadoop/accounting/cron-jobs.erb'),
+    }
+  } else {
+    file{'/etc/cron.d/accounting-jobs':
       ensure => 'absent',
     }
   }

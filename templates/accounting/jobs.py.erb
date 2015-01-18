@@ -1,0 +1,79 @@
+#! /usr/bin/python2
+
+import pycurl, json
+from io import BytesIO
+
+import time
+import calendar
+import datetime
+
+# epoch time of local date
+#now = datetime.date.today().strftime('%s')
+
+# epoch time of GMT date
+now0 = datetime.date.today()
+now = calendar.timegm(datetime.datetime(now0.year, now0.month, now0.day, 0, 0).timetuple())
+print '# ' + str(now0)
+
+begin = 1000 * (now - 24 * 3600)
+end = 1000 * now
+url = "<%= @_mapred_url -%>/ws/v1/history/mapreduce/jobs?finishedTimeBegin=" + str(begin) + "&finishedTimeEnd=" + str(end)
+print '# ' + url
+
+b = BytesIO()
+c = pycurl.Curl()
+c.setopt(pycurl.URL, url)
+#c.setopt(pycurl.WRITEDATA, b)
+c.setopt(pycurl.WRITEFUNCTION, b.write)
+c.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
+c.setopt(pycurl.USERPWD, ":")
+c.perform()
+s = b.getvalue().decode('utf-8')
+
+if c.getinfo(c.RESPONSE_CODE) != 200:
+	print s
+	print 'Status: %d' % c.getinfo(c.RESPONSE_CODE)
+	c.close()
+	b.close()
+	raise Exception()
+
+c.close()
+
+j = json.loads(s)
+#print json.dumps(j, indent=4)
+
+class User:
+	jobs = 0
+	total = 0
+	completed = 0
+	wait = 0
+	time = 0
+	wait_min = -1
+	wait_max = -1
+
+users = dict()
+if j["jobs"]:
+	for job in j["jobs"]["job"]:
+		username = job["user"]
+
+		if username not in users:
+			users[username] = User()
+
+		user = users[username]
+		wait = job["startTime"] - job["submitTime"]
+
+		user.jobs += 1
+		user.total += job['reducesTotal'] + job['mapsTotal']
+		user.completed += job['reducesCompleted'] + job['mapsCompleted']
+		user.wait += wait
+		user.time += job["finishTime"] - job["startTime"]
+		if user.wait_min == -1 or wait < user.wait_min:
+			user.wait_min = wait
+		if user.wait_max == -1 or wait > user.wait_max:
+			user.wait_max = wait
+
+#		print '#[progress]', username, users[username].total, user.completed, user.wait, user.time
+
+print "INSERT INTO measure (name) VALUES ('jobs')"
+for username, user in users.iteritems():
+	print "INSERT INTO jobs (id_measure, user, jobs, done, fail, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), '%s', %d, %d, %d, %d, %d, %d, %d)" % (username, user.jobs, user.completed, user.total - user.completed, user.wait, user.time, user.wait_min, user.wait_max)
