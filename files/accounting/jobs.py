@@ -13,21 +13,24 @@ import socket
 base_url = "http://" + socket.getfqdn() + ":19888"
 begin_rel = 24 * 3600
 end_rel = 0
+utc=0
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "hm:b:e:", ["help", "mapred-url=", "begin=", "end="])
+	opts, args = getopt.getopt(sys.argv[1:], "hm:b:e:u", ["help", "mapred-url=", "begin=", "end=", "utc"])
 except getopt.GetoptError:
 	print 'Args error'
 	sys.exit(2)
 for opt, arg in opts:
 	if opt in ('-h', '--help'):
-		print('jobs.py [-h|--help] [-m|--mapred-url URL] [-b|--begin] [-e|--end]')
+		print('jobs.py [-h|--help] [-m|--mapred-url URL] [-b|--begin] [-e|--end] [-u|--utc]')
 	elif opt in ('-m', '--mapred-url'):
 		base_url = arg
 	elif opt in ('-b', '--begin'):
 		begin_rel = int(arg)
 	elif opt in ('-e', '--end'):
 		end_rel = int(arg)
+	elif opt in ('-u', '--utc'):
+		utc=1
 	else:
 		print 'Args error'
 		sys.exit(2)
@@ -35,9 +38,14 @@ for opt, arg in opts:
 # epoch time of local date
 #now = datetime.date.today().strftime('%s')
 
-# epoch time of GMT date
 now0 = datetime.date.today()
-now = calendar.timegm(datetime.datetime(now0.year, now0.month, now0.day, 0, 0).timetuple())
+if utc:
+	# epoch time of GMT date
+	now = calendar.timegm(datetime.datetime(now0.year, now0.month, now0.day, 0, 0).timetuple())
+else:
+	# epoch time of local date
+	now = int(time.mktime(datetime.datetime(now0.year, now0.month, now0.day, 0, 0).timetuple()))
+
 print '# ' + str(now0)
 
 begin = now - begin_rel
