@@ -1,5 +1,5 @@
 # == Class site_hadoop::devel::hadoop
-# Local post-installation steps for Hadoop.
+# Local post-installation steps for Hadoop for testing in Vagrant.
 class site_hadoop::devel::hadoop {
   hadoop::kinit{'vagrant-kinit':
     touchfile => 'vagrant-user-created',

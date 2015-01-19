@@ -4,13 +4,11 @@
 #
 # ##Parameters
 #
-# ####`email` = undef
-# = undef
+# ####`email` undef
 #
 # Email address to send errors from cron.
 #
-# ####`mirror`
-# = 'cloudera'
+# ####`mirror` 'cloudera'
 #
 # Cloudera mirror to use.
 #

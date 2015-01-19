@@ -1,5 +1,7 @@
 # == Class site_hadoop::accounting
 #
+# Custom Hadoop accouting scripts.
+#
 # Requires:
 # * database
 # * hdfs user and group (=hadoop)
