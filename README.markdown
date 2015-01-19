@@ -21,6 +21,7 @@ Helper module for using together with CESNET Hadoop puppet modules. There are im
 ##Module Description
 
 This module performs settings and decisions not meant to be in generic Hadoop modules:
+
 * sets Coudera repository
 * installs particular version of Java
 * (optionally) custom scripts for accounting
@@ -29,6 +30,7 @@ This module performs settings and decisions not meant to be in generic Hadoop mo
 Supported:
 
 * Debian 7/wheezy + Cloudera distribution (tested on Hadoop 2.5.0)
+* Fedora 21
 
 <a name="setup"></a>
 ##Setup
@@ -36,10 +38,10 @@ Supported:
 <a name="what-hadoop-affects"></a>
 ###What cesnet-hadoop module affects
 
-* Packages: java, Kerberos, other "admin look & feel" packages (less, vim, ...), optionally cron-apt
+* Packages: Java JRE, Kerberos client, other "admin look & feel" packages (less, vim, ...), optionally cron-apt
 * Files modified:
- * /etc/apt/sources.list.d/cloudera.list
- * /etc/apt/preferences.d/10\_cloudera.pref
+ * */etc/apt/sources.list.d/cloudera.list*
+ * */etc/apt/preferences.d/10\_cloudera.pref*
  * Cloudera apt gpg key
  * (optionally) */etc/cron-apt/config*, */etc/cron-apt/action.d/9-upgrade*, *etc/cron.d/cron-apt*
 
@@ -59,7 +61,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
 <a name="usage"></a>
 ##Usage
 
-**Example 1**: enable autoupdates
+**Example 1**: enable autoupdates:
 
     class{'site_hadoop':
       email => 'valtri@civ.zcu.cz',
@@ -130,6 +132,7 @@ Email address to send errors from cron.
 Cloudera mirror to use.
 
 Values:
+
 * **cloudera**
 * **scientific**
 

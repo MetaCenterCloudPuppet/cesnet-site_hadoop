@@ -1,12 +1,27 @@
 {
-  "name": "meta-site_hadoop",
-  "version": "0.1.0",
-  "author": "CESNET",
-  "summary": "Hadoop Site-Specific Stuff",
-  "license": "Public Domain",
+  "name": "cesnet-site_hadoop",
+  "version": "0.9.0",
+  "author": "František Dvořák <valtri@civ.zcu.cz>",
+  "summary": "Hadoop Site-Specific Module",
+  "license": "MIT",
   "source": "mailto://valtri@civ.zcu.cz",
   "project_page": "https://github.com/CESNET/",
   "issues_url": "mailto://valtri@civ.zcu.cz",
+  "operatingsystem_support": [
+    {
+    "operatingsystem": "Debian",
+    "operatingsystemrelease": ["7"]
+    },
+    {
+    "operatingsystem": "Fedora",
+    "operatingsystemrelease": ["21"]
+    }
+  ],
+  "tags": ["hadoop", "accounting"],
   "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
   ]
 }

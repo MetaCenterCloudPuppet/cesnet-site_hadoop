@@ -13,6 +13,7 @@
 # Cloudera mirror to use.
 #
 # Values:
+#
 # * **cloudera**
 # * **scientific**
 #
