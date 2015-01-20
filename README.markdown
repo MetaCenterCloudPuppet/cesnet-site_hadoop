@@ -136,8 +136,6 @@ Values:
 * **cloudera**
 * **scientific**
 
-Kerberos realm to use. It needs to be specified, when security is enabled.
-
 
 <a name="limitations"></a>
 ##Limitations
@@ -147,5 +145,4 @@ Only Debian 7 fully supported. The core part will work on Fedora 21 too.
 <a name="development"></a>
 ##Development
 
-* Repository: [http://scientific.zcu.cz/git/?p=meta-site\_hadoop.git;a=summary](http://scientific.zcu.cz/git/?p=meta-site_hadoop.git;a=summary)
-* Email: František Dvořák &lt;valtri@civ.zcu.cz&gt;
+* Repository: [https://github.com/MetaCenterCloudPuppet/cesnet-site\_hadoop](https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop)

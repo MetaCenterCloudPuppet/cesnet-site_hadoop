@@ -17,8 +17,6 @@
 # * **cloudera**
 # * **scientific**
 #
-# Kerberos realm to use. It needs to be specified, when security is enabled.
-#
 class site_hadoop (
   $email = undef,
   $mirror = $site_hadoop::params::mirror,
