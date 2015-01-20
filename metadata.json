@@ -4,9 +4,9 @@
   "author": "František Dvořák <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
-  "source": "mailto://valtri@civ.zcu.cz",
-  "project_page": "https://github.com/CESNET/",
-  "issues_url": "mailto://valtri@civ.zcu.cz",
+  "source": "https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop",
+  "project_page": "https://github.com/MetaCenterCloudPuppet",
+  "issues_url": "https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop/issues",
   "operatingsystem_support": [
     {
     "operatingsystem": "Debian",
