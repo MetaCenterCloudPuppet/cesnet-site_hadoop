@@ -64,7 +64,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
 **Example 1**: enable autoupdates:
 
     class{'site_hadoop':
-      email => 'valtri@civ.zcu.cz',
+      email => 'email@example.com',
       stage => 'setup',
     }
     
@@ -75,7 +75,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
 **Example 2**: enable Hadoop accounting:
 
     class { '::mysql::server':
-      root_password    => 'strongpassword',
+      root_password => 'strongpassword',
     }
     
     mysql::db { 'accounting':
@@ -90,15 +90,15 @@ Better to set stage to 'setup', because this will set also the repository. All H
       db_user           => 'accounting',
       db_password       => 'accpass',
       email             => 'email@example.com',
-      accountinmg_hdfs  => '0 */4 * * *',
-      accountinmg_quota => '0 */4 * * *',
-      accountinmg_jobs  => '10 2 * * *',
+      accounting_hdfs  => '0 */4 * * *',
+      accounting_quota => '0 */4 * * *',
+      accounting_jobs  => '10 2 * * *',
     }
     
     # site_hadoop::accounting provides the SQL import script
     Class['site_hadoop::accounting'] -> Mysql::Db['accounting']
     # start accounting after Hadoop startup (not strictly needed)
-    #Class['hadoop::namenode::install'] -> Class['site_hadoop::accounting']
+    #Class['hadoop::namenode::service'] -> Class['site_hadoop::accounting']
 
 <a name="reference"></a>
 ##Reference
@@ -146,3 +146,4 @@ Only Debian 7 fully supported. The core part will work on Fedora 21 too.
 ##Development
 
 * Repository: [https://github.com/MetaCenterCloudPuppet/cesnet-site\_hadoop](https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop)
+* Testing: [https://github.com/MetaCenterCloudPuppet/hadoop-tests](https://github.com/MetaCenterCloudPuppet/hadoop-tests)
