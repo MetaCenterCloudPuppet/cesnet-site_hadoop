@@ -4,19 +4,23 @@
 #
 # === Parameters
 #
+# ####`email`
+#
+# Email to sent information about updates. Taken from site_hadoop *email* parameter (default undef).
+#
 # ####`time`
 # = ''0 5 * * *'
 #
 # Time to upgrade in cron format (see *man 5 crontab*).
 #
 class site_hadoop::autoupdate(
+  $email = $site_hadoop::email,
   $time = $site_hadoop::params::time_autoupdate,
 ) inherits site_hadoop::params {
   include stdlib
 
   ensure_packages($site_hadoop::params::packages_autoupdate)
 
-  $email = $site_hadoop::email
   if $::osfamily == 'Debian' {
     file { '/etc/cron-apt/config':
       content => template('site_hadoop/cron-apt.conf.erb'),
