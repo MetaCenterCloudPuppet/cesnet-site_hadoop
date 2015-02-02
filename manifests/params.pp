@@ -32,6 +32,8 @@ class site_hadoop::params {
     redhat => ['yum-autoupdate'],
   }
 
+  $full = false
+
   # every night at 5:00
   $time_autoupdate = '0 5 * * *'
 
