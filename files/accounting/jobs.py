@@ -120,4 +120,4 @@ sql_begin = datetime.datetime.fromtimestamp(begin).strftime('%Y-%m-%d %H:%M:%S')
 sql_end = datetime.datetime.fromtimestamp(end).strftime('%Y-%m-%d %H:%M:%S')
 print "INSERT INTO measure (name, start, end) VALUES ('jobs', '%s', '%s');" % (sql_begin, sql_end)
 for username, user in users.iteritems():
-	print "INSERT INTO jobs (id_measure, user, jobs, done, fail, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), '%s', %d, %d, %d, %d, %d, %d, %d);" % (username, user.jobs, user.completed, user.fails, user.wait, user.time, user.wait_min, user.wait_max)
+	print "INSERT INTO jobs (id_measure, user, jobs, fails, subjobs, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), '%s', %d, %d, %d, %d, %d, %d, %d);" % (username, user.jobs, user.fails, user.completed, user.wait, user.time, user.wait_min, user.wait_max)

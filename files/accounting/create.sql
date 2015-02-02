@@ -14,8 +14,8 @@
 -- INSERT INTO hdfs (id_measure, hostname, state, full, disk, disk_used) VALUES (last_insert_id(), 'hador1', 1, 1024, 1023, 10);
 --
 -- INSERT INTO measure (name, start, end) VALUES ('jobs', '2015-01-16', '2015-01-17');
--- INSERT INTO jobs (id_measure, user, jobs, done, fail, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), 'valtri', 6, 10, 2, 1000, 500, 10, 100);
--- INSERT INTO jobs (id_measure, user, jobs, done, fail, wait_min, wait_max) VALUES (last_insert_id(), 'nemo', 0, 0, 0, NULL, NULL);
+-- INSERT INTO jobs (id_measure, user, jobs, fails, subjobs, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), 'valtri', 6, 10, 2, 1000, 500, 10, 100);
+-- INSERT INTO jobs (id_measure, user, jobs, fails, subjobs, wait_min, wait_max) VALUES (last_insert_id(), 'nemo', 0, 0, 0, NULL, NULL);
 --
 -- How to read values:
 --
@@ -83,8 +83,8 @@ CREATE TABLE jobs (
 	id_measure INTEGER NOT NULL,
 	user CHAR(20) NULL,
 	jobs INTEGER,
-	done INTEGER,
-	fail INTEGER,
+	fails INTEGER,
+	subjobs INTEGER,
 	real_wait INTEGER,
 	real_time INTEGER,
 	wait_min INTEGER,
@@ -125,4 +125,4 @@ DELIMITER ;
 CREATE VIEW view_measures AS SELECT m.* FROM measure m, statistic s WHERE s.last_id_measure = m.id_measure;
 CREATE VIEW view_hdfs AS SELECT m.seq, m.time, h.hostname, h.full, h.disk, h.disk_used, h.disk_free, h.block_under, h.block_corrupt, h.block_missing FROM hdfs h, measure m WHERE h.id_measure=m.id_measure;
 CREATE VIEW view_quota AS SELECT m.seq, m.time, q.user, q.used FROM quota q, measure m WHERE q.id_measure=m.id_measure;
-CREATE VIEW view_jobs AS SELECT m.seq, m.time, m.start, m.end, j.user, j.jobs, j.done, j.fail, j.real_wait, j.real_time, j.wait_min, j.wait_max FROM jobs j, measure m WHERE j.id_measure=m.id_measure;
+CREATE VIEW view_jobs AS SELECT m.seq, m.time, m.start, m.end, j.user, j.jobs, j.fails, j.subjobs, j.real_wait, j.real_time, j.wait_min, j.wait_max FROM jobs j, measure m WHERE j.id_measure=m.id_measure;
