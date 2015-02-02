@@ -14,15 +14,17 @@ base_url = "http://" + socket.getfqdn() + ":19888"
 begin_rel = 24 * 3600
 end_rel = 0
 utc=0
+debug=0
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "hm:b:e:u", ["help", "mapred-url=", "begin=", "end=", "utc"])
+	opts, args = getopt.getopt(sys.argv[1:], "hm:b:e:ud", ["help", "mapred-url=", "begin=", "end=", "utc", "debug"])
 except getopt.GetoptError:
 	print 'Args error'
 	sys.exit(2)
 for opt, arg in opts:
 	if opt in ('-h', '--help'):
-		print('jobs.py [-h|--help] [-m|--mapred-url URL] [-b|--begin] [-e|--end] [-u|--utc]')
+		print('jobs.py [-h|--help] [-m|--mapred-url URL] [-b|--begin] [-e|--end] [-u|--utc] [-d|--debug]')
+		sys.exit(0)
 	elif opt in ('-m', '--mapred-url'):
 		base_url = arg
 	elif opt in ('-b', '--begin'):
@@ -31,6 +33,8 @@ for opt, arg in opts:
 		end_rel = int(arg)
 	elif opt in ('-u', '--utc'):
 		utc=1
+	elif opt in ('-d', '--debug'):
+		debug=1
 	else:
 		print 'Args error'
 		sys.exit(2)
@@ -73,10 +77,13 @@ if c.getinfo(c.RESPONSE_CODE) != 200:
 c.close()
 
 j = json.loads(s)
-#print json.dumps(j, indent=4)
+
+if debug:
+	print json.dumps(j, indent=4)
 
 class User:
 	jobs = 0
+	fails = 0
 	total = 0
 	completed = 0
 	wait = 0
@@ -96,6 +103,8 @@ if j["jobs"]:
 		wait = job["startTime"] - job["submitTime"]
 
 		user.jobs += 1
+		if job['state'] != 'NEW' and job['state'] != 'INITED' and job['state'] != 'RUNNING' and job['state'] != 'SUCCEEDED':
+			user.fails += 1
 		user.total += job['reducesTotal'] + job['mapsTotal']
 		user.completed += job['reducesCompleted'] + job['mapsCompleted']
 		user.wait += wait
@@ -111,4 +120,4 @@ sql_begin = datetime.datetime.fromtimestamp(begin).strftime('%Y-%m-%d %H:%M:%S')
 sql_end = datetime.datetime.fromtimestamp(end).strftime('%Y-%m-%d %H:%M:%S')
 print "INSERT INTO measure (name, start, end) VALUES ('jobs', '%s', '%s');" % (sql_begin, sql_end)
 for username, user in users.iteritems():
-	print "INSERT INTO jobs (id_measure, user, jobs, done, fail, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), '%s', %d, %d, %d, %d, %d, %d, %d);" % (username, user.jobs, user.completed, user.total - user.completed, user.wait, user.time, user.wait_min, user.wait_max)
+	print "INSERT INTO jobs (id_measure, user, jobs, done, fail, real_wait, real_time, wait_min, wait_max) VALUES (last_insert_id(), '%s', %d, %d, %d, %d, %d, %d, %d);" % (username, user.jobs, user.completed, user.fails, user.wait, user.time, user.wait_min, user.wait_max)
