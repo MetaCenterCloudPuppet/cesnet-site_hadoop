@@ -27,9 +27,11 @@ class site_hadoop::params {
     default => undef,
   }
 
-  $packages_autoupdate = $::osfamily ? {
+  $packages_autoupdate = $::operatingsystem ? {
+    centos => ['yum-cron'],
     debian => ['cron-apt'],
-    redhat => ['yum-autoupdate'],
+    fedora => ['yum-autoupdate'],
+    ubuntu => ['cron-apt'],
   }
 
   $full = false
@@ -41,8 +43,9 @@ class site_hadoop::params {
 
   $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')
   $cdh5_repopath = $::operatingsystem ? {
+    centos => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
     debian => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
-    redhat => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh/",
+    redhat => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
     ubuntu => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
   }
 
