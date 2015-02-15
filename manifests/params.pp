@@ -13,14 +13,16 @@ class site_hadoop::params {
         'wheezy', 'jessie', 'precise','quantal','raring','saucy', 'trusty': {
           $java_packages = ['openjdk-7-jre-headless']
         }
+        default: {}
       }
     }
     default: {}
   }
     
   $packages = $::osfamily ? {
-    debian => ['acl', 'heimdal-clients', 'less', 'mc', 'puppet', 'vim', 'wget'],
-    redhat => ['krb5-workstation', 'less', 'mc', 'puppet', 'vim-enhanced', 'wget'],
+    debian  => ['acl', 'heimdal-clients', 'less', 'mc', 'puppet', 'vim', 'wget'],
+    redhat  => ['krb5-workstation', 'less', 'mc', 'puppet', 'vim-enhanced', 'wget'],
+    default => undef,
   }
   $mc_setup = $::osfamily ? {
     debian  => '/usr/lib/mc/mc',
@@ -28,10 +30,11 @@ class site_hadoop::params {
   }
 
   $packages_autoupdate = $::operatingsystem ? {
-    centos => ['yum-cron'],
-    debian => ['cron-apt'],
-    fedora => ['yum-autoupdate'],
-    ubuntu => ['cron-apt'],
+    centos  => ['yum-cron'],
+    debian  => ['cron-apt'],
+    fedora  => ['yum-autoupdate'],
+    ubuntu  => ['cron-apt'],
+    default => undef,
   }
 
   $full = false
@@ -43,10 +46,9 @@ class site_hadoop::params {
 
   $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')
   $cdh5_repopath = $::operatingsystem ? {
-    centos => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
-    debian => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
-    redhat => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
-    ubuntu => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
+    debian  => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
+    ubuntu  => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
+    default => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
   }
 
   $mirror = 'cloudera'

@@ -24,7 +24,9 @@ class site_hadoop::autoupdate(
 ) inherits site_hadoop::params {
   include stdlib
 
-  ensure_packages($site_hadoop::params::packages_autoupdate)
+  if $site_hadoop::params::packages_autoupdate {
+    ensure_packages($site_hadoop::params::packages_autoupdate)
+  }
 
   if $::osfamily == 'Debian' {
     if ($full) {
