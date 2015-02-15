@@ -10,7 +10,7 @@ class site_hadoop::cloudera {
     }
     ->
     exec { 'wget-cloudera':
-      command => "wget -P /etc/apt/sources.list.d/ $url/cloudera.list && sed -i /etc/apt/sources.list.d/cloudera.list -e \"s/\\\\(deb\\\\|deb-src\\\\) http/\\\\1 [arch=amd64] http/\"",
+      command => "wget -P /etc/apt/sources.list.d/ $url/cloudera.list && sed -i /etc/apt/sources.list.d/cloudera.list -e \"s/\\\\(deb\\\\|deb-src\\\\) http/\\\\1 [arch=amd64] http/\" && sed -i /etc/apt/sources.list.d/cloudera.list -e 's,\${baseUrl},http://archive.cloudera.com,' -e 's,\${category},cdh5,'",
       path    => $site_hadoop::path,
       creates => '/etc/apt/sources.list.d/cloudera.list',
     }

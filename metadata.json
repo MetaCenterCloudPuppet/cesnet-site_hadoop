@@ -15,6 +15,10 @@
     {
     "operatingsystem": "Fedora",
     "operatingsystemrelease": ["21"]
+    },
+    {
+    "operatingsystem": "Ubuntu",
+    "operatingsystemrelease": ["14.04"]
     }
   ],
   "tags": ["hadoop", "accounting"],
