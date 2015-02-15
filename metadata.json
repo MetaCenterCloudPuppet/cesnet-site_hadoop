@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
