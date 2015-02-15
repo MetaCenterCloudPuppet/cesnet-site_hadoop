@@ -38,24 +38,28 @@ class site_hadoop::autoupdate(
       content => template('site_hadoop/cron-apt.conf.erb'),
       owner   => 'root',
       group   => 'root',
+      mode    => '0644',
       require => Package[$site_hadoop::params::packages_autoupdate],
     }
     file { '/etc/cron-apt/action.d/3-download':
       content => template('site_hadoop/cron-apt-action-download.erb'),
       owner   => 'root',
       group   => 'root',
+      mode    => '0644',
       require => Package[$site_hadoop::params::packages_autoupdate],
     }
     file { '/etc/cron-apt/action.d/9-upgrade':
       content => template('site_hadoop/cron-apt-action-upgrade.erb'),
       owner   => 'root',
       group   => 'root',
+      mode    => '0644',
       require => Package[$site_hadoop::params::packages_autoupdate],
     }
     file { '/etc/cron.d/cron-apt':
       content => template('site_hadoop/cron-apt.cron.erb'),
       owner   => 'root',
       group   => 'root',
+      mode    => '0644',
       require => Package[$site_hadoop::params::packages_autoupdate],
     }
   }

@@ -25,6 +25,7 @@ class site_hadoop::cloudera {
       file {'/etc/apt/preferences.d/10_cloudera.pref':
         owner  => 'root',
         group  => 'root',
+        mode   => '0644',
         source => 'puppet:///modules/site_hadoop/10_cloudera.pref',
       }
     }
