@@ -42,6 +42,7 @@ Supported:
 * Files modified:
  * */etc/apt/sources.list.d/cloudera.list*
  * */etc/apt/preferences.d/10\_cloudera.pref*
+ * */usr/local/bin/launch* (when *scripts_enable* parameter is *true*)
  * Cloudera apt gpg key
  * (optionally) */etc/cron-apt/config*, */etc/cron-apt/action.d/9-upgrade*, *etc/cron.d/cron-apt*
 
@@ -135,6 +136,10 @@ Values:
 
 * **cloudera**
 * **scientific**
+
+####`scripts_enable` true
+
+Create also helper useful scripts in /usr/local.
 
 
 <a name="limitations"></a>

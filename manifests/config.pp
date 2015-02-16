@@ -13,4 +13,17 @@ class site_hadoop::config {
       target => "${site_hadoop::mc_setup}.sh",
     }
   }
+
+  if $site_hadoop::scripts_enable {
+    file { '/usr/local/bin/launch':
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      source => 'puppet:///modules/site_hadoop/launch.sh',
+    }
+  } else {
+    file { '/usr/local/bin/launch':
+      ensure => 'absent',
+    }
+  }
 }

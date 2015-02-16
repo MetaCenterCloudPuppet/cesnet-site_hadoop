@@ -17,9 +17,15 @@
 # * **cloudera**
 # * **scientific**
 #
+# ####`scripts_enable` true
+#
+# Create also helper useful scripts in /usr/local.
+#
+#
 class site_hadoop (
   $email = undef,
   $mirror = $site_hadoop::params::mirror,
+  $scripts_enable = $site_hadoop::params::scripts_enable,
 ) inherits site_hadoop::params {
   include 'site_hadoop::install'
   include 'site_hadoop::config'

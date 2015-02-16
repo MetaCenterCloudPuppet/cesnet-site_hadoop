@@ -60,4 +60,6 @@ class site_hadoop::params {
       default => "http://archive.cloudera.com${cdh5_repopath}",
     }
   }
+
+  $scripts_enable = true
 }
