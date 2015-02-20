@@ -31,10 +31,12 @@ class site_hadoop::cloudera {
     }
 
     'RedHat': {
-      exec { 'wget-cloudera':
-        command => "wget -P /etc/yum.repos.d/ ${url}/cloudera-cdh5.repo",
-        path    => $site_hadoop::path,
-        creates => '/etc/yum.repos.d/cloudera-cdh5.repo',
+      if $::operatingsystem != 'Fedora' {
+        exec { 'wget-cloudera':
+          command => "wget -P /etc/yum.repos.d/ ${url}/cloudera-cdh5.repo",
+          path    => $site_hadoop::path,
+          creates => '/etc/yum.repos.d/cloudera-cdh5.repo',
+        }
       }
     }
 
