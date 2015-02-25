@@ -88,12 +88,14 @@ Better to set stage to 'setup', because this will set also the repository. All H
     }
     
     class{'site_hadoop::accounting':
-      db_user           => 'accounting',
-      db_password       => 'accpass',
-      email             => 'email@example.com',
+      db_user          => 'accounting',
+      db_password      => 'accpass',
+      email            => 'email@example.com',
       accounting_hdfs  => '0 */4 * * *',
       accounting_quota => '0 */4 * * *',
       accounting_jobs  => '10 2 * * *',
+      # needs to be empty string, when not using Kerberos security
+      principal        => '',
     }
     
     # site_hadoop::accounting provides the SQL import script
@@ -141,6 +143,57 @@ Values:
 
 Create also helper useful scripts in /usr/local.
 
+###Accounting class parameters
+
+####`accounting_hdfs`
+= undef
+
+Enable storing global HDFS disk and data statistics. The value is time in the cron format. See *man 5 crontab*.
+
+####`accounting_quota`
+= undef
+
+Enable storing user data statistics. The value is time in the cron format. See *man 5 crontab*.
+
+####`accounting_jobs`
+= undef
+
+Enable storing user jobs statistics. The value is time in the cron format. See *man 5 crontab*.
+
+####`db_name`
+= undef (system default is *accounting*)
+
+Database name for statistics.
+
+####`db_user`
+= undef (system default is *accounting*)
+
+Database user for statistics.
+
+####`db_password`
+= undef
+
+Database password for statistics.
+
+####`email`
+= undef
+
+Email address to send errors from cron.
+
+####`mapred_hostname`
+= $::fqdn
+
+Hadoop Job History Node hostname for gathering user jobs statistics.
+
+####`mapred_url`
+= http://*mapred_hostname*:19888, https://*mapred_hostname*:19890
+
+HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It is derived from *mapred_hostname* and *principal*, but it may be needed to override it anyway (different hosts due to High Availability, non-default port, ...).
+
+####`principal`
+= undef (system default is nn/'hostname -f')
+
+Kerberos principal to access Hadoop. Undef means using default principal value. It needs to be empty string to disable security and not using Kerberos tickets!
 
 <a name="limitations"></a>
 ##Limitations

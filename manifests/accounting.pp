@@ -76,12 +76,12 @@
 # ####`mapred_url`
 # = http://*mapred_hostname*:19888, https://*mapred_hostname*:19890
 #
-# HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It is derived from *mapred_hostname* and *principal*, but it may be needed to override it anyway (different hosts due to High Availability, non-defalt port, ...).
+# HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It is derived from *mapred_hostname* and *principal*, but it may be needed to override it anyway (different hosts due to High Availability, non-default port, ...).
 #
 # ####`principal`
-# = undef
+# = undef (system default is nn/\`hostname -f\`)
 #
-# Kerberos principal to access Hadoop.
+# Kerberos principal to access Hadoop. Undef means using default principal value. It needs to be empty string to disable security and not using Kerberos tickets!
 #
 class site_hadoop::accounting(
   $accounting_hdfs = undef,
