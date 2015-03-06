@@ -49,8 +49,11 @@ c = pycurl.Curl()
 
 
 def get_rest(base_url, url):
+	if debug >= 3:
+		print '# %s%s' % (base_url, url)
+
 	b = BytesIO()
-	c.setopt(pycurl.URL, base_url + url)
+	c.setopt(pycurl.URL, str(base_url + url))
 	#c.setopt(pycurl.WRITEDATA, b)
 	c.setopt(pycurl.WRITEFUNCTION, b.write)
 	c.perform()
@@ -65,8 +68,6 @@ def get_rest(base_url, url):
 
 	j = json.loads(s)
 
-	if debug >= 3:
-		print '# %s%s' % (base_url, url)
 	if debug >= 4:
 		print json.dumps(j, indent=4)
 
