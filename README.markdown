@@ -117,6 +117,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
  * server
 * **accounting**: Custom Hadoop accouting scripts
 * **autoupdate**: Configure automatic updates on Debian
+* **bookkeeping**: Custom Hadoop bookkeeping scripts
 * cloudera
 * config
 * init

@@ -1,0 +1,23 @@
+<%if @db_name -%>
+dbname=<%= @db_name %>
+<% end -%>
+<%if @db_host -%>
+dbhost=<%= @db_host %>
+<% end -%>
+<%if @db_user -%>
+dbuser=<%= @db_user %>
+<% end -%>
+<%if @db_password -%>
+dbpassword=<%= @db_password %>
+<% end -%>
+<%if @historyserver_hostname -%>
+mapred=<%= @historyserver_hostname %>
+<% end -%>
+<%if @resourcemanager_hostname -%>
+yarn=<%= @resourcemanager_hostname %>
+<% end -%>
+<%if @realm -%>
+ssl=1
+<% else -%>
+ssl=0
+<% end -%>
