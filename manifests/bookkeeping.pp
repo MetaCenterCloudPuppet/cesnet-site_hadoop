@@ -9,7 +9,7 @@
 # === Parameters
 #
 # ####`db_name`
-# = undef (system default is *hadoop*)
+# = undef (system default is *bookkeeping*)
 #
 # ####`db_host`
 # = undef (system default is local socket)
@@ -17,7 +17,7 @@
 # Database name for statistics.
 #
 # ####`db_user`
-# = undef (system default is *hadoop*)
+# = undef (system default is *bookkeeping*)
 #
 # Database user for statistics.
 #
