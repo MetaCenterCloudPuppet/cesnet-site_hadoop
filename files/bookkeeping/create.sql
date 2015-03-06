@@ -29,7 +29,9 @@ CREATE TABLE subjobs (
 	finish BIGINT,
 
 	INDEX(id),
-	INDEX(jobid)
+	INDEX(jobid),
+	INDEX(start),
+	INDEX(finish)
 );
 
 
