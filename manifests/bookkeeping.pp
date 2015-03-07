@@ -161,7 +161,7 @@ class site_hadoop::bookkeeping(
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('site_hadoop/bookkeeping/cron.erb'),
+      content => template('site_hadoop/bookkeeping/cron-refresh.erb'),
     }
     exec{'bookkeeping-refresh-now':
       command => "${prefix}/share/hadoop/bookkeeping-refresh.sh",
