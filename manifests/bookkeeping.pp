@@ -77,7 +77,7 @@ class site_hadoop::bookkeeping(
   $db_user = undef,
   $db_password = undef,
   $email = undef,
-  $freq = '*/10 * * * *',
+  $freq = '*/12 * * * *',
   $historyserver_hostname = $::fqdn,
   $interval = undef,
   $keytab = undef,

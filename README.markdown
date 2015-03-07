@@ -2,6 +2,8 @@
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
+   * [Accounting](#accounting)
+   * [Bookkeeping](#bookkeeping)
 3. [Setup - The basics of getting started with site\_hadoop](#setup)
     * [What cesnet-hadoop module affects](#what-site_hadoop-affects)
     * [Beginning with hadoop](#beginning-with-site_hadoop)
@@ -25,12 +27,39 @@ This module performs settings and decisions not meant to be in generic Hadoop mo
 * sets Coudera repository
 * installs particular version of Java
 * (optionally) custom scripts for accounting
+* (optionally) custom scripts for bookkeeping
 * (optionally) enable autoupdates
 
 Supported:
 
 * Debian 7/wheezy + Cloudera distribution (tested on Hadoop 2.5.0)
 * Fedora 21
+
+<a name="accounting"></a>
+### Accounting
+
+Several basic values are regularly measured and saved to local MySQL database:
+
+* disk space of each node
+* disk space of each user (*/user/\**)
+* number of jobs and basic summary (like elapsed times) for each user for last 24 hours
+
+The last information (24 hours job statistics) could be mined also from data gathered by bookkeeping (see below). Accounting will do it more lightweight though - only summary is gathered without cloning of jobs metadata.
+
+With accounting you will have basic statistics of Hadoop cluster.
+
+<a name="bookkeeping"></a>
+### Bookkeeping
+
+Job metadata information is regularly copied from Hadoop to local MySQL database using HTTP REST API from YARN Resource Manager and MapRed Job History server.
+
+Information stored:
+
+* jobs: top-level information of submitted jobs (elapsed time, ...)
+* subjobs: individial map/reduce tasks (node used, elasped time, ...)
+* job nodes: subjobs information aggregated per node (number of map/reduce tasks, summary of elapsed time, ...)
+
+With all job metadata in local database you will have detailed history information of Hadoop cluster.
 
 <a name="setup"></a>
 ##Setup
@@ -102,6 +131,30 @@ Better to set stage to 'setup', because this will set also the repository. All H
     Class['site_hadoop::accounting'] -> Mysql::Db['accounting']
     # start accounting after Hadoop startup (not strictly needed)
     #Class['hadoop::namenode::service'] -> Class['site_hadoop::accounting']
+
+**Example 3**: enable Hadoop bookkeeping:
+
+    class{'mysql::server':
+      root_password => 'strong_password',
+    }
+
+    mysql::db{'bookkeeping':
+      user     => 'bookkeeping',
+      password => 'bkpass',
+      grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+      sql      => '/usr/local/share/hadoop/bookkeeping.sql',
+    }
+
+    class{'site_hadoop::bookkeeping':
+      email       => 'email@example.com',
+      db_name     => 'bookkeeping',
+      db_user     => 'bookkeeping',
+      db_password => 'bkpass',
+      freq        => '*/12 * * * *',
+      interval    => 3600,
+    }
+
+    Class['site_hadoop::bookkeeping'] -> Mysql::Db['bookkeeping']
 
 <a name="reference"></a>
 ##Reference
@@ -195,6 +248,71 @@ HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It 
 = undef (system default is nn/'hostname -f')
 
 Kerberos principal to access Hadoop. Undef means using default principal value. It needs to be empty string to disable security and not using Kerberos tickets!
+
+###Bookkeeping class parameters
+
+####`db_name`
+= undef (system default is *bookkeeping*)
+
+####`db_host`
+= undef (system default is local socket)
+
+Database name for statistics.
+
+####`db_user`
+= undef (system default is *bookkeeping*)
+
+Database user for statistics.
+
+####`db_password`
+= undef (system default is empty password)
+
+Database password for statistics.
+
+####`email`
+= undef
+
+Email address to send errors from cron.
+
+####`freq`
+= '*/10 * * * *'
+
+Frequency of hadoop job metadata polling. The value is time in the cron format. See *man 5 crontab*.
+
+####`historyserver_hostname`
+= $::fqdn
+
+Hadoop Job History Server hostname.
+
+####`interval`
+= undef (scripts default: 3600)
+
+Interval (in seconds) to scan Hadoop.
+
+####`keytab`
+= undef (script default: /etc/security/keytab/nn.service.keytab)
+
+Service keytab for ticket refresh.
+
+####`principal`
+= undef (script default: nn/\`hostname -f\`@REALM)
+
+Kerberos principal name for gathering metadata. Undef means using default principal value.
+
+####`realm`
+= undef
+
+Kerberos realm. Non-empty values enables the security.
+
+####`refresh`
+= '0 */4 * * *'
+
+Ticket refresh frequency. The value is time in the cron format. See *man 5 crontab*.
+
+####`resourcemanager_hostname`
+= $::fqdn
+
+Hadoop Resourse Manager hostname.
 
 <a name="limitations"></a>
 ##Limitations
