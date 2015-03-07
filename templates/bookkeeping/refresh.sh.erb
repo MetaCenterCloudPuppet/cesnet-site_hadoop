@@ -1,5 +1,6 @@
 #! /bin/sh -e
 
+DEFAULTDIR='<%= scope.lookupvar('site_hadoop::defaultconfdir') -%>'
 KRB5CCNAME='FILE:/tmp/krb5cc_hadoop_bookeeping'
 KEYTAB='FILE:/etc/security/keytab/nn.service.keytab'
 PRINCIPAL="nn/`hostname -f`"

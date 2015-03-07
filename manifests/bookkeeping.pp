@@ -141,7 +141,7 @@ class site_hadoop::bookkeeping(
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    source  => 'puppet:///modules/site_hadoop/bookkeeping/refresh.sh',
+    content => template('site_hadoop/bookkeeping/refresh.sh.erb'),
     require => File["${prefix}/share/hadoop"],
   }
   if $freq {
@@ -168,7 +168,7 @@ class site_hadoop::bookkeeping(
       creates => $ticket,
       path    => '/sbin:/usr/sbin:/bin:/usr/bin',
       user    => 'hdfs',
-      require => File["${prefix}/share/hadoop"],
+      require => [File["${prefix}/share/hadoop"], File["${site_hadoop::defaultconfdir}/hadoop-bookkeeping"]],
     }
   } else {
     file{'/etc/cron.d/hadoop-bookkeeping-refresh':
