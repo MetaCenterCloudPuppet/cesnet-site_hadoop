@@ -15,5 +15,5 @@ export KRB5CCNAME
 
 begin=$(($(date '+%s')-INTERVAL))000
 
-${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "finishedTimeBegin=${begin}" --db --debug=0
-${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "startedTimeBegin=${begin}" --db --debug=0
+${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "finishedTimeBegin=${begin}" --db --debug=2 > /tmp/bookkeeping-finish.log
+${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "startedTimeBegin=${begin}" --db --debug=2 > /tmp/bookkeeping-start.log
