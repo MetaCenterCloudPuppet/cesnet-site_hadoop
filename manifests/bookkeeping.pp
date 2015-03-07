@@ -99,12 +99,12 @@ class site_hadoop::bookkeeping(
   $ticket = '/tmp/krb5cc_hadoop_bookkeeping'
 
   ensure_packages($packages)
-  file{"${prefix}/share/hadoop":
+  ensure_resource('file', "${prefix}/share/hadoop", {
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
-  }
+  })
   file{"${site_hadoop::defaultconfdir}/hadoop-bookkeeping":
     owner   => 'root',
     group   => 'root',
@@ -142,6 +142,7 @@ class site_hadoop::bookkeeping(
     group   => 'root',
     mode    => '0755',
     source => 'puppet:///modules/site_hadoop/bookkeeping/refresh.sh',
+    require => File["${prefix}/share/hadoop"],
   }
   if $freq {
     file{'/etc/cron.d/hadoop-bookkeeping':
@@ -167,7 +168,7 @@ class site_hadoop::bookkeeping(
       creates => $ticket,
       path    => '/sbin:/usr/sbin:/bin:/usr/bin',
       user    => 'hdfs',
-      require => File["${prefix}/share/hadoop/bookkeeping-refresh.sh"],
+      require => File["${prefix}/share/hadoop"],
     }
   } else {
     file{'/etc/cron.d/hadoop-bookkeeping-refresh':
