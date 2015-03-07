@@ -171,11 +171,12 @@ Better to set stage to 'setup', because this will set also the repository. All H
 * **accounting**: Custom Hadoop accouting scripts
 * **autoupdate**: Configure automatic updates on Debian
 * **bookkeeping**: Custom Hadoop bookkeeping scripts
-* cloudera
-* config
-* init
-* install
+* cloudera: Set-up Cloudera repository
+* config: Configuration of Hadoop cluster machines
+* init: The main class
+* install: Installation of packages required by site\_hadoop module
 * kdc: Experiments with KDC
+* params: Parameters and default values for site\_hadoop module
 
 <a name="parameters"></a>
 ###Module Parameters

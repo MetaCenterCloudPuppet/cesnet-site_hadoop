@@ -1,3 +1,7 @@
+# == Class site_hadoop::cloudera
+#
+# Set-up Cloudera repository.
+#
 class site_hadoop::cloudera {
   $url = $site_hadoop::mirrors[$site_hadoop::mirror]
 

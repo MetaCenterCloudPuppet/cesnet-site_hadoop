@@ -1,3 +1,7 @@
+# == Class site_hadoop::params
+#
+# Parameters and default values for site\_hadoop module.
+#
 class site_hadoop::params {
   $defaultconfdir = $::osfamily ? {
     debian => '/etc/default',

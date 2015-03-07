@@ -1,3 +1,7 @@
+# == Class site_hadoop::config
+#
+# Configuration of Hadoop cluster machines, not meant to be in generic Hadoop puppet modules.
+#
 class site_hadoop::config {
   if $site_hadoop::mc_setup {
     file { '/etc/profile.d/mc.csh':

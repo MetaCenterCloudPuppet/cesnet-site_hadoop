@@ -141,7 +141,7 @@ class site_hadoop::bookkeeping(
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    source => 'puppet:///modules/site_hadoop/bookkeeping/refresh.sh',
+    source  => 'puppet:///modules/site_hadoop/bookkeeping/refresh.sh',
     require => File["${prefix}/share/hadoop"],
   }
   if $freq {

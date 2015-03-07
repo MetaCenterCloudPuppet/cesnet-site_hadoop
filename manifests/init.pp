@@ -1,6 +1,6 @@
 # == Class site_hadoop
 #
-# Basic system configurations for Hadoop cluster on Meta.
+# The main class. Basic system configurations for Hadoop cluster.
 #
 # ##Parameters
 #
