@@ -11,6 +11,8 @@
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Classes](#classes)
     * [Module Parameters](#parameters)
+    * [Accounting class parameters](#parameters-accounting)
+    * [Bookkeeping class parameters](#parameters-bookkeeping)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
@@ -198,6 +200,7 @@ Values:
 
 Create also helper useful scripts in /usr/local.
 
+<a name="parameters-accounting"></a>
 ###Accounting class parameters
 
 ####`accounting_hdfs`
@@ -250,6 +253,7 @@ HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It 
 
 Kerberos principal to access Hadoop. Undef means using default principal value. It needs to be empty string to disable security and not using Kerberos tickets!
 
+<a name="parameters-bookkeeping"></a>
 ###Bookkeeping class parameters
 
 ####`db_name`
@@ -313,7 +317,12 @@ Ticket refresh frequency. The value is time in the cron format. See *man 5 cront
 ####`resourcemanager_hostname`
 = $::fqdn
 
-Hadoop Resourse Manager hostname.
+Hostname of the Hadoop YARN Resource Manager.
+
+####`resourcemanager_hostname2`
+= undef
+
+Hostname of the second Hadoop YARN Resource Manager, used with high availability.
 
 <a name="limitations"></a>
 ##Limitations

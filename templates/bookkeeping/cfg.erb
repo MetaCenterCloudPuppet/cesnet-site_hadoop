@@ -16,6 +16,9 @@ mapred=<%= @historyserver_hostname %>
 <%if @resourcemanager_hostname -%>
 yarn=<%= @resourcemanager_hostname %>
 <% end -%>
+<%if @resourcemanager_hostname2 -%>
+yarn=<%= @resourcemanager_hostname2 %>
+<% end -%>
 <%if @realm -%>
 ssl=1
 <% else -%>

@@ -69,7 +69,12 @@
 # ####`resourcemanager_hostname`
 # = $::fqdn
 #
-# Hadoop Resourse Manager hostname.
+# Hostname of the Hadoop YARN Resource Manager.
+#
+# ####`resourcemanager_hostname2`
+# = undef
+#
+# Hostname of the second Hadoop YARN Resource Manager, used with high availability.
 #
 class site_hadoop::bookkeeping(
   $db_name = undef,
@@ -85,6 +90,7 @@ class site_hadoop::bookkeeping(
   $realm = undef,
   $refresh = '0 */4 * * *',
   $resourcemanager_hostname = $::fqdn,
+  $resourcemanager_hostname2 = undef,
 ) {
   include stdlib
 
