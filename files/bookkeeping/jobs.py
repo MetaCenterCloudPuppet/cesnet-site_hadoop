@@ -3,9 +3,10 @@
 import pycurl, json
 from io import BytesIO
 
+import getopt
+import errno
 import re
 import sys
-import getopt
 import socket
 
 import MySQLdb
@@ -70,6 +71,33 @@ def get_rest(base_url, url):
 
 	if debug >= 4:
 		print json.dumps(j, indent=4)
+
+	return j
+
+
+def get_cluster_status(base_url):
+	try:
+		j = get_rest(base_yarn_url, '/ws/v1/cluster/info')
+	except pycurl.error:
+		if c.getinfo(pycurl.OS_ERRNO) == errno.ECONNREFUSED:
+			j = json.loads('{"clusterInfo":{"state":"NO CONNETION"}}')
+		else:
+			raise
+
+	if not j['clusterInfo']:
+		if debug >= 2:
+			print 'Error with YARN RM'
+		return None
+
+	ci = j['clusterInfo']
+	if not 'haState' in ci.keys():
+		ci['haState'] = 'NONE'
+	if debug >= 2:
+		print '[YARN] state=%s, haState=%s' % (ci['state'], ci['haState'])
+	if ci['state'] != 'STARTED':
+		return None
+	if ci['haState'] != 'ACTIVE':
+		return None
 
 	return j
 
@@ -178,6 +206,11 @@ base_mapred_url = gen_url(base_mapred_url, 19888, 19890)
 if debug >= 2:
 	print '[MR] URL: ' + base_mapred_url
 	print '[YARN] URL: ' + base_yarn_url
+
+j = get_cluster_status(base_yarn_url)
+if not j:
+	print '[YARN] probem with RM'
+	sys.exit(2)
 
 regJob = re.compile('^job_')
 regApp = re.compile('^application_')
