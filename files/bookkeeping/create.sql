@@ -45,6 +45,27 @@ CREATE TABLE jobnodes (
 	INDEX (jobid)
 );
 
+
+CREATE TABLE jobcounters (
+	jobid CHAR(80) NOT NULL,
+	counterid INTEGER,
+
+	reduce BIGINT,
+	map BIGINT,
+	total BIGINT,
+
+	INDEX(jobid),
+	INDEX(counterid)
+);
+
+
+CREATE TABLE counters (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	groupName CHAR(128),
+	name CHAR(128)
+);
+
+
 CREATE TABLE nodes (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	host VARCHAR(256),
