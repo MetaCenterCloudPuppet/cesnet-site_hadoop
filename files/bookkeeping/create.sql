@@ -8,7 +8,7 @@ CREATE TABLE jobs (
 	start BIGINT,
 	finish BIGINT,
 
-	memory_seconds INTEGER,
+	memory_seconds BIGINT,
 	cpu_seconds INTEGER,
 	map INTEGER,
 	reduce INTEGER,
