@@ -7,4 +7,4 @@ summary 'Hadoop Site-Specific Module'
 description 'Hadoop Site-Specific Module'
 project_page 'https://github.com/MetaCenterCloudPuppet'
 
-dependency 'puppetlabs/stdlib'
+dependency 'puppetlabs/stdlib', '>= 1.0.0 <5.0.0'
