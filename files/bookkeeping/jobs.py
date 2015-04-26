@@ -42,7 +42,8 @@ dbname = 'bookkeeping'
 dbuser = 'bookkeeping'
 dbpassword = ''
 debug=0
-ssl=0
+gss=None
+https=0
 query=''
 host=socket.getfqdn()
 id = None
@@ -109,7 +110,7 @@ def get_cluster_status(base_url):
 
 
 def gen_url(base_url, port_nossl, port_ssl):
-	if ssl:
+	if https:
 		schema = 'https://'
 		port = port_ssl
 	else:
@@ -127,7 +128,7 @@ def gen_url(base_url, port_nossl, port_ssl):
 
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], 'hb:c:d:j:m:y:sq:', ['help', 'base=', 'config=', 'db', 'dbhost=', 'dbname=', 'dbuser=', 'dbpassword=', 'debug=', 'jobid=', 'mapred=', 'yarn=', 'ssl', 'query='])
+	opts, args = getopt.getopt(sys.argv[1:], 'hb:c:d:g:j:m:y:sq:', ['help', 'base=', 'config=', 'db', 'dbhost=', 'dbname=', 'dbuser=', 'dbpassword=', 'debug=', 'gss=', 'jobid=', 'mapred=', 'yarn=', 'ssl', 'query='])
 except getopt.GetoptError:
 	print 'Args error'
 	sys.exit(2)
@@ -144,10 +145,11 @@ OPTIONS are:\n\
   --dbname\n\
   --dbuser\n\
   --dbpassword\n\
+  -g, --gss=0/1 ..... enable SPNEGO (default: according to ssl)\n\
   -j, --jobid ....... single job query istead of list all\n\
   -m, --mapred URL .. MapReduce Job History server\n\
   -y, --yarn URL .... YARN Resource Manager\n\
-  -s, --ssl ......... enable default SSL schema and ports\n\
+  -s, --ssl ......... enable default HTTPS schema and ports\n\
   -q, --query ....... initial query parameter (only if -j is not used)"
 		sys.exit(0)
 	elif opt in ('-b', '--base'):
@@ -170,12 +172,14 @@ OPTIONS are:\n\
 				dbpassword = cfg[1]
 			elif cfg[0] == 'debug':
 				debug = int(cfg[1])
+			elif cfg[0] == 'gss':
+				gss = int(cfg[1])
 			elif cfg[0] == 'mapred':
 				base_mapred_url = cfg[1]
 			elif cfg[0] == 'yarn':
 				base_yarn_urls.append(cfg[1])
 			elif cfg[0] == 'ssl':
-				ssl = int(cfg[1])
+				https = int(cfg[1])
 	elif opt in ('-d', '--debug'):
 		debug = int(arg)
 	elif opt in ('--db'):
@@ -188,6 +192,8 @@ OPTIONS are:\n\
 		dbuser = arg
 	elif opt in ('--dbpassword'):
 		dbpassword = arg
+	elif opt in ('-g', '--gss'):
+		gss = int(arg)
 	elif opt in ('-j', '--jobid'):
 		id = arg
 	elif opt in ('-m', '--mapred'):
@@ -195,14 +201,19 @@ OPTIONS are:\n\
 	elif opt in ('-y', '--yarn'):
 		base_yarn_urls.append(arg)
 	elif opt in ('-s', '--ssl'):
-		ssl=1
+		https=1
 	elif opt in ('-q', '--query'):
 		query='?%s' % arg
 	else:
 		print 'Args error'
 		sys.exit(2)
 
-if ssl:
+if gss is None:
+	gss = https
+
+if gss:
+	if debug >= 2:
+		print '[CURL] SPNEGO enabled'
 	curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
 	curl.setopt(pycurl.USERPWD, ":")
 

@@ -41,6 +41,11 @@
 #
 # Hadoop Job History Server hostname.
 #
+# ####`https`
+# = false
+#
+# Enable HTTPS.
+#
 # ####`interval`
 # = undef (scripts default: 3600)
 #
@@ -84,6 +89,7 @@ class site_hadoop::bookkeeping(
   $email = undef,
   $freq = '*/12 * * * *',
   $historyserver_hostname = $::fqdn,
+  $https = false,
   $interval = undef,
   $keytab = undef,
   $principal = undef,
