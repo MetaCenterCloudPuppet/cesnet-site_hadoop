@@ -1,3 +1,7 @@
+# == Class site_hadoop::kdc::client
+#
+# Kerberos client setup (not tested).
+#
 class site_hadoop::kdc::client {
   $realm = $site_hadoop::kdc::realm
   $domain = $site_hadoop::kdc::domain

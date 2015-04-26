@@ -1,3 +1,7 @@
+# == Class site_hadoop::kdc::server
+#
+# KDC Server setup (not tested).
+#
 class site_hadoop::kdc::server {
   include stdlib
   include site_hadoop::kdc::client

@@ -1,3 +1,7 @@
+# == Class site_hadoop::kdc::params
+#
+# Parameters for KDC.
+#
 class site_hadoop::kdc::params {
   case $::osfamily {
     'Debian': {
