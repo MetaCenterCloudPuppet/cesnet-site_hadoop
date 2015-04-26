@@ -24,6 +24,9 @@ class site_hadoop::kdc::params {
         #'client' => ['krb5-workstation'],
       }
     }
+    default: {
+      fail("${::osfamily} (${::operatingsystem}) not supported")
+    }
   }
 
   $kdc_conf_dir = $::osfamily ? {
