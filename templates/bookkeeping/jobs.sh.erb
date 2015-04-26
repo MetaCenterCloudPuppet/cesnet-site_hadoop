@@ -3,15 +3,22 @@
 PREFIX='<%= @prefix -%>'
 CONFIGFILE='/etc/hadoop-bookkeeping'
 DEFAULTDIR='<%= scope.lookupvar('site_hadoop::defaultconfdir') -%>'
-KRB5CCNAME='FILE:/tmp/krb5cc_hadoop_bookeeping'
+KRB5CCNAME='FILE:/tmp/krb5cc_hadoop_bookkeeping'
 # interval must be higher than cronjob frequency
 # ==> 5 x 12 minutes
 INTERVAL=$((5*12*60))
+PRINCIPAL="nn/`hostname -f`"
 
 if test -f ${DEFAULTDIR}/hadoop-bookkeeping; then
  . ${DEFAULTDIR}/hadoop-bookkeeping
 fi
 export KRB5CCNAME
+
+if test -n "${PRINCIPAL}" -a -x ${PREFIX}/share/hadoop/bookkeeping-refresh.sh; then
+	if ! klist >/dev/null 2>&1; then
+		${PREFIX}/share/hadoop/bookkeeping-refresh.sh
+	fi
+fi
 
 begin=$(($(date '+%s')-INTERVAL))000
 
