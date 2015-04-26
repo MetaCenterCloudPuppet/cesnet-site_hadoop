@@ -29,7 +29,7 @@ class site_hadoop::autoupdate(
   }
 
   if $::osfamily == 'Debian' {
-    if ($full) {
+    if $full {
       $action = 'dist-upgrade'
     } else {
       $action = 'upgrade'

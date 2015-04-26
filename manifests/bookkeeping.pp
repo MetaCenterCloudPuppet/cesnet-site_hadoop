@@ -168,7 +168,7 @@ class site_hadoop::bookkeeping(
       ensure => 'absent',
     }
   }
-  if $realm and $refresh {
+  if $realm and $realm != '' and $refresh {
     file{'/etc/cron.d/hadoop-bookkeeping-refresh':
       owner   => 'root',
       group   => 'root',
