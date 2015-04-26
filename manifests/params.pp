@@ -24,8 +24,8 @@ class site_hadoop::params {
   }
     
   $packages = $::osfamily ? {
-    debian  => ['acl', 'heimdal-clients', 'less', 'mc', 'puppet', 'vim', 'wget'],
-    redhat  => ['krb5-workstation', 'less', 'mc', 'puppet', 'vim-enhanced', 'wget'],
+    debian  => ['acl', 'heimdal-clients', 'less', 'mc', 'vim', 'wget'],
+    redhat  => ['krb5-workstation', 'less', 'mc', 'vim-enhanced', 'wget'],
     default => undef,
   }
   $mc_setup = $::osfamily ? {
