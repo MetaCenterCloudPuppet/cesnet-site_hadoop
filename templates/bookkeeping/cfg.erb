@@ -19,7 +19,7 @@ yarn=<%= @resourcemanager_hostname %>
 <%if @resourcemanager_hostname2 -%>
 yarn=<%= @resourcemanager_hostname2 %>
 <% end -%>
-<%if @realm -%>
+<%if @realm and not @realm.empty? -%>
 gss=1
 <% else -%>
 gss=0
