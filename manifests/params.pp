@@ -20,6 +20,14 @@ class site_hadoop::params {
         default: {}
       }
     }
+    'RedHat': {
+      case $::lsbmajdistrelease {
+        6: {
+          $java_packages = ['java-1.8.0-openjdk-headless']
+        }
+        default: {}
+      }
+    }
     default: {}
   }
     

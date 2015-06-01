@@ -36,6 +36,7 @@ Supported:
 
 * Debian 7/wheezy + Cloudera distribution (tested on Hadoop 2.5.0)
 * Fedora 21
+* RHEL 6, CentOS 6
 
 <a name="accounting"></a>
 ### Accounting

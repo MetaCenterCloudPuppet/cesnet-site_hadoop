@@ -9,24 +9,28 @@
   "issues_url": "https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop/issues",
   "operatingsystem_support": [
     {
-    "operatingsystem": "CentOS",
-    "operatingsystemrelease": ["6"]
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": ["6"]
     },
     {
-    "operatingsystem": "Debian",
-    "operatingsystemrelease": ["7"]
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["7"]
     },
     {
-    "operatingsystem": "Fedora",
-    "operatingsystemrelease": ["21"]
+      "operatingsystem": "Fedora",
+      "operatingsystemrelease": ["21"]
     },
     {
-    "operatingsystem": "RedHat",
-    "operatingsystemrelease": ["6"]
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": ["6"]
     },
     {
-    "operatingsystem": "Ubuntu",
-    "operatingsystemrelease": ["14.04"]
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["14.04"]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": ["6"]
     }
   ],
   "tags": ["hadoop", "accounting"],
