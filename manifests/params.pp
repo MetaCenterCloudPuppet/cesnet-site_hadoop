@@ -70,6 +70,10 @@ class site_hadoop::params {
     'scientific' => $::operatingsystem ? {
       debian  => 'http://scientific.zcu.cz/repos/hadoop',
       default => "http://archive.cloudera.com${cdh5_repopath}",
+    },
+    'scientific/test' => $::operatingsystem ? {
+      debian  => 'http://scientific.zcu.cz/repos/hadoop-test',
+      default => "http://archive.cloudera.com${cdh5_repopath}",
     }
   }
 

@@ -196,6 +196,7 @@ Values:
 
 * **cloudera**
 * **scientific**
+* **scientific/test**
 
 ####`scripts_enable` true
 
