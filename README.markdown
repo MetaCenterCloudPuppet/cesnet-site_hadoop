@@ -1,3 +1,7 @@
+##site\_hadoop
+
+[![Build Status](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site_hadoop.svg?branch=master)](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site\_hadoop)
+
 ####Table of Contents
 
 1. [Overview](#overview)
