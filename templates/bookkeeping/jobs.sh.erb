@@ -4,6 +4,8 @@ PREFIX='<%= @prefix -%>'
 CONFIGFILE='/etc/hadoop-bookkeeping'
 DEFAULTDIR='<%= scope.lookupvar('site_hadoop::defaultconfdir') -%>'
 KRB5CCNAME='FILE:/tmp/krb5cc_hadoop_bookkeeping'
+LOCKFILE='/var/run/hadoop-hdfs/bookkeeping.lock'
+PANICFILE='/var/run/hadoop-hdfs/bookkeeping.panic'
 # interval must be higher than cronjob frequency
 # ==> 5 x 12 minutes
 INTERVAL=$((5*12*60))
@@ -20,7 +22,29 @@ if test -n "${PRINCIPAL}" -a -x ${PREFIX}/share/hadoop/bookkeeping-refresh.sh; t
 	fi
 fi
 
-begin=$(($(date '+%s')-INTERVAL))000
+# get lock for exclusive run
+if ! (set -o noclobber; echo "$0 $$" > "${LOCKFILE}") 2> /dev/null;
+then
+    #
+	# we couldn't acquire the lock, don't panic!
+	#
+	# do not fail here, but next run must not be incremental
+	#
 
-${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "finishedTimeBegin=${begin}" --db --debug=2 > /tmp/bookkeeping-finish.log
-${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "startedTimeBegin=${begin}" --db --debug=2 > /tmp/bookkeeping-start.log
+	# XXX: we're not checking the oldness of $PANICFILE (default is to keep
+	# records in History Server 3 days, we might lost some)
+	echo "`date`: $0 $$" >> "${PANICFILE}"
+
+	echo "Lockfile found! All python processes:" > /tmp/bookkeeping-long.log
+	ps xafu | grep 'bookkeeping\.py' >> /tmp/bookkeeping-long.log
+	exit 0
+fi
+trap 'rm -f "${LOCKFILE}"' INT TERM EXIT
+
+if test -f "${PANICFILE}"; then
+	${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} --db --debug=3 > /tmp/bookkeeping-finish-full.log && rm -f "${PANICFILE}"
+else
+	begin=$(($(date '+%s')-INTERVAL))000
+	${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "finishedTimeBegin=${begin}" --db --debug=2 > /tmp/bookkeeping-finish.log
+	${PREFIX}/share/hadoop/bookkeeping.py -c ${CONFIGFILE} -q "startedTimeBegin=${begin}" --db --debug=2 > /tmp/bookkeeping-start.log
+fi
