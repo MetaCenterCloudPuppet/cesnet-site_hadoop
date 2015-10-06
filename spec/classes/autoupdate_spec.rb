@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'site_hadoop::autoupdate', :type => 'class' do
   context "on Debian" do
-    let(:facts) { {:operatingsystem => 'Debian', :osfamily => 'Debian' } }
+    let(:facts) { {:operatingsystem => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy' } }
 
     it { should compile.with_all_deps }
     it { should contain_file('/etc/cron.d/cron-apt') }

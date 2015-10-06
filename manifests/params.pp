@@ -3,39 +3,54 @@
 # Parameters and default values for site\_hadoop module.
 #
 class site_hadoop::params {
+  case $::osfamily {
+    'Debian': {
+      $java_ppa_versions = [6, 7, 8, 9]
+      case $::lsbdistcodename {
+        'squeeze', 'lucid': {
+          $java_native_versions = [6]
+        }
+        'wheezy', 'precise', 'trusty': {
+          $java_native_versions = [6, 7]
+        }
+        'jessie': {
+          $java_native_versions = [7]
+        }
+        'stretch': {
+          $java_native_versions = [7, 8]
+        }
+        default: {
+          fail("${::osfamily}/${::operatingsystem} $::lsbdistcodename not supported")
+        }
+      }
+    }
+    'RedHat': {
+      $java_ppa_versions = []
+      case $::os {
+        'Fedora': {
+          $java_native_versions = [8]
+        }
+        default: {
+          $java_native_versions = [6, 7, 8]
+        }
+      }
+    }
+    default: {
+      fail("${::osfamily}/${::operatingsystem} not supported")
+    }
+  }
+
   $defaultconfdir = $::osfamily ? {
     debian => '/etc/default',
     redhat => '/etc/sysconfig',
   }
 
-  case $::osfamily {
-    'Debian': {
-      case $::lsbdistcodename {
-        'lenny', 'squeeze', 'lucid', 'natty': {
-          $java_packages = ['openjdk-6-jre-headless']
-        }
-        'wheezy', 'jessie', 'precise','quantal','raring','saucy', 'trusty': {
-          $java_packages = ['openjdk-7-jre-headless']
-        }
-        default: {}
-      }
-    }
-    'RedHat': {
-      case $::lsbmajdistrelease {
-        6: {
-          $java_packages = ['java-1.8.0-openjdk-headless']
-        }
-        default: {}
-      }
-    }
-    default: {}
-  }
-    
   $packages = $::osfamily ? {
     debian  => ['acl', 'heimdal-clients', 'less', 'mc', 'vim', 'wget'],
     redhat  => ['krb5-workstation', 'less', 'mc', 'vim-enhanced', 'wget'],
     default => undef,
   }
+
   $mc_setup = $::osfamily ? {
     debian  => '/usr/lib/mc/mc',
     default => undef,

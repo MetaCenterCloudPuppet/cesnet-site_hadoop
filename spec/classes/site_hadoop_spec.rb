@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe 'site_hadoop', :type => 'class' do
-  $test_os.each do |facts|
-    os = facts['operatingsystem']
-
+  on_supported_os.each do |os,facts|
     context "on #{os}" do
       let(:facts) do
         facts
