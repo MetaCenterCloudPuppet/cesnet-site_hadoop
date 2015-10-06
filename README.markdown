@@ -4,43 +4,35 @@
 
 ####Table of Contents
 
-1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
+1. [Module Description - What the module does and why it is useful](#module-description)
    * [Accounting](#accounting)
    * [Bookkeeping](#bookkeeping)
-3. [Setup - The basics of getting started with site\_hadoop](#setup)
+2. [Setup - The basics of getting started with site\_hadoop](#setup)
     * [What cesnet-hadoop module affects](#what-site_hadoop-affects)
     * [Beginning with hadoop](#beginning-with-site_hadoop)
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+3. [Usage - Configuration options and additional functionality](#usage)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Classes](#classes)
-    * [Module Parameters](#parameters)
-    * [Accounting class parameters](#parameters-accounting)
-    * [Bookkeeping class parameters](#parameters-bookkeeping)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
-
-<a name="overview"></a>
-##Overview
-
-Helper module for using together with CESNET Hadoop puppet modules. There are implemented decisions not meant to be directly in generic Hadoop modules: settings of Cloudera repository, installing particular version of java, desired packages, and there are custom scripts for accounting, ...
+     * [site\_hadoop](#class-site_hadoop)
+     * [site\_hadoop::accounting](#class-accounting)
+     * [site\_hadoop::bookkeeping](#class-bookkeeping)
+5. [Development - Guide for contributing to the module](#development)
 
 <a name="module-description"></a>
 ##Module Description
 
-This module performs settings and decisions not meant to be in generic Hadoop modules:
+This is helper module for Hadoop, which performs settings and decisions not meant to be in generic Hadoop modules:
 
-* sets Coudera repository
+* sets Cloudera repository
 * installs particular version of Java
 * (optionally) custom scripts for accounting
 * (optionally) custom scripts for bookkeeping
-* (optionally) enable autoupdates
 
 Supported:
 
-* Debian 7/wheezy + Cloudera distribution (tested on Hadoop 2.5.0)
-* Fedora 21
-* RHEL 6, CentOS 6
+* **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0)
+* **Fedora 21**
+* **RHEL 6 and clones**
 
 <a name="accounting"></a>
 ### Accounting
@@ -63,7 +55,7 @@ Job metadata information is regularly copied from Hadoop to local MySQL database
 Information stored:
 
 * jobs: top-level information of submitted jobs (elapsed time, ...)
-* subjobs: individial map/reduce tasks (node used, elasped time, ...)
+* subjobs: individual map/reduce tasks (node used, elapsed time, ...)
 * job nodes: subjobs information aggregated per node (number of map/reduce tasks, summary of elapsed time, ...)
 
 With all job metadata in local database you will have detailed history information of Hadoop cluster.
@@ -78,7 +70,7 @@ With all job metadata in local database you will have detailed history informati
 * Files modified:
  * */etc/apt/sources.list.d/cloudera.list*
  * */etc/apt/preferences.d/10\_cloudera.pref*
- * */usr/local/bin/launch* (when *scripts_enable* parameter is *true*)
+ * */usr/local/bin/launch* (when *scripts\_enable* parameter is *true*)
  * Cloudera apt gpg key
  * (optionally) */etc/cron-apt/config*, */etc/cron-apt/action.d/9-upgrade*, *etc/cron.d/cron-apt*
 
@@ -87,7 +79,7 @@ With all job metadata in local database you will have detailed history informati
 <a name="beginning-with-site_hadoop"></a>
 ###Beginning with site\_hadoop
 
-**Example**: the basic usage, core part neccessary for cesnet-hadoop:
+**Example**: the basic usage, core part necessary for cesnet-hadoop:
 
     class{'site_hadoop':
       stage => setup,
@@ -98,18 +90,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
 <a name="usage"></a>
 ##Usage
 
-**Example 1**: enable autoupdates:
-
-    class{'site_hadoop':
-      email => 'email@example.com',
-      stage => 'setup',
-    }
-    
-    class{'site_hadoop::autoupdate':
-      time => '0 5 * * *',
-    }
-
-**Example 2**: enable Hadoop accounting:
+**Example 1**: enable Hadoop accounting:
 
     class { '::mysql::server':
       root_password => 'strongpassword',
@@ -139,7 +120,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
     # start accounting after Hadoop startup (not strictly needed)
     #Class['hadoop::namenode::service'] -> Class['site_hadoop::accounting']
 
-**Example 3**: enable Hadoop bookkeeping:
+**Example 2**: enable Hadoop bookkeeping:
 
     class{'mysql::server':
       root_password => 'strong_password',
@@ -169,32 +150,31 @@ Better to set stage to 'setup', because this will set also the repository. All H
 <a name="classes"></a>
 ###Classes
 
-* devel:
- * **hadoop**: Local post-installation steps for Hadoop for testing in Vagrant
-* kdc:
- * client
- * params
- * server
-* **accounting**: Custom Hadoop accouting scripts
-* **autoupdate**: Configure automatic updates on Debian
-* **bookkeeping**: Custom Hadoop bookkeeping scripts
-* cloudera: Set-up Cloudera repository
-* config: Configuration of Hadoop cluster machines
-* init: The main class
-* install: Installation of packages required by site\_hadoop module
-* kdc: Experiments with KDC
-* params: Parameters and default values for site\_hadoop module
+* [**`site_hadoop`**](#class-site_hadoop): The main class
+* `site_hadoop::devel`:
+ * **`site_hadoop::devel::hadoop`**: Local post-installation steps for Hadoop for testing in Vagrant
+* `site_hadoop::kdc`: Experiments with KDC
+ * `site_hadoop::kdc::client`
+ * `site_hadoop::kdc::params`
+ * `site_hadoop::kdc::server`
+* [**`site_hadoop::server::accounting`**](#class-accounting): Custom Hadoop accounting scripts
+* `site_hadoop::server::autoupdate` (deprecated): Replaced by **cesnet-autopdate** module
+* [**`site_hadoop::server::bookkeeping`**](#class-bookkeeping): Custom Hadoop bookkeeping scripts
+* `site_hadoop::cloudera`: Set-up Cloudera repository
+* `site_hadoop::config`: Configuration of Hadoop cluster machines
+* `site_hadoop::install`: Installation of packages required by site\_hadoop module
+* `site_hadoop::params`: Parameters and default values for site\_hadoop module
 
-<a name="parameters"></a>
-###Module Parameters
+<a name="class-site_hadoop"></a>
+###`site_hadoop`
 
-####`email` undef
+####`email`
 
-Email address to send errors from cron.
+Email address to send errors from cron. Default: undef.
 
-####`mirror` 'cloudera'
+####`mirror`
 
-Cloudera mirror to use.
+Cloudera mirror to use. Default: 'cloudera'.
 
 Values:
 
@@ -202,141 +182,138 @@ Values:
 * **scientific**
 * **scientific/test**
 
-####`scripts_enable` true
+####`scripts_enable`
 
-Create also helper useful scripts in /usr/local.
+Create also helper useful scripts in /usr/local. Default: true.
 
-<a name="parameters-accounting"></a>
-###Accounting class parameters
+<a name="class-accounting"></a>
+###`site_hadoop::accounting`
 
 ####`accounting_hdfs`
-= undef
 
-Enable storing global HDFS disk and data statistics. The value is time in the cron format. See *man 5 crontab*.
+Enable storing global HDFS disk and data statistics. Default: undef.
+
+The value is time in the cron format. See *man 5 crontab*.
 
 ####`accounting_quota`
-= undef
 
-Enable storing user data statistics. The value is time in the cron format. See *man 5 crontab*.
+Enable storing user data statistics. Default: undef.
+
+The value is time in the cron format. See *man 5 crontab*.
 
 ####`accounting_jobs`
-= undef
 
-Enable storing user jobs statistics. The value is time in the cron format. See *man 5 crontab*.
+Enable storing user jobs statistics. Default: undef.
+
+The value is time in the cron format. See *man 5 crontab*.
 
 ####`db_name`
-= undef (system default is *accounting*)
 
-Database name for statistics.
+Database name for statistics. Default: undef (system default is *accounting*).
 
 ####`db_user`
-= undef (system default is *accounting*)
 
-Database user for statistics.
+Database user for statistics. Default: undef (system default is *accounting*).
 
 ####`db_password`
-= undef
 
-Database password for statistics.
+Database password for statistics. Default: undef.
 
 ####`email`
-= undef
 
-Email address to send errors from cron.
+Email address to send errors from cron. Default: undef.
 
 ####`mapred_hostname`
-= $::fqdn
 
-Hadoop Job History Node hostname for gathering user jobs statistics.
+Hadoop Job History Node hostname for gathering user jobs statistics. Default: $::fqdn.
 
 ####`mapred_url`
-= http://*mapred_hostname*:19888, https://*mapred_hostname*:19890
 
-HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. It is derived from *mapred_hostname* and *principal*, but it may be needed to override it anyway (different hosts due to High Availability, non-default port, ...).
+HTTP REST URL of Hadoop Job History Node for gathering user jobs statistics. Default: "http://*mapred_hostname*:19888", "https://*mapred_hostname*:19890".
+
+It is derived from *mapred_hostname* and *principal*, but it may be needed to override it anyway (different hosts due to High Availability, non-default port, ...).
 
 ####`principal`
-= undef (system default is nn/'hostname -f')
 
-Kerberos principal to access Hadoop. Undef means using default principal value. It needs to be empty string to disable security and not using Kerberos tickets!
+Kerberos principal to access Hadoop. Default: undef (system default is nn/&#96;hostname -f&#96;).
 
-<a name="parameters-bookkeeping"></a>
-###Bookkeeping class parameters
+Undef value means using default principal value. It needs to be empty string to disable security and not using Kerberos tickets!
+
+<a name="class-bookkeeping"></a>
+###`site_hadoop::bookkeeping`
 
 ####`db_name`
-= undef (system default is *bookkeeping*)
+
+Default: undef (system default is *bookkeeping*).
 
 ####`db_host`
-= undef (system default is local socket)
 
-Database name for statistics.
+Database name for statistics. Default: undef (system default is local socket).
 
 ####`db_user`
-= undef (system default is *bookkeeping*)
 
-Database user for statistics.
+Database user for statistics. Default: undef (system default is *bookkeeping*).
 
 ####`db_password`
-= undef (system default is empty password)
 
-Database password for statistics.
+Database password for statistics. Default: undef (system default is empty password).
 
 ####`email`
-= undef
 
-Email address to send errors from cron.
+Email address to send errors from cron. Default: undef.
 
 ####`freq`
-= '*/10 * * * *'
 
-Frequency of hadoop job metadata polling. The value is time in the cron format. See *man 5 crontab*.
+Frequency of hadoop job metadata polling. Default: '*/10 * * * *'.
+
+The value is time in the cron format. See *man 5 crontab*.
 
 ####`historyserver_hostname`
-= $::fqdn
 
-Hadoop Job History Server hostname.
+Hadoop Job History Server hostname. Default: $::fqdn.
+
+####`https`
+
+Enable HTTPS. Default: false.
 
 ####`interval`
-= undef (scripts default: 3600)
 
-Interval (in seconds) to scan Hadoop.
+Interval (in seconds) to scan Hadoop. Default: undef (scripts default: 3600).
 
 ####`keytab`
-= undef (script default: /etc/security/keytab/nn.service.keytab)
 
-Service keytab for ticket refresh.
+Service keytab for ticket refresh. Default: undef (script default: /etc/security/keytab/nn.service.keytab).
 
 ####`principal`
-= undef (script default: nn/\`hostname -f\`@REALM)
 
-Kerberos principal name for gathering metadata. Undef means using default principal value.
+Kerberos principal name for gathering metadata. Default: undef (script default: nn/&#96;hostname -f&#96;@REALM).
+
+Undef means using default principal value.
 
 ####`realm`
-= undef
 
-Kerberos realm. Non-empty values enables the security.
+Kerberos realm. Default: undef.
+
+Non-empty values enables the security.
 
 ####`refresh`
-= '0 */4 * * *'
 
-Ticket refresh frequency. The value is time in the cron format. See *man 5 crontab*.
+Ticket refresh frequency. Default: '0 */4 * * *'.
+
+The value is time in the cron format. See *man 5 crontab*.
 
 ####`resourcemanager_hostname`
-= $::fqdn
 
-Hostname of the Hadoop YARN Resource Manager.
+Hostname of the Hadoop YARN Resource Manager. Default: $::fqdn.
 
 ####`resourcemanager_hostname2`
-= undef
 
-Hostname of the second Hadoop YARN Resource Manager, used with high availability.
-
-<a name="limitations"></a>
-##Limitations
-
-Only Debian 7 fully supported. The core part will work on Fedora 21 too.
+Hostname of the second Hadoop YARN Resource Manager, used with high availability. Default: undef.
 
 <a name="development"></a>
 ##Development
 
 * Repository: [https://github.com/MetaCenterCloudPuppet/cesnet-site\_hadoop](https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop)
-* Testing: [https://github.com/MetaCenterCloudPuppet/hadoop-tests](https://github.com/MetaCenterCloudPuppet/hadoop-tests)
+* Testing:
+ * basic: see *.travis.xml*
+ * vagrant: [https://github.com/MetaCenterCloudPuppet/hadoop-tests](https://github.com/MetaCenterCloudPuppet/hadoop-tests)

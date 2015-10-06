@@ -1,6 +1,6 @@
 # == Class site_hadoop::autoupdate
 #
-# Configure automatic updates on Debian.
+# Replaced by **cesnet-autoupdate** module. Configure automatic updates on Debian.
 #
 # === Parameters
 #

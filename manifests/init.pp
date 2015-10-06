@@ -2,26 +2,6 @@
 #
 # The main class. Basic system configurations for Hadoop cluster.
 #
-# ##Parameters
-#
-# ####`email` undef
-#
-# Email address to send errors from cron.
-#
-# ####`mirror` 'cloudera'
-#
-# Cloudera mirror to use.
-#
-# Values:
-#
-# * **cloudera**
-# * **scientific**
-#
-# ####`scripts_enable` true
-#
-# Create also helper useful scripts in /usr/local.
-#
-#
 class site_hadoop (
   $email = undef,
   $mirror = $site_hadoop::params::mirror,
