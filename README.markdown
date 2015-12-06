@@ -325,6 +325,12 @@ Hostname of the second Hadoop YARN Resource Manager, used with high availability
 
 #### Parameters
 
+#####`ensure`
+
+`ensure` parameter for java packages. Default: undef.
+
+Default is usually OK. Due to limitation in puppet, when java package is in *held* state, this must be specified also here.
+
 #####`java_version`
 
 Major version number of Java to install. Default: [8, 7].

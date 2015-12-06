@@ -3,6 +3,7 @@
 # Install Java JRE Headless.
 #
 class site_hadoop::java(
+  $ensure = undef,
   $java_version = [8, 7],
   $ppa_repo_enable = false,
 ) inherits ::site_hadoop::params {
@@ -59,7 +60,13 @@ class site_hadoop::java(
 
     $java_packages = ["oracle-java${_java_version}-installer", "oracle-java${_java_version}-unlimited-jce-policy"]
 
-    ensure_packages($java_packages)
+    if !$ensure {
+      ensure_packages($java_packages)
+    } else {
+      package{$java_packages:
+        ensure => $ensure,
+      }
+    }
 
     Exec['repo-ppa-accept-license']
     -> Package["oracle-java${_java_version}-installer"]
@@ -71,6 +78,12 @@ class site_hadoop::java(
       default  => undef,
     }
 
-    ensure_packages($java_packages)
+    if !$ensure {
+      ensure_packages($java_packages)
+    } else {
+      package{$java_packages:
+        ensure => $ensure,
+      }
+    }
   }
 }
