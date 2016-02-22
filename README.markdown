@@ -172,7 +172,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
 * `site_hadoop::cloudera`: Set-up Cloudera repository
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
 * `site_hadoop::install`: Installation of packages required by site\_hadoop module
-* [**`site_hadoop::java`**](#class-java): Install Java JRE Headless
+* [**`site_hadoop::java`**](#class-java) (deprecated): Replaced by **cesnet-java\_ng** module
 * `site_hadoop::params`: Parameters and default values for site\_hadoop module
 
 <a name="class-site_hadoop"></a>
