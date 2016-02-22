@@ -26,7 +26,7 @@ class site_hadoop::params {
     }
     'RedHat': {
       $java_ppa_versions = []
-      case $::os {
+      case $::operatingsystem {
         'Fedora': {
           $java_native_versions = [8]
         }
