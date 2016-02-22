@@ -46,8 +46,12 @@ class site_hadoop::params {
   }
 
   $packages = $::osfamily ? {
-    debian  => ['acl', 'heimdal-clients', 'less', 'mc', 'vim', 'wget', 'procps'],
-    redhat  => ['krb5-workstation', 'less', 'mc', 'vim-enhanced', 'wget'],
+    debian  => [
+      'acl', 'heimdal-clients', 'procps',
+      'python-scipy',
+      'less', 'mc', 'vim', 'wget',
+    ],
+    redhat  => ['krb5-workstation', 'scipy', 'less', 'mc', 'vim-enhanced', 'wget'],
     default => undef,
   }
 
