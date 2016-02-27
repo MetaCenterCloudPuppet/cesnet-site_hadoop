@@ -20,7 +20,7 @@ class site_hadoop::params {
           $java_native_versions = [7, 8]
         }
         default: {
-          fail("${::osfamily}/${::operatingsystem} $::lsbdistcodename not supported")
+          fail("${::osfamily}/${::operatingsystem} ${::lsbdistcodename} not supported")
         }
       }
     }
