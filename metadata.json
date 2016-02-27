@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -32,7 +32,7 @@
       "operatingsystemrelease": ["6", "7"]
     }
   ],
-  "tags": ["hadoop", "accounting", "java"],
+  "tags": ["hadoop", "accounting", "cloudera"],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
