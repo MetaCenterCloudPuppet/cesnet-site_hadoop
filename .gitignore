@@ -8,3 +8,5 @@
 /Gemfile.lock
 /junit
 /log
+/.yardoc
+/coverage
