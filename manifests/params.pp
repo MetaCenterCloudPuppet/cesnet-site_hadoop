@@ -20,6 +20,9 @@ class site_hadoop::params {
     default => undef,
   }
 
+  # version specific file
+  $hive_schema = 'hive-schema-1.1.0.mysql.sql'
+
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 
   $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')
@@ -42,6 +45,4 @@ class site_hadoop::params {
       default => "http://archive.cloudera.com${cdh5_repopath}",
     }
   }
-
-  $scripts_enable = true
 }

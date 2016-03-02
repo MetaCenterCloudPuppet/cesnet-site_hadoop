@@ -7,7 +7,6 @@ describe 'site_hadoop', :type => 'class' do
         facts
       end
       it { should compile.with_all_deps }
-      it { should contain_class('site_hadoop::cloudera') }
     end
   end
 end

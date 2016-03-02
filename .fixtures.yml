@@ -1,5 +1,11 @@
 fixtures:
   repositories:
+    mysql: "git://github.com/puppetlabs/puppetlabs-mysql.git"
+    staging: "git://github.com/nanliu/puppet-staging"
     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+    alternatives: "git://github.com/puppet-community/puppet-alternatives"
+    hadoop: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop"
+    hadoop_lib: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop_lib"
+    zookeeper: "git://github.com/MetaCenterCloudPuppet/cesnet-zookeeper"
   symlinks:
     site_hadoop: "#{source_dir}"

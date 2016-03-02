@@ -171,6 +171,10 @@ Better to set stage to 'setup', because this will set also the repository. All H
 
 Email address to send errors from cron. Default: undef.
 
+####`hive_schema`
+
+Name of the hive database schema file. Default: 'hive-schema-1.1.0.mysql.sql'.
+
 ####`mirror`
 
 Cloudera mirror to use. Default: 'cloudera'.
@@ -181,9 +185,59 @@ Values:
 * **scientific**
 * **scientific/test**
 
+####`users`
+
+Accounts to create. Default: undef.
+
+####`user_realms`
+
+Realms to add to *.k5login* files. Default: undef.
+
+####`hbase_enable`
+
+Deploys Apache HBase addon. Default: true.
+
+####`hive_enable`
+
+Deploys Apache Hive addon. Default: true.
+
+####`impala_enable`
+
+Deploys Cloudera Impala addon. Default: false.
+
+Disabled by default because of crashes with security (IMPALA-2645).
+
+####`java_enable`
+
+Installs Java automatically. Default: true.
+
+####`nfs_frontend_enable`
+
+Launches HDFS NFS Gateway and mounts HDFS on the frontend. Default: true.
+
+####`nfs_yarn_enable`
+
+Launches HDFS NFS Gateway and mounts HDFS on the YARN master. Default: false.
+
+####`pig_enable`
+
+Installs Apache Pig addon. Default: true.
+
 ####`scripts_enable`
 
-Create also helper useful scripts in /usr/local. Default: true.
+Creates also helper useful scripts in /usr/local. Default: true.
+
+####`spark_enable`
+
+Depoys Apache Spark. Default: true.
+
+####`spark_standalone_enable`
+
+Depoys complete stadalone Apache Spark cluster. Default: false.
+
+####`yarn_enable`
+
+Enables Hadoop YARN. Default: true.
 
 <a name="class-accounting"></a>
 ###`site_hadoop::accounting` class
