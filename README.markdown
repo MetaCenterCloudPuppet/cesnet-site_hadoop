@@ -16,7 +16,6 @@
      * [site\_hadoop](#class-site_hadoop)
      * [site\_hadoop::accounting](#class-accounting)
      * [site\_hadoop::bookkeeping](#class-bookkeeping)
-     * [site\_hadoop::java](#class-java)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
@@ -92,14 +91,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
 <a name="usage"></a>
 ##Usage
 
-**Example 1**: install Java 8, enable external PPA repository if needed
-
-    class { '::site_hadoop::java'
-      java_version    => 8,
-      ppa_repo_enable => true,
-    }
-
-**Example 2**: enable Hadoop accounting:
+**Example 1**: enable Hadoop accounting:
 
     class { '::mysql::server':
       root_password => 'strongpassword',
@@ -129,7 +121,7 @@ Better to set stage to 'setup', because this will set also the repository. All H
     # start accounting after Hadoop startup (not strictly needed)
     #Class['hadoop::namenode::service'] -> Class['site_hadoop::accounting']
 
-**Example 3**: enable Hadoop bookkeeping:
+**Example 2**: enable Hadoop bookkeeping:
 
     class{'mysql::server':
       root_password => 'strong_password',
@@ -172,7 +164,6 @@ Better to set stage to 'setup', because this will set also the repository. All H
 * `site_hadoop::cloudera`: Set-up Cloudera repository
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
 * `site_hadoop::install`: Installation of packages required by site\_hadoop module
-* [**`site_hadoop::java`**](#class-java) (deprecated): Replaced by **cesnet-java\_ng** module
 * `site_hadoop::params`: Parameters and default values for site\_hadoop module
 
 <a name="class-site_hadoop"></a>
@@ -319,36 +310,6 @@ Hostname of the Hadoop YARN Resource Manager. Default: $::fqdn.
 ####`resourcemanager_hostname2`
 
 Hostname of the second Hadoop YARN Resource Manager, used with high availability. Default: undef.
-
-<a name="class-java"></a>
-### site\_hadoop::java class
-
-#### Parameters
-
-#####`ensure`
-
-`ensure` parameter for java packages. Default: undef.
-
-Default is usually OK. Due to limitation in puppet, when java package is in *held* state, this must be specified also here.
-
-#####`java_version`
-
-Major version number of Java to install. Default: [8, 7].
-
-Value can be array or single item. When array, the first available version is used.
-
-#####`ppa_repo_enable`
-
-Enable webupd8 PPA repository providing Oracle Java, if needed. Default: false.
-
-PPA repository may be needed, if the given Java is not available natively in the distribution.
-
-Even when **true**, native packages are preferred (see *params.pp*).
-
-<a name="limitation"></a>
-##Limitation
-
-Java alternatives are not touched.
 
 <a name="development"></a>
 ##Development

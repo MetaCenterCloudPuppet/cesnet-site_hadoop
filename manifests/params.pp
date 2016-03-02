@@ -3,43 +3,6 @@
 # Parameters and default values for site\_hadoop module.
 #
 class site_hadoop::params {
-  case $::osfamily {
-    'Debian': {
-      $java_ppa_versions = [6, 7, 8, 9]
-      case $::lsbdistcodename {
-        'squeeze', 'lucid': {
-          $java_native_versions = [6]
-        }
-        'wheezy', 'precise', 'trusty': {
-          $java_native_versions = [6, 7]
-        }
-        'jessie': {
-          $java_native_versions = [7]
-        }
-        'stretch': {
-          $java_native_versions = [7, 8]
-        }
-        default: {
-          fail("${::osfamily}/${::operatingsystem} ${::lsbdistcodename} not supported")
-        }
-      }
-    }
-    'RedHat': {
-      $java_ppa_versions = []
-      case $::operatingsystem {
-        'Fedora': {
-          $java_native_versions = [8]
-        }
-        default: {
-          $java_native_versions = [6, 7, 8]
-        }
-      }
-    }
-    default: {
-      fail("${::osfamily}/${::operatingsystem} not supported")
-    }
-  }
-
   $defaultconfdir = $::osfamily ? {
     debian => '/etc/default',
     redhat => '/etc/sysconfig',
