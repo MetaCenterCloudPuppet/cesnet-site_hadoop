@@ -163,6 +163,18 @@ Better to set stage to 'setup', because this will set also the repository. All H
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
 * `site_hadoop::install`: Installation of packages required by site\_hadoop module
 * `site_hadoop::params`: Parameters and default values for site\_hadoop module
+* **`site_hadoop::role::common`**: Hadoop inicializations and dependencies needed on all nodes
+* **`site_hadoop::role::frontend`**: Hadoop Frontend
+* **`site_hadoop::role::frontend_ext`**: Hadoop External Frontend
+* **`site_hadoop::role::ha`**: Hadoop HA quorum server
+* **`site_hadoop::role::master`**: Hadoop Master server in cluster without high availability
+* **`site_hadoop::role::master_ha1`**: Primary Hadoop master server in cluster with high availability
+* **`site_hadoop::role::master_ha2`**: Secondary Hadoop master server in cluster with high availability
+* **`site_hadoop::role::master_hdfs`**: Hadoop master providing HDFS Namenode in cluster without high availability
+* **`site_hadoop::role::master_yarn`**: Hadoop master providing YARN Resourcemanager and MapRed Historyserver in cluster without high availability
+* **`site_hadoop::role::simple`**: Hadoop cluster completely on one machine
+* **`site_hadoop::role::slave`**: Hadoop worker node
+
 
 <a name="class-site_hadoop"></a>
 ###`site_hadoop`

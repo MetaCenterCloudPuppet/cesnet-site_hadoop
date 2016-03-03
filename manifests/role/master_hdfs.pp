@@ -1,6 +1,6 @@
 # = Class site_hadoop::role::master_hdfs
 #
-# Hadoop Master server with namenode in cluster without high availability.
+# Hadoop master providing HDFS Namenode in cluster without high availability.
 #
 # Use case: non-HA, two machines for master daemons, multiple nodes.
 #

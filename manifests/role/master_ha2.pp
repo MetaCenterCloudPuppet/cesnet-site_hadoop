@@ -1,6 +1,6 @@
 # = Class site_hadoop::role::master_ha2
 #
-# Second Hadoop master server in cluster with high availability.
+# Secondary Hadoop master server in cluster with high availability.
 #
 class site_hadoop::role::master_ha2 {
   include ::hadoop

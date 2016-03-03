@@ -1,6 +1,6 @@
 # = Class site_hadoop::role::master_ha1
 #
-# First Hadoop master server in cluster with high availability.
+# Primary Hadoop master server in cluster with high availability.
 #
 class site_hadoop::role::master_ha1 {
   include ::hadoop

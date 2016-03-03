@@ -1,6 +1,6 @@
 # = Class site_hadoop::role::master_yarn
 #
-# Hadoop master with YARN Resourcemanager and MapRed Historyserver in cluster without high availability.
+# Hadoop master providing YARN Resourcemanager and MapRed Historyserver in cluster without high availability.
 #
 # Use case: non-HA, two machines for master daemons, multiple nodes.
 #
