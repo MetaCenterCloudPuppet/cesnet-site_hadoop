@@ -23,19 +23,6 @@ class site_hadoop::params {
     default => undef,
   }
 
-  $packages_autoupdate = $::operatingsystem ? {
-    centos  => ['yum-cron'],
-    debian  => ['cron-apt'],
-    fedora  => ['yum-autoupdate'],
-    ubuntu  => ['cron-apt'],
-    default => undef,
-  }
-
-  $full = false
-
-  # every night at 5:00
-  $time_autoupdate = '0 5 * * *'
-
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 
   $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')

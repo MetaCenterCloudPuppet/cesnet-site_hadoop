@@ -73,7 +73,6 @@ With all job metadata in local database you will have detailed history informati
  * */etc/apt/preferences.d/10\_cloudera.pref*
  * */usr/local/bin/launch* (when *scripts\_enable* parameter is *true*)
  * Cloudera apt gpg key
- * (optionally) */etc/cron-apt/config*, */etc/cron-apt/action.d/9-upgrade*, *etc/cron.d/cron-apt*
 
 **Note**: Security files are NOT handled by this module. They needs to be copied to proper places for CESNET Hadoop puppet modules.
 
@@ -159,7 +158,6 @@ Better to set stage to 'setup', because this will set also the repository. All H
  * `site_hadoop::kdc::params`
  * `site_hadoop::kdc::server`
 * [**`site_hadoop::server::accounting`**](#class-accounting): Custom Hadoop accounting scripts
-* `site_hadoop::server::autoupdate` (deprecated): Replaced by **cesnet-autopdate** module
 * [**`site_hadoop::server::bookkeeping`**](#class-bookkeeping): Custom Hadoop bookkeeping scripts
 * `site_hadoop::cloudera`: Set-up Cloudera repository
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
