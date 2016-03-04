@@ -363,6 +363,11 @@ Hostname of the Hadoop YARN Resource Manager. Default: $::fqdn.
 
 Hostname of the second Hadoop YARN Resource Manager, used with high availability. Default: undef.
 
+<a name="limitations"></a>
+##Limitations
+
+To avoid puppet dependency hell some packages are installed in the stage *setup*.
+
 <a name="development"></a>
 ##Development
 

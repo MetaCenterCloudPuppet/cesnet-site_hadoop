@@ -11,11 +11,14 @@
 class site_hadoop::role::common {
   include ::stdlib
   include ::site_hadoop
-  include ::site_hadoop::install
   include ::site_hadoop::config
   include ::hadoop
 
   class{'::site_hadoop::cloudera':
+    stage => 'setup'
+  }
+
+  class{'::site_hadoop::install':
     stage => 'setup'
   }
 
@@ -62,8 +65,5 @@ class site_hadoop::role::common {
     }
   }
 
-  Package[$site_hadoop::packages] -> Class['site_hadoop::role::common']
-  Class['site_hadoop::install'] ->
-  Class['site_hadoop::config'] ->
-  Class['site_hadoop']
+  Class['site_hadoop::cloudera'] -> Class['site_hadoop::install']
 }
