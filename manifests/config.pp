@@ -3,21 +3,6 @@
 # Configuration of Hadoop cluster machines, not meant to be in generic Hadoop puppet modules.
 #
 class site_hadoop::config {
-  if $site_hadoop::mc_setup {
-    file { '/etc/profile.d/mc.csh':
-      ensure => link,
-      owner  => 'root',
-      group  => 'root',
-      target => "${site_hadoop::mc_setup}.csh",
-    }
-    file { '/etc/profile.d/mc.sh':
-      ensure => link,
-      owner  => 'root',
-      group  => 'root',
-      target => "${site_hadoop::mc_setup}.sh",
-    }
-  }
-
   if $site_hadoop::scripts_enable {
     file { '/usr/local/bin/launch':
       owner  => 'root',

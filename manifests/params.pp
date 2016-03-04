@@ -12,14 +12,11 @@ class site_hadoop::params {
     debian  => [
       'acl', 'heimdal-clients', 'procps',
       'python-scipy',
-      'less', 'mc', 'vim', 'wget',
     ],
-    redhat  => ['krb5-workstation', 'scipy', 'less', 'mc', 'vim-enhanced', 'wget'],
-    default => undef,
-  }
-
-  $mc_setup = $::osfamily ? {
-    debian  => '/usr/lib/mc/mc',
+    redhat  => [
+      'krb5-workstation',
+      'scipy',
+    ],
     default => undef,
   }
 

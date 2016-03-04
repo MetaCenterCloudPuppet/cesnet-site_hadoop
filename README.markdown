@@ -67,7 +67,7 @@ With all job metadata in local database you will have detailed history informati
 <a name="what-hadoop-affects"></a>
 ###What cesnet-hadoop module affects
 
-* Packages: Java JRE, Kerberos client, other "admin look & feel" packages (less, vim, ...), optionally cron-apt
+* Packages: Java JRE, Kerberos client
 * Files modified:
  * */etc/apt/sources.list.d/cloudera.list*
  * */etc/apt/preferences.d/10\_cloudera.pref*
