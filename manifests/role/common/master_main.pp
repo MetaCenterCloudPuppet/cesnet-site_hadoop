@@ -87,29 +87,31 @@ class site_hadoop::role::common::master_main {
     }
   }
 
-  include ::mysql::server
-  include ::mysql::server::mysqltuner
+  if $site_hadoop::accounting_enable {
+    include ::mysql::server
+    include ::mysql::server::mysqltuner
 
-  if $hadoop::hdfs_deployed {
-    include ::site_hadoop::accounting
-    include ::site_hadoop::bookkeeping
+    if $hadoop::hdfs_deployed {
+      include ::site_hadoop::accounting
+      include ::site_hadoop::bookkeeping
 
-    mysql::db{'accounting':
-      user     => 'accounting',
-      password => $site_hadoop::accounting::db_password,
-      grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-      sql      => '/usr/local/share/hadoop/accounting.sql',
+      mysql::db{'accounting':
+        user     => 'accounting',
+        password => $site_hadoop::accounting::db_password,
+        grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+        sql      => '/usr/local/share/hadoop/accounting.sql',
+      }
+      mysql::db{'bookkeeping':
+        user     => 'bookkeeping',
+        password => $site_hadoop::bookkeeping::db_password,
+        grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+        sql      => '/usr/local/share/hadoop/bookkeeping.sql',
+      }
+
+      Class['site_hadoop::accounting'] -> Mysql::Db['accounting']
+      Class['site_hadoop::bookkeeping'] -> Mysql::Db['bookkeeping']
+
+      Class['hadoop::namenode::install'] -> Class['site_hadoop::accounting']
     }
-    mysql::db{'bookkeeping':
-      user     => 'bookkeeping',
-      password => $site_hadoop::bookkeeping::db_password,
-      grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-      sql      => '/usr/local/share/hadoop/bookkeeping.sql',
-    }
-
-    Class['site_hadoop::accounting'] -> Mysql::Db['accounting']
-    Class['site_hadoop::bookkeeping'] -> Mysql::Db['bookkeeping']
-
-    Class['hadoop::namenode::install'] -> Class['site_hadoop::accounting']
   }
 }

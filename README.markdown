@@ -205,6 +205,12 @@ Accounts to create. Default: undef.
 
 Realms to add to *.k5login* files. Default: undef.
 
+####`accounting_enable`
+
+Installs MySQL/MariaDB on the primary master node and enables accouting and bookkeeping. Default: true.
+
+See [site\_hadoop::accounting](#class-accounting) and [site\_hadoop::bookkeeping](#class-bookkeeping)
+
 ####`hbase_enable`
 
 Deploys Apache HBase addon. Default: true.

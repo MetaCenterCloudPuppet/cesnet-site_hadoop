@@ -8,6 +8,7 @@ class site_hadoop (
   $mirror = $site_hadoop::params::mirror,
   $users = undef,
   $user_realms = undef,
+  $accounting_enable = true,
   $hbase_enable = true,
   $hive_enable = true,
   $impala_enable = false,
