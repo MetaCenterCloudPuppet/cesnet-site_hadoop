@@ -6,6 +6,7 @@ fixtures:
     alternatives: "git://github.com/puppet-community/puppet-alternatives"
     hadoop: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop"
     hadoop_lib: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop_lib"
+    java_ng: "git://github.com/MetaCenterCloudPuppet/cesnet-java_ng"
     zookeeper: "git://github.com/MetaCenterCloudPuppet/cesnet-zookeeper"
   symlinks:
     site_hadoop: "#{source_dir}"
