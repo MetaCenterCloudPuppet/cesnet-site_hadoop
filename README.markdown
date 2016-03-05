@@ -9,8 +9,10 @@
    * [Bookkeeping](#bookkeeping)
 2. [Setup - The basics of getting started with site\_hadoop](#setup)
     * [What cesnet-hadoop module affects](#what-site_hadoop-affects)
-    * [Beginning with hadoop](#beginning-with-site_hadoop)
 3. [Usage - Configuration options and additional functionality](#usage)
+    * [Basic Hadoop Cluster](#usage-basic)
+    * [Hadoop Accounting](#usage-accounting)
+    * [Hadoop Bookkeeping](#usage-bookkeeping)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Classes](#classes)
      * [site\_hadoop](#class-site_hadoop)
@@ -25,14 +27,16 @@
 This is helper module for Hadoop, which performs settings and decisions not meant to be in generic Hadoop modules:
 
 * sets Cloudera repository
-* (optionally) installs particular version of Java (optionally enable webupd8 PPA repository)
-* (optionally) custom scripts for accounting
-* (optionally) custom scripts for bookkeeping
+* enables custom accounting
+* enables custom bookkeeping
+* installs Hadoop and its addons using **roles**
+
+This module provide roles. Roles are helper classes joining together external, hadoop, and hadoop addons puppet modules. They solve dependencies and hide complexity of putting all pieces together.
 
 Supported:
 
-* **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0)
-* **Fedora 21**
+* **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0, 2.6.0)
+* **Fedora**
 * **RHEL 6 and clones**
 
 <a name="accounting"></a>
@@ -71,26 +75,89 @@ With all job metadata in local database you will have detailed history informati
 * Files modified:
  * */etc/apt/sources.list.d/cloudera.list*
  * */etc/apt/preferences.d/10\_cloudera.pref*
- * */usr/local/bin/launch* (when *scripts\_enable* parameter is *true*)
  * Cloudera apt gpg key
+ * */usr/local/bin/launch* (when *scripts\_enable* parameter is *true*)
 
 **Note**: Security files are NOT handled by this module. They needs to be copied to proper places for CESNET Hadoop puppet modules.
-
-<a name="beginning-with-site_hadoop"></a>
-###Beginning with site\_hadoop
-
-**Example**: the basic usage, core part necessary for cesnet-hadoop:
-
-    class{'site_hadoop':
-      stage => setup,
-    }
-
-Better to set stage to 'setup', because this will set also the repository. All Hadoop puppet modules would need depend on this otherwise.
 
 <a name="usage"></a>
 ##Usage
 
-**Example 1**: enable Hadoop accounting:
+<a name="usage-basic"></a>
+### Basic Hadoop cluster with addons
+
+This is basic multinode Hadoop cluster with addons.
+
+Hadoop module addons modules still needs to be configured:
+
+    $clients = [
+      'client.example.com',
+    ]
+    $master = 'master.example.com'
+    $slaves = [
+        'node1.example.com',
+        'node2.example.com',
+        'node3.example.com',
+    ]
+    $zookeepers = [
+      'master.example.com',
+    ]
+
+    class { '::hadoop':
+      hdfs_hostname       => $master,
+      yarn_hostname       => $master,
+      slaves              => $slaves,
+      frontends           => $clients,
+      nfs_hostnames       => $clients,
+      zookeeper_hostnames => $zookeepers,
+    }
+
+    class { '::hbase':
+      hdfs_hostname       => $master,
+      master_hostname     => $master,
+      slaves              => $slaves,
+      zookeeper_hostnames => $zookeepers,
+    }
+
+    class { '::hive':
+      metastore_hostname  => $master,
+      server2_hostname    => $master,
+      zookeeper_hostnames => $zookeepers,
+    }
+
+    class { '::spark':
+      hdfs_hostname          => $master,
+      historyserver_hostname => $master,
+    }
+
+    class { '::site_hadoop':
+      users => [
+        'hawking',
+      ],
+    }
+
+    node 'master.example.com' {
+      include ::site_hadoop::role::master
+    }
+
+    node /node\d+.example.com/ {
+      include ::site_hadoop::role::slave
+    }
+
+    node 'client.example.com' {
+      include ::site_hadoop::role::frontend
+    }
+
+<a name="usage-accounting"></a>
+### Hadoop accounting
+
+This is already included in the "primary master" roles:
+
+* *::site\_hadoop::role::master*
+* *::site\_hadoop::role::master\_hdfs*
+* *::site\_hadoop::role::master\_ha1*
+
+It can be disabled by *accounting\_enable* parameter.
 
     class { '::mysql::server':
       root_password => 'strongpassword',
@@ -120,7 +187,16 @@ Better to set stage to 'setup', because this will set also the repository. All H
     # start accounting after Hadoop startup (not strictly needed)
     #Class['hadoop::namenode::service'] -> Class['site_hadoop::accounting']
 
-**Example 2**: enable Hadoop bookkeeping:
+<a name="usage-bookkeeping"></a>
+### Hadoop bookkeeping
+
+This is already included in the "primary master" roles:
+
+* *::site\_hadoop::role::master*
+* *::site\_hadoop::role::master\_hdfs*
+* *::site\_hadoop::role::master\_ha1*
+
+It can be disabled by *accounting\_enable* parameter.
 
     class{'mysql::server':
       root_password => 'strong_password',
