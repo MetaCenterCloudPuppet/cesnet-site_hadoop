@@ -23,11 +23,12 @@ class site_hadoop::role::master_ha2 {
     include ::hadoop::zkfc
   }
 
+  if $site_hadoop::yarn_enable {
+    include ::hadoop::resourcemanager
+  }
+
   if $hadoop::hdfs_deployed {
     include ::hadoop::historyserver
-    if $site_hadoop::yarn_enable {
-      include ::hadoop::resourcemanager
-    }
     if $site_hadoop::hbase_enable {
       include ::hbase
       if $hbase::backup_hostnames {

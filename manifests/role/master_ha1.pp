@@ -22,10 +22,11 @@ class site_hadoop::role::master_ha1 {
     include ::hadoop::zkfc
   }
 
+  if $site_hadoop::yarn_enable {
+    include ::hadoop::resourcemanager
+  }
+
   if $hdfs_deployed {
-    if $site_hadoop::yarn_enable {
-      include ::hadoop::resourcemanager
-    }
     if $site_hadoop::hbase_enable {
       include ::hbase::master
     }
