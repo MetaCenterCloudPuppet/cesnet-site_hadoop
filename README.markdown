@@ -462,6 +462,8 @@ Hostname of the second Hadoop YARN Resource Manager, used with high availability
 
 To avoid puppet dependency hell some packages are installed in the stage *setup*.
 
+Only Puppet 3 can be tested by unit-tests, Puppet 4 can't use *site.pp* in tests.
+
 <a name="development"></a>
 ##Development
 
