@@ -100,8 +100,10 @@ Hadoop module addons modules still needs to be configured:
         'node3.example.com',
     ]
     $zookeepers = [
-      'master.example.com',
+      $master,
     ]
+    # set to false for initial run
+    $hdfs_deployed = true
 
     class { '::hadoop':
       hdfs_hostname       => $master,
@@ -110,6 +112,7 @@ Hadoop module addons modules still needs to be configured:
       frontends           => $clients,
       nfs_hostnames       => $clients,
       zookeeper_hostnames => $zookeepers,
+      hdfs_deployed       => $hdfs_deployed,
     }
 
     class { '::hbase':
@@ -137,16 +140,23 @@ Hadoop module addons modules still needs to be configured:
     }
 
     node 'master.example.com' {
+      class { '::zookeeper':
+        hostnames => $zookeepers,
+      }
       include ::site_hadoop::role::master
     }
 
-    node /node\d+.example.com/ {
+    node /node\d+\.example\.com/ {
       include ::site_hadoop::role::slave
     }
 
     node 'client.example.com' {
       include ::site_hadoop::role::frontend
     }
+
+Note: all the classes with parameters can be replaced by hiera.
+
+Note 2: all classes with parameters there are configuration only classes, except the zookeeper class. Zookeeper must be specified only on the proper nodes, or there can be used hiera instead.
 
 <a name="usage-accounting"></a>
 ### Hadoop accounting
