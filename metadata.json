@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -49,8 +49,40 @@
   ],
   "dependencies": [
     {
+      "name": "cesnet/hadoop",
+      "version_requirement": ">= 2.3.0 < 3.0.0"
+    },
+    {
+      "name": "cesnet/hbase",
+      "version_requirement": "< 1.0.0"
+    },
+    {
+      "name": "cesnet/hive",
+      "version_requirement": ">= 0.11.0 < 1.0.0"
+    },
+    {
+      "name": "cesnet/java_ng",
+      "version_requirement": ">= 2.1.0 < 3.0.0"
+    },
+    {
+      "name": "cesnet/pig",
+      "version_requirement": "< 1.0.0"
+    },
+    {
+      "name": "cesnet/spark",
+      "version_requirement": ">= 1.0.0 < 2.0.0"
+    },
+    {
+      "name": "cesnet/zookeeper",
+      "version_requirement": "< 1.0.0"
+    },
+    {
+      "name": "puppetlabs/mysql",
+      "version_requirement": "< 4.0.0"
+    },
+    {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 1.0.0 <5.0.0"
+      "version_requirement": ">= 1.0.0 < 5.0.0"
     }
   ]
 }
