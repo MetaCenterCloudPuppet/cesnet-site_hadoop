@@ -31,6 +31,10 @@ class site_hadoop::role::slave {
     }
   }
 
+  if $site_hadoop::hive_enable {
+    include ::hive::worker
+  }
+
   if $site_hadoop::impala_enable {
     include ::impala::server
 
