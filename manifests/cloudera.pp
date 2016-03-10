@@ -4,42 +4,49 @@
 #
 class site_hadoop::cloudera {
   $url = $site_hadoop::mirrors[$site_hadoop::mirror]
+  $version = $site_hadoop::version
 
   case $::osfamily {
     'Debian': {
-      # cloudera repo
-      exec { 'key-cloudera':
-        command => "apt-key adv --fetch-key ${url}/archive.key",
-        path    => $site_hadoop::path,
-        creates => '/etc/apt/sources.list.d/cloudera.list',
+      include ::apt
+
+      apt::key { 'cloudera':
+        id     => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
+        source => "${url}/archive.key",
       }
       ->
-      exec { 'wget-cloudera':
-        command => "wget -P /etc/apt/sources.list.d/ ${url}/cloudera.list && sed -i /etc/apt/sources.list.d/cloudera.list -e \"s/\\\\(deb\\\\|deb-src\\\\) http/\\\\1 [arch=amd64] http/\" && sed -i /etc/apt/sources.list.d/cloudera.list -e 's,\${baseUrl},http://archive.cloudera.com,' -e 's,\${category},cdh5,'",
-        path    => $site_hadoop::path,
-        creates => '/etc/apt/sources.list.d/cloudera.list',
+      apt::pin { 'cloudera':
+        originator => 'Cloudera',
+        priority   => 900,
+      }
+      ->
+      apt::source { 'cloudera':
+        architecture => $::architecture,
+        comment      => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${site_hadoop::majdistrelease} ${::architecture}",
+        location     => $url,
+        release      => "${::lsbdistcodename}-cdh${version}",
+        repos        => 'contrib',
+        include      => {
+          deb => true,
+          src => true,
+        },
       }
       ~>
-      exec { 'apt-get-update':
+      exec { 'apt-get-update-cloudera':
         command     => 'apt-get update',
         refreshonly => true,
         path        => $site_hadoop::path,
-      }
-
-      file {'/etc/apt/preferences.d/10_cloudera.pref':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/site_hadoop/10_cloudera.pref',
       }
     }
 
     'RedHat': {
       if $::operatingsystem != 'Fedora' {
-        exec { 'wget-cloudera':
-          command => "wget -P /etc/yum.repos.d/ ${url}/cloudera-cdh5.repo",
-          path    => $site_hadoop::path,
-          creates => '/etc/yum.repos.d/cloudera-cdh5.repo',
+        $majdistrelease = $site_hadoop::majdistrelease
+        file { '/etc/yum.repos.d/cloudera-cdh5.repo':
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0644',
+          content => template('site_hadoop/cloudera.repo.erb'),
         }
       }
     }

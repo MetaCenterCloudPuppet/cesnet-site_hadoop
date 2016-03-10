@@ -291,6 +291,12 @@ Accounts to create. Default: undef.
 
 Realms to add to *.k5login* files. Default: undef.
 
+####`version`
+
+Cloudera version to install. Default: '5'.
+
+Selects repository providing this version. The default is "5" - the latest version from CDH 5.
+
 ####`accounting_enable`
 
 Installs MySQL/MariaDB on the primary master node and enables accouting and bookkeeping. Default: true.
