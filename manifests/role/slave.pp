@@ -37,6 +37,7 @@ class site_hadoop::role::slave {
 
   if $site_hadoop::impala_enable {
     include ::impala::server
+    include ::hadoop::common::hdfs::config
 
     Class['::hadoop::common::hdfs::config'] -> Class['::impala::common::config']
     if $site_hadoop::hbase_enable {
