@@ -1,6 +1,6 @@
 [cloudera-cdh<%= @version -%>]
 # Packages for Cloudera's Distribution for Hadoop, Version <%= @version -%>, on <%= @operatingsystem -%> <%= @majdistrelease -%> <%= @architecture %>
 name=Cloudera's Distribution for Hadoop, Version <%= @version %>
-baseurl=https://archive.cloudera.com/cdh5/redhat/<%= @majdistrelease -%>/x86_64/cdh/<%= @version -%>/
-gpgkey =https://archive.cloudera.com/cdh5/redhat/<%= @majdistrelease -%>/x86_64/cdh/RPM-GPG-KEY-cloudera
+baseurl=https://archive.cloudera.com<%= cdh5_repopath -%>/<%= @version -%>/
+gpgkey =https://archive.cloudera.com<%= cdh5_repopath -%>/RPM-GPG-KEY-cloudera
 gpgcheck = 1

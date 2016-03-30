@@ -3,6 +3,7 @@
 # Set-up Cloudera repository.
 #
 class site_hadoop::cloudera {
+  $cdh5_repopath = $site_hadoop::cdh5_repopath
   $url = $site_hadoop::mirrors[$site_hadoop::mirror]
   $version = $site_hadoop::version
 
@@ -23,7 +24,7 @@ class site_hadoop::cloudera {
       apt::source { 'cloudera':
         architecture => $::architecture,
         comment      => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${site_hadoop::majdistrelease} ${::architecture}",
-        location     => $url,
+        location     => "${url}${cdh5_repopath}",
         release      => "${::lsbdistcodename}-cdh${version}",
         repos        => 'contrib',
         include      => {
