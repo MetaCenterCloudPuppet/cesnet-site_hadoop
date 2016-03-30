@@ -16,6 +16,7 @@ class site_hadoop (
   $java_enable = true,
   $nfs_frontend_enable = true,
   $nfs_yarn_enable = false,
+  $oozie_enable = false,
   $pig_enable = true,
   $scripts_enable = true,
   $spark_enable = true,

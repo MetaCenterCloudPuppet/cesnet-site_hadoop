@@ -27,6 +27,14 @@ class site_hadoop::role::master_ha2 {
     include ::hadoop::resourcemanager
   }
 
+  if $site_hadoop::hive_enable {
+    include ::hive::user
+  }
+
+  if $site_hadoop::oozie_enable {
+    include ::oozie::user
+  }
+
   if $hadoop::hdfs_deployed {
     include ::hadoop::historyserver
     if $site_hadoop::hbase_enable {
@@ -37,12 +45,12 @@ class site_hadoop::role::master_ha2 {
         include ::hbase::user
       }
     }
-    if $site_hadoop::hive_enable {
-      include ::hive::user
-    }
     if $site_hadoop::spark_enable {
       include ::spark::historyserver
       include ::spark::user
+
+      # prefer system user created by the package
+      Class['spark::historyserver::install'] -> Class['spark::user']
     }
   }
 }

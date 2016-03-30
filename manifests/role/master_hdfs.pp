@@ -11,6 +11,7 @@
 # * Hive metastore (optional)
 # * Hive server2 (optional)
 # * MySQL (HDFS accounting+bookkeeping, Hive)
+# * Oozie server (optional)
 # * Spark Master (optional)
 #
 class site_hadoop::role::master_hdfs {

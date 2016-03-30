@@ -139,6 +139,11 @@ Hadoop module addons modules still needs to be configured:
       ],
     }
 
+    # required for hive, oozie
+    class { '::mysql::bindings':
+      java_enable => true,
+    }
+
     node 'master.example.com' {
       class { '::zookeeper':
         hostnames => $zookeepers,
@@ -328,6 +333,12 @@ Launches HDFS NFS Gateway and mounts HDFS on the frontend. Default: true.
 ####`nfs_yarn_enable`
 
 Launches HDFS NFS Gateway and mounts HDFS on the YARN master. Default: false.
+
+####`oozie_enable`
+
+Installs Apache Oozie addon. Default: true.
+
+It is used by Apache Hue in workflow editor and for submitting jobs.
 
 ####`pig_enable`
 

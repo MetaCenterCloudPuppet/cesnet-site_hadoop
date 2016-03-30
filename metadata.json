@@ -65,6 +65,10 @@
       "version_requirement": ">= 2.1.0 < 3.0.0"
     },
     {
+      "name": "cesnet/oozie",
+      "version_requirement": ">= 0.9.3 < 1.0.0"
+    },
+    {
       "name": "cesnet/pig",
       "version_requirement": "< 1.0.0"
     },

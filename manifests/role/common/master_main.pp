@@ -10,6 +10,7 @@
 #  * spark::master
 #  * impala::catalog, impala::statestore
 #  * hive::metastore, hive::server
+#  * oozie::server
 #
 class site_hadoop::role::common::master_main {
   $hive_path='/usr/lib/hive/scripts/metastore/upgrade/mysql'
@@ -28,6 +29,9 @@ class site_hadoop::role::common::master_main {
     }
     if $site_hadoop::impala_enable {
       include ::impala::hdfs
+    }
+    if $site_hadoop::oozie_enable {
+      include ::oozie::hdfs
     }
     if $site_hadoop::spark_enable {
       include ::spark::hdfs
@@ -84,6 +88,22 @@ class site_hadoop::role::common::master_main {
       if $site_hadoop::impala_enable {
         Class['hive::metastore::service'] -> Class['impala::catalog::service']
       }
+    }
+    if $site_hadoop::oozie_enable {
+      include ::oozie
+      include ::oozie::server
+      include ::mysql::server
+      include ::mysql::bindings
+
+      mysql::db { 'oozie':
+        user     => 'oozie',
+        password => '$oozie::db_password',
+        grant    => ['CREATE', 'INDEX', 'SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+      }
+
+      Class['mysql::bindings'] -> Class['oozie::server::config']
+      Mysql::Db['oozie'] -> Class['oozie::server::service']
+      Class['oozie::hdfs'] -> Class['oozie::server::service']
     }
   }
 
