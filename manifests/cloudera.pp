@@ -13,7 +13,7 @@ class site_hadoop::cloudera {
 
       apt::key { 'cloudera':
         id     => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
-        source => "${url}/archive.key",
+        source => "${url}${cdh5_repopath}/archive.key",
       }
       ->
       apt::pin { 'cloudera':

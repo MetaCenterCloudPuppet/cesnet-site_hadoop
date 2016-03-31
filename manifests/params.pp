@@ -34,15 +34,15 @@ class site_hadoop::params {
 
   $mirror = 'cloudera'
   $mirrors = {
-    'cloudera' => "http://archive.cloudera.com${cdh5_repopath}",
+    'cloudera' => 'http://archive.cloudera.com',
     # only Debian at scientific
     'scientific' => $::operatingsystem ? {
       debian  => 'http://scientific.zcu.cz/repos/hadoop',
-      default => "http://archive.cloudera.com${cdh5_repopath}",
+      default => 'http://archive.cloudera.com',
     },
     'scientific/test' => $::operatingsystem ? {
       debian  => 'http://scientific.zcu.cz/repos/hadoop-test',
-      default => "http://archive.cloudera.com${cdh5_repopath}",
+      default => 'http://archive.cloudera.com',
     }
   }
 }
