@@ -1,3 +1,6 @@
+class {'::hue':
+  hdfs_hostname => $::fqdn,
+}
 class {'::site_hadoop':
   hbase_enable => false,
   hive_enable  => false,

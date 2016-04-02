@@ -12,6 +12,7 @@ class site_hadoop (
   $accounting_enable = true,
   $hbase_enable = true,
   $hive_enable = true,
+  $hue_enable = false,
   $impala_enable = false,
   $java_enable = true,
   $nfs_frontend_enable = true,

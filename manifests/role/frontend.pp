@@ -2,14 +2,6 @@
 #
 # Hadoop Frontend.
 #
-# services:
-# * Hadoop Frontend + basic packages
-# * HBase Frontend (optional)
-# * Hive Frontend (optional)
-# * Pig Frontend (optional)
-# * Spark Frontend (optional)
-# * HDFS NFS Gateway (optional)
-#
 class site_hadoop::role::frontend {
   include ::hadoop
   include ::site_hadoop::role::common::frontend

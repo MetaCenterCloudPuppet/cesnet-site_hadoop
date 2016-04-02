@@ -255,16 +255,17 @@ It can be disabled by *accounting\_enable* parameter.
 * `site_hadoop::install`: Installation of packages required by site\_hadoop module
 * `site_hadoop::params`: Parameters and default values for site\_hadoop module
 * **`site_hadoop::role::common`**: Hadoop inicializations and dependencies needed on all nodes
-* **`site_hadoop::role::frontend`**: Hadoop Frontend
+* [**`site_hadoop::role::frontend`**](#role-frontend): Hadoop Frontend
 * **`site_hadoop::role::frontend_ext`**: Hadoop External Frontend
 * **`site_hadoop::role::ha`**: Hadoop HA quorum server
-* **`site_hadoop::role::master`**: Hadoop Master server in cluster without high availability
+* [**`site_hadoop::role::hue`**](#role-hue): Apache Hue web interface
+* [**`site_hadoop::role::master`**](#role-master): Hadoop Master server in cluster without high availability
 * **`site_hadoop::role::master_ha1`**: Primary Hadoop master server in cluster with high availability
 * **`site_hadoop::role::master_ha2`**: Secondary Hadoop master server in cluster with high availability
 * **`site_hadoop::role::master_hdfs`**: Hadoop master providing HDFS Namenode in cluster without high availability
 * **`site_hadoop::role::master_yarn`**: Hadoop master providing YARN Resourcemanager and MapRed Historyserver in cluster without high availability
 * **`site_hadoop::role::simple`**: Hadoop cluster completely on one machine
-* **`site_hadoop::role::slave`**: Hadoop worker node
+* [**`site_hadoop::role::slave`**](#role-slave): Hadoop worker node
 
 
 <a name="class-site_hadoop"></a>
@@ -315,6 +316,10 @@ Deploys Apache HBase addon. Default: true.
 ####`hive_enable`
 
 Deploys Apache Hive addon. Default: true.
+
+####`hue_enable`
+
+Deploys Apache Hue web interface. Default: false.
 
 ####`impala_enable`
 
@@ -483,6 +488,93 @@ Hostname of the Hadoop YARN Resource Manager. Default: $::fqdn.
 ####`resourcemanager_hostname2`
 
 Hostname of the second Hadoop YARN Resource Manager, used with high availability. Default: undef.
+
+<a name="role-frontend"></a>
+###`site_hadoop::role::frontend`
+
+Hadoop Frontend.
+
+Installed clients:
+
+* Hadoop Frontend + basic packages
+* HBase Frontend (optional, *hbase\_enable*)
+* Hive Frontend (optional, *hive\_enable*)
+* Pig Frontend (optional, *pig\_enable*)
+* Spark Frontend (optional, *spark\_enable*)
+* HDFS NFS Gateway (optional, *nfs_frontend\_enable*)
+
+Required additional parameters:
+
+* *hadoop::frontends*
+* *hadoop::nfs\_hostnames*
+* *hbase::frontends*
+
+Add also 'nfs' user to *security.client.protocol.acl* authorization (not needed by default).
+
+<a name="role-master"></a>
+###`site_hadoop::role::master`
+
+Hadoop Master server in cluster without high availability.
+
+Use case: non-HA, single master, multiple nodes.
+
+Services:
+
+* HDFS namenode (+ initializations for Spark, HBase, Hive, ...)
+* HDFS NFS Gateway (optional, *nfs\_yarn\_enable*)
+* YARN Resourcemanager (optional, *yarn\_enable*)
+* MapRed Historyserver
+* HBase master (optional, *hbase\_enable*)
+* Hive metastore (optional, *hive\_enable*)
+* Hive server2 (optional, *hive\_enable*)
+* Impala catalog (optional, *impala\_enable\*)
+* Impala statestore (optional, *impala\_enable\*)
+* MySQL (HDFS accounting+bookkeeping, Hive if enabled)
+* Oozie Server (optional, *oozie\_enable*)
+* Spark Master (optional, *spark\_standalone\_enable*)
+* Spark Historyserver (optional, *spark\_enable*)
+* Zookeeper
+
+Requires many parameters (hostnames for each service, ...).
+
+<a name="role-hue"></a>
+###`site_hadoop::role::hue`
+
+Apache Hue web interface.
+
+Services:
+
+* Hadoop HTTPFS (in case of HDFS HA)
+* Hue
+
+Required additional parameters:
+
+* *hadoop::hue\_hostnames*
+* *hadoop::httpfs\_hostnames*
+* *hadoop::oozie\_hostnames*
+* *hue::hdfs_hostname* or *hue::defaultFS*
+* *hue::httpfs\_hostname*
+* *hue::oozie\_hostname*
+* *oozie::hue\_hostnames*
+
+Keep enabled also oozie.
+
+Add also 'hue' and 'oozie' groups to *security.client.protocol.acl* authorization (not needed by default).
+
+<a name="role-slave"></a>
+###`site_hadoop::role::slave`
+
+Hadoop worker node.
+
+Services:
+
+* HDFS Datanode
+* YARN Nodemanager (optional, *yarn\_enable*)
+* HBase regionserver (optional, *hbase\_enable*)
+* Impala server (optional, *impala\_enable*)
+* Spark worker (optional, *spark\_standalone\_enable*)
+
+Requires many parameters (hostnames for each service, ...).
 
 <a name="limitations"></a>
 ##Limitations

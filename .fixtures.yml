@@ -7,6 +7,7 @@ fixtures:
     alternatives: "git://github.com/puppet-community/puppet-alternatives"
     hadoop: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop"
     hadoop_lib: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop_lib"
+    hue: "git://github.com/MetaCenterCloudPuppet/cesnet-hue"
     java_ng: "git://github.com/MetaCenterCloudPuppet/cesnet-java_ng"
     oozie: "git://github.com/MetaCenterCloudPuppet/cesnet-oozie"
     zookeeper: "git://github.com/MetaCenterCloudPuppet/cesnet-zookeeper"

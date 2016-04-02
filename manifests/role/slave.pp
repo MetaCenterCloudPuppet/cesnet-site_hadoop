@@ -2,18 +2,6 @@
 #
 # Hadoop worker node.
 #
-# services:
-# * HDFS Datanode
-#
-# services (yarn_enable==true):
-# * YARN Nodemanager
-#
-# services (hbase_enable==true):
-# * HBase regionserver
-#
-# services (impala_enable==true):
-# * Impala server
-#
 class site_hadoop::role::slave {
   include ::hadoop
   include ::site_hadoop::role::common

@@ -27,6 +27,9 @@ class site_hadoop::role::common::master_main {
     if $site_hadoop::hive_enable {
       include ::hive::hdfs
     }
+    if $site_hadoop::hue_enable {
+      include ::hue::hdfs
+    }
     if $site_hadoop::impala_enable {
       include ::impala::hdfs
     }
