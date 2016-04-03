@@ -10,6 +10,7 @@ class site_hadoop (
   $user_realms = undef,
   $version = '5',
   $accounting_enable = true,
+  $database_setup_enable = true,
   $hbase_enable = true,
   $hive_enable = true,
   $hue_enable = false,

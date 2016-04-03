@@ -60,32 +60,36 @@ class site_hadoop::role::common::master_main {
       include ::hive
       include ::hive::metastore
       include ::hive::server2
-      include ::mysql::server
-      include ::mysql::bindings
 
-      #
-      # ERROR at line 822: Failed to open file 'hive-txn-schema-0.13.0.mysql.sql', error: 2
-      # (resurrection of HIVE-6559, https://issues.apache.org/jira/browse/HIVE-6559)
-      #
-      Class['hive::metastore::install']
-      ->
-      exec{'hive-bug':
-        command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE hive,SOURCE ${hive_path}/hive,'",
-        unless  => "grep 'SOURCE ${hive_path}' ${hive_path}/${site_hadoop::hive_schema}",
-        path    => '/sbin:/usr/sbin:/bin:/usr/bin',
-      }
-      ->
-      mysql::db { 'metastore':
-        user     => 'hive',
-        password => $hive::db_password,
-        grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-        sql      => "${hive_path}/${site_hadoop::hive_schema}",
+      if $hive::db and ($hive::db == 'mariadb' or $hive::db == 'mysql') and $site_hadoop::database_setup_enable {
+        include ::mysql::server
+        include ::mysql::bindings
+
+        #
+        # ERROR at line 822: Failed to open file 'hive-txn-schema-0.13.0.mysql.sql', error: 2
+        # (resurrection of HIVE-6559, https://issues.apache.org/jira/browse/HIVE-6559)
+        #
+        Class['hive::metastore::install']
+        ->
+        exec{'hive-bug':
+          command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE hive,SOURCE ${hive_path}/hive,'",
+          unless  => "grep 'SOURCE ${hive_path}' ${hive_path}/${site_hadoop::hive_schema}",
+          path    => '/sbin:/usr/sbin:/bin:/usr/bin',
+        }
+        ->
+        mysql::db { 'metastore':
+          user     => 'hive',
+          password => $hive::db_password,
+          grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+          sql      => "${hive_path}/${site_hadoop::hive_schema}",
+        }
+
+        Class['hive::hdfs'] -> Class['hive::metastore']
+        Class['hive::metastore::install'] -> Mysql::Db['metastore']
+        Mysql::Db['metastore'] -> Class['hive::metastore::service']
+        Class['mysql::bindings'] -> Class['hive::metastore::config']
       }
 
-      Class['hive::hdfs'] -> Class['hive::metastore']
-      Class['hive::metastore::install'] -> Mysql::Db['metastore']
-      Mysql::Db['metastore'] -> Class['hive::metastore::service']
-      Class['mysql::bindings'] -> Class['hive::metastore::config']
       Class['hive::hdfs'] -> Class['hive::server2']
 
       if $site_hadoop::impala_enable {
@@ -95,18 +99,21 @@ class site_hadoop::role::common::master_main {
     if $site_hadoop::oozie_enable {
       include ::oozie
       include ::oozie::server
-      include ::mysql::server
-      include ::mysql::bindings
 
-      mysql::db { 'oozie':
-        user     => 'oozie',
-        password => '$oozie::db_password',
-        grant    => ['CREATE', 'INDEX', 'SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+      if ($oozie::db == 'mariadb' or $oozie::db == 'mysql') and $site_hadoop::database_setup_enable {
+        include ::mysql::server
+        include ::mysql::bindings
+
+        mysql::db { 'oozie':
+          user     => 'oozie',
+          password => $oozie::db_password,
+          grant    => ['CREATE', 'INDEX', 'SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+        }
+
+        Class['mysql::bindings'] -> Class['oozie::server::config']
+        Mysql::Db['oozie'] -> Class['oozie::server::service']
+        Class['oozie::hdfs'] -> Class['oozie::server::service']
       }
-
-      Class['mysql::bindings'] -> Class['oozie::server::config']
-      Mysql::Db['oozie'] -> Class['oozie::server::service']
-      Class['oozie::hdfs'] -> Class['oozie::server::service']
     }
   }
 

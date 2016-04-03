@@ -309,6 +309,16 @@ Installs MySQL/MariaDB on the primary master node and enables accouting and book
 
 See [site\_hadoop::accounting](#class-accounting) and [site\_hadoop::bookkeeping](#class-bookkeeping)
 
+####`database_setup_enable`
+
+Installs and setup database server and databases, if needed. Default: true.
+
+Database is installed only, if enabled in parameters of:
+
+* Hive: *db*
+* Oozie: *db*
+* site Hadoop *accounting\_enable*
+
 ####`hbase_enable`
 
 Deploys Apache HBase addon. Default: true.
@@ -536,6 +546,13 @@ Services:
 * Zookeeper
 
 Requires many parameters (hostnames for each service, ...).
+
+MariaDB/MySQL database is supported. To setup and use it also for Hive and Oozie addons, add parameters:
+
+    hive::db: mysql
+    hive::db_password: OOZIE_DB_PASSWORD
+    oozie::db: mysql
+    oozie::db_password: HIVE_DB_PASSWORD
 
 <a name="role-hue"></a>
 ###`site_hadoop::role::hue`
