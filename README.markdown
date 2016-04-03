@@ -1,4 +1,4 @@
-##site\_hadoop
+##The main site module for Hadoop environment
 
 [![Build Status](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site_hadoop.svg?branch=master)](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site\_hadoop)
 
@@ -24,7 +24,7 @@
 <a name="module-description"></a>
 ##Module Description
 
-This is helper module for Hadoop, which performs settings and decisions not meant to be in generic Hadoop modules:
+This is the main puppet module for Hadoop environment, which performs settings and decisions not meant to be in generic Hadoop modules:
 
 * sets Cloudera repository
 * enables custom accounting
@@ -37,7 +37,7 @@ Supported:
 
 * **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0, 2.6.0)
 * **Fedora**
-* **RHEL 6 and clones**
+* **RHEL 6, 7 and clones**
 
 <a name="accounting"></a>
 ### Accounting
@@ -254,7 +254,7 @@ It can be disabled by *accounting\_enable* parameter.
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
 * `site_hadoop::install`: Installation of packages required by site\_hadoop module
 * `site_hadoop::params`: Parameters and default values for site\_hadoop module
-* **`site_hadoop::role::common`**: Hadoop inicializations and dependencies needed on all nodes
+* **`site_hadoop::role::common`**: Hadoop initialization and dependencies needed on all nodes
 * [**`site_hadoop::role::frontend`**](#role-frontend): Hadoop Frontend
 * **`site_hadoop::role::frontend_ext`**: Hadoop External Frontend
 * **`site_hadoop::role::ha`**: Hadoop HA quorum server
@@ -305,7 +305,7 @@ Selects repository providing this version. The default is "5" - the latest versi
 
 ####`accounting_enable`
 
-Installs MySQL/MariaDB on the primary master node and enables accouting and bookkeeping. Default: true.
+Installs MySQL/MariaDB on the primary master node and enables accounting and bookkeeping. Default: true.
 
 See [site\_hadoop::accounting](#class-accounting) and [site\_hadoop::bookkeeping](#class-bookkeeping)
 
@@ -365,11 +365,11 @@ Creates also helper useful scripts in /usr/local. Default: true.
 
 ####`spark_enable`
 
-Depoys Apache Spark. Default: true.
+Deploys Apache Spark. Default: true.
 
 ####`spark_standalone_enable`
 
-Depoys complete stadalone Apache Spark cluster. Default: false.
+Deploys complete standalone Apache Spark cluster. Default: false.
 
 ####`yarn_enable`
 
@@ -530,16 +530,16 @@ Use case: non-HA, single master, multiple nodes.
 
 Services:
 
-* HDFS namenode (+ initializations for Spark, HBase, Hive, ...)
+* HDFS Namenode (+ initialization for Spark, HBase, Hive, ...)
 * HDFS NFS Gateway (optional, *nfs\_yarn\_enable*)
 * YARN Resourcemanager (optional, *yarn\_enable*)
 * MapRed Historyserver
-* HBase master (optional, *hbase\_enable*)
-* Hive metastore (optional, *hive\_enable*)
-* Hive server2 (optional, *hive\_enable*)
-* Impala catalog (optional, *impala\_enable\*)
-* Impala statestore (optional, *impala\_enable\*)
-* MySQL (HDFS accounting+bookkeeping, Hive if enabled)
+* HBase Master (optional, *hbase\_enable*)
+* Hive Metastore (optional, *hive\_enable*)
+* Hive Server2 (optional, *hive\_enable*)
+* Impala Catalog (optional, *impala\_enable\*)
+* Impala Statestore (optional, *impala\_enable\*)
+* MySQL (HDFS accounting+bookkeeping, Hive, Oozie)
 * Oozie Server (optional, *oozie\_enable*)
 * Spark Master (optional, *spark\_standalone\_enable*)
 * Spark Historyserver (optional, *spark\_enable*)
@@ -576,7 +576,7 @@ Required additional parameters:
 
 Keep enabled also oozie.
 
-Add also 'hue' and 'oozie' groups to *security.client.protocol.acl* authorization (not needed by default).
+Add also 'hue' user and 'oozie' group into *security.client.protocol.acl* authorization (not needed by default).
 
 <a name="role-slave"></a>
 ###`site_hadoop::role::slave`
@@ -587,9 +587,9 @@ Services:
 
 * HDFS Datanode
 * YARN Nodemanager (optional, *yarn\_enable*)
-* HBase regionserver (optional, *hbase\_enable*)
-* Impala server (optional, *impala\_enable*)
-* Spark worker (optional, *spark\_standalone\_enable*)
+* HBase Regionserver (optional, *hbase\_enable*)
+* Impala Server (optional, *impala\_enable*)
+* Spark Worker (optional, *spark\_standalone\_enable*)
 
 Requires many parameters (hostnames for each service, ...).
 
@@ -598,7 +598,7 @@ Requires many parameters (hostnames for each service, ...).
 
 To avoid puppet dependency hell some packages are installed in the stage *setup*.
 
-Only Puppet 3 can be tested by unit-tests, Puppet 4 can't use *site.pp* in tests.
+Only Puppet 3 is tested automatically by unit-tests. Puppet 4 can't use *site.pp* in the tests.
 
 <a name="development"></a>
 ##Development
