@@ -553,6 +553,7 @@ MariaDB/MySQL database is supported. To setup and use it also for Hive, Hue and 
     hive::db_password: OOZIE_DB_PASSWORD
     hue::db: mysql
     hue::db_password: HUE_DB_PASSWORD
+    mysql::bindings::java_enable: true
     oozie::db: mysql
     oozie::db_password: HIVE_DB_PASSWORD
 
@@ -575,6 +576,7 @@ Required additional parameters:
 * *hue::hdfs_hostname* or *hue::defaultFS*
 * *hue::httpfs\_hostname*
 * *hue::oozie\_hostname*
+* *mysql::bindings::java\_enable*: *true*
 * *oozie::hue\_hostnames*
 
 Keep enabled also oozie.
