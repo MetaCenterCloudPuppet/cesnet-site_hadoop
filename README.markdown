@@ -547,10 +547,12 @@ Services:
 
 Requires many parameters (hostnames for each service, ...).
 
-MariaDB/MySQL database is supported. To setup and use it also for Hive and Oozie addons, add parameters:
+MariaDB/MySQL database is supported. To setup and use it also for Hive, Hue and Oozie addons, add parameters:
 
     hive::db: mysql
     hive::db_password: OOZIE_DB_PASSWORD
+    hue::db: mysql
+    hue::db_password: HUE_DB_PASSWORD
     oozie::db: mysql
     oozie::db_password: HIVE_DB_PASSWORD
 
@@ -563,6 +565,7 @@ Services:
 
 * Hadoop HTTPFS (in case of HDFS HA)
 * Hue
+* MySQL
 
 Required additional parameters:
 
@@ -577,6 +580,15 @@ Required additional parameters:
 Keep enabled also oozie.
 
 Add also 'hue' user and 'oozie' group into *security.client.protocol.acl* authorization (not needed by default).
+
+MariaDB/MySQL database is supported. To setup and use it for Hive, Hue, and Oozie addons, add parameters:
+
+    hive::db: mysql
+    hive::db_password: OOZIE_DB_PASSWORD
+    hue::db: mysql
+    hue::db_password: HUE_DB_PASSWORD
+    oozie::db: mysql
+    oozie::db_password: HIVE_DB_PASSWORD
 
 <a name="role-slave"></a>
 ###`site_hadoop::role::slave`
