@@ -59,7 +59,11 @@ class site_hadoop::role::common::master_main {
     if $site_hadoop::hive_enable {
       include ::hive
       include ::hive::metastore
-      include ::hive::server2
+
+      if $site_hadoop::yarn_enable {
+        include ::hive::server2
+        Class['hive::hdfs'] -> Class['hive::server2']
+      }
 
       if $hive::db and ($hive::db == 'mariadb' or $hive::db == 'mysql') and $site_hadoop::database_setup_enable {
         include ::mysql::server
@@ -89,8 +93,6 @@ class site_hadoop::role::common::master_main {
         Mysql::Db['metastore'] -> Class['hive::metastore::service']
         Class['mysql::bindings'] -> Class['hive::metastore::config']
       }
-
-      Class['hive::hdfs'] -> Class['hive::server2']
 
       if $site_hadoop::impala_enable {
         Class['hive::metastore::service'] -> Class['impala::catalog::service']
