@@ -3,8 +3,8 @@
 # KDC Server setup (not tested).
 #
 class site_hadoop::kdc::server {
-  include stdlib
-  include site_hadoop::kdc::client
+  include ::stdlib
+  include ::site_hadoop::kdc::client
 
   ensure_packages($site_hadoop::kdc::packages['server'])
 

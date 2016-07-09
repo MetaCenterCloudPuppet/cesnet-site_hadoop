@@ -23,11 +23,11 @@ class site_hadoop::bookkeeping(
   $resourcemanager_hostname = $::fqdn,
   $resourcemanager_hostname2 = undef,
 ) {
-  include stdlib
+  include ::stdlib
 
   $packages = $::osfamily ? {
-    debian => ['python-pycurl', 'python-mysqldb'],
-    redhat => ['python-pycurl', 'MySQL-python'],
+    'debian' => ['python-pycurl', 'python-mysqldb'],
+    'redhat' => ['python-pycurl', 'MySQL-python'],
     default => undef,
   }
 

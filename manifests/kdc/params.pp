@@ -30,13 +30,13 @@ class site_hadoop::kdc::params {
   }
 
   $kdc_conf_dir = $::osfamily ? {
-    debian => '/etc/krb5kdc',
-    redhat => '/var/kerberos/krb5kdc',
+    'debian' => '/etc/krb5kdc',
+    'redhat' => '/var/kerberos/krb5kdc',
   }
 
   $kdc_data_dir = $::osfamily ? {
-    debian => '/var/lib/krb5kdc',
-    redhat => '/var/kerberos/krb5kdc',
+    'debian' => '/var/lib/krb5kdc',
+    'redhat' => '/var/kerberos/krb5kdc',
   }
 
   $realm = 'HADOOP'

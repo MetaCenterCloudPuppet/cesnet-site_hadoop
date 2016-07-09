@@ -49,7 +49,7 @@ class site_hadoop::role::common::frontend {
   }
 
   $packages = $::osfamily ? {
-    debian  => ['ant', 'maven'],
+    'debian'  => ['ant', 'maven'],
     default => [],
   }
 

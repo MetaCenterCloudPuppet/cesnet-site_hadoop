@@ -8,6 +8,6 @@ class site_hadoop::kdc (
   $perform = undef,
 ) inherits site_hadoop::kdc::params {
   if $site_hadoop::kdc::perform {
-    include site_hadoop::kdc::server
+    include ::site_hadoop::kdc::server
   }
 }

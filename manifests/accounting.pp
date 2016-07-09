@@ -43,7 +43,7 @@ class site_hadoop::accounting(
   $mapred_url = undef,
   $principal = undef,
 ) {
-  include stdlib
+  include ::stdlib
 
   $packages = ['python-pycurl']
 

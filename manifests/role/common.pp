@@ -15,11 +15,11 @@ class site_hadoop::role::common {
   include ::hadoop
 
   class{'::site_hadoop::cloudera':
-    stage => 'setup'
+    stage => 'setup',
   }
 
   class{'::site_hadoop::install':
-    stage => 'setup'
+    stage => 'setup',
   }
 
   if $site_hadoop::java_enable {
@@ -31,7 +31,7 @@ class site_hadoop::role::common {
     class{'::java_ng':
       flavor      => $java_flavor,
       set_default => member($hadoop::frontends, $::fqdn),
-      stage       => 'setup'
+      stage       => 'setup',
     }
   }
 

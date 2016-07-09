@@ -4,16 +4,16 @@
 #
 class site_hadoop::params {
   $defaultconfdir = $::osfamily ? {
-    debian => '/etc/default',
-    redhat => '/etc/sysconfig',
+    'debian' => '/etc/default',
+    'redhat' => '/etc/sysconfig',
   }
 
   $packages = $::osfamily ? {
-    debian  => [
+    'debian'  => [
       'acl', 'heimdal-clients', 'procps',
       'python-scipy',
     ],
-    redhat  => [
+    'redhat'  => [
       'krb5-workstation',
       'scipy',
     ],
@@ -27,8 +27,8 @@ class site_hadoop::params {
 
   $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')
   $cdh5_repopath = $::operatingsystem ? {
-    debian  => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
-    ubuntu  => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
+    'debian'  => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
+    'ubuntu'  => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
     default => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
   }
 
@@ -37,12 +37,12 @@ class site_hadoop::params {
     'cloudera' => 'http://archive.cloudera.com',
     # only Debian at scientific
     'scientific' => $::operatingsystem ? {
-      debian  => 'http://scientific.zcu.cz/repos/hadoop',
+      'debian'  => 'http://scientific.zcu.cz/repos/hadoop',
       default => 'http://archive.cloudera.com',
     },
     'scientific/test' => $::operatingsystem ? {
-      debian  => 'http://scientific.zcu.cz/repos/hadoop-test',
+      'debian'  => 'http://scientific.zcu.cz/repos/hadoop-test',
       default => 'http://archive.cloudera.com',
-    }
+    },
   }
 }
