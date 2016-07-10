@@ -1,6 +1,6 @@
 ##The main site module for Hadoop environment
 
-[![Build Status](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site_hadoop.svg?branch=master)](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site\_hadoop)
+[![Build Status](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site_hadoop.svg?branch=master)](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-site\_hadoop) [![Puppet Forge](https://img.shields.io/puppetforge/v/cesnet/site_hadoop.svg)](https://forge.puppetlabs.com/cesnet/site\_hadoop)
 
 ####Table of Contents
 
