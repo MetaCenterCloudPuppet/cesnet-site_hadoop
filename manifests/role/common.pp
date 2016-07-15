@@ -38,6 +38,7 @@ class site_hadoop::role::common {
   if $site_hadoop::hbase_enable { include ::hbase }
   if $site_hadoop::hive_enable { include ::hive }
   if $site_hadoop::impala_enable { include ::impala }
+  if $site_hadoop::oozie_enable { include ::oozie }
   if $site_hadoop::spark_enable { include ::spark }
 
   if $site_hadoop::users and $hadoop::zookeeper_deployed {
