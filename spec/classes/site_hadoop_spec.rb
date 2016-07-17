@@ -7,6 +7,8 @@ describe 'site_hadoop', :type => 'class' do
         facts
       end
       it { should compile.with_all_deps }
+      it { should contain_class('site_hadoop') }
+      it { should contain_class('site_hadoop::params') }
     end
   end
 end
