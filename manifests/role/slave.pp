@@ -5,6 +5,7 @@
 class site_hadoop::role::slave {
   include ::hadoop
   include ::site_hadoop::role::common
+  include ::site_hadoop::role::common::impala
 
   if $hadoop::zookeeper_deployed {
     include ::hadoop::datanode

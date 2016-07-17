@@ -20,6 +20,12 @@ class site_hadoop::params {
     default => undef,
   }
 
+  $packages_sasl = $::osfamily ? {
+    /Debian/ => 'libsasl2-modules-gssapi-heimdal',
+    /RedHat/ => 'cyrus-sasl-gssapi',
+    default  => undef,
+  }
+
   # version specific file
   $hive_schema = 'hive-schema-1.1.0.mysql.sql'
 

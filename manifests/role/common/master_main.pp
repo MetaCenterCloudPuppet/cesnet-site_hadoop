@@ -18,6 +18,7 @@ class site_hadoop::role::common::master_main {
   include ::hadoop
   include ::hadoop::namenode
   include ::site_hadoop::role::common
+  include ::site_hadoop::role::common::impala
 
   if $hadoop::zookeeper_deployed {
     # HDFS (non-data) required

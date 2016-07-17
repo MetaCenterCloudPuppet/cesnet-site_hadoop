@@ -14,6 +14,7 @@
 #
 class site_hadoop::role::common::frontend {
   include ::site_hadoop::role::common
+  include ::site_hadoop::role::common::impala
   include ::hadoop::frontend
   if $site_hadoop::hbase_enable {
     include ::hbase::frontend
