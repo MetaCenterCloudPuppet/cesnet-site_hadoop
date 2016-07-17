@@ -31,6 +31,14 @@ class site_hadoop::role::master_ha2 {
     include ::hive::user
   }
 
+  if $site_hadoop::hue_enable {
+    include ::hue::user
+  }
+
+  if $site_hadoop::impala_enable {
+    include ::impala::user
+  }
+
   if $site_hadoop::oozie_enable {
     include ::oozie::user
   }
