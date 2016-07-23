@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -59,6 +59,10 @@
     {
       "name": "cesnet/hive",
       "version_requirement": ">= 0.11.0 < 1.0.0"
+    },
+    {
+      "name": "cesnet/impala",
+      "version_requirement": "< 2.0.0"
     },
     {
       "name": "cesnet/java_ng",
