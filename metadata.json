@@ -50,7 +50,7 @@
     },
     {
       "name": "cesnet/hbase",
-      "version_requirement": "< 1.0.0"
+      "version_requirement": "< 2.0.0"
     },
     {
       "name": "cesnet/hive",

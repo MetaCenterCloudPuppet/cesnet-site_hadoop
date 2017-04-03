@@ -8,7 +8,7 @@ description 'Hadoop Site-Specific Module'
 project_page 'https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop'
 
 dependency 'cesnet/hadoop', '>= 2.4.0 < 3.0.0'
-dependency 'cesnet/hbase', '< 1.0.0'
+dependency 'cesnet/hbase', '< 2.0.0'
 dependency 'cesnet/hive', '>= 0.11.0 < 1.0.0'
 dependency 'cesnet/impala', '< 2.0.0'
 dependency 'cesnet/java_ng', '>= 2.1.0 < 3.0.0'
