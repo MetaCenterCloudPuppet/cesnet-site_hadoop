@@ -25,6 +25,7 @@ group :test do
   gem 'json_pure', '< 2.0.0'
   # >= 3.1 hard requires newest ruby
   gem 'listen', '< 3.1'
+  gem 'parallel_tests', '<= 2.9.0' if RUBY_VERSION < '2.0.0'
 end
 
 group :development do
