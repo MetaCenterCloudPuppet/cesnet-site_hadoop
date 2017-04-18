@@ -19,3 +19,25 @@ $mysql_facts = {
   :root_home => '/root',
   :staging_http_get => 'wget',
 }
+
+$test_os={
+    :supported_os => [
+        {
+          'osfamily' => 'Debian',
+          'operatingsystem' => 'Debian',
+          'operatingsystemrelease' => ['7']
+        }, {
+          'osfamily' => 'Debian',
+          'operatingsystem' => 'Ubuntu',
+          'operatingsystemrelease' => ['14.04']
+        }, {
+          'osfamily' => 'RedHat',
+          'operatingsystem' => 'RedHat',
+          'operatingsystemrelease' => ['6']
+        }, {
+          'osfamily' => 'CentOS',
+          'operatingsystem' => 'RedHat',
+          'operatingsystemrelease' => ['7']
+        }
+    ]
+}

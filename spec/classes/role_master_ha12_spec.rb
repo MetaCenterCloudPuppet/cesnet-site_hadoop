@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'site_hadoop::role::master_ha1', :type => 'class' do
-  on_supported_os.each do |os,facts|
+  on_supported_os($test_os).each do |os,facts|
     context "on #{os}" do
       let(:facts) do
         facts.merge($mysql_facts)
@@ -21,7 +21,7 @@ describe 'site_hadoop::role::master_ha1', :type => 'class' do
 end
 
 describe 'site_hadoop::role::master_ha2', :type => 'class' do
-  on_supported_os.each do |os,facts|
+  on_supported_os($test_os).each do |os,facts|
     context "on #{os}" do
       let(:facts) do
         facts.merge($mysql_facts)
