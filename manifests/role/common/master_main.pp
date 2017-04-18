@@ -115,7 +115,7 @@ class site_hadoop::role::common::master_main {
 
         Class['mysql::bindings'] -> Class['oozie::server::config']
         Mysql::Db['oozie'] -> Class['oozie::server::service']
-        Class['oozie::hdfs'] -> Class['oozie::server::service']
+        Class['oozie::hdfs'] -> Class['oozie::server::config']
       }
     }
   }
