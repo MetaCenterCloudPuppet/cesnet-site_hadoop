@@ -1,7 +1,13 @@
 fixtures:
   repositories:
-    apt: "git://github.com/puppetlabs/puppetlabs-apt.git"
-    mysql: "git://github.com/puppetlabs/puppetlabs-mysql.git"
+    apt:
+      repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
+      # for tests with puppet < 4
+      ref: "2.4.0"
+    mysql:
+      repo: "https://github.com/puppetlabs/puppetlabs-mysql.git"
+      # for tests with puppet < 4
+      ref: "3.11.0"
     staging: "git://github.com/nanliu/puppet-staging"
     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
     alternatives: "git://github.com/puppet-community/puppet-alternatives"
