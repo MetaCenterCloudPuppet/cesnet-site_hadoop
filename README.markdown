@@ -77,6 +77,7 @@ With all job metadata in local database you will have detailed history informati
  * */etc/apt/preferences.d/10\_cloudera.pref*
  * Cloudera apt gpg key
  * */usr/local/bin/launch* (when *scripts\_enable* parameter is *true*)
+ * */usr/lib/bigtop-tomcat/lib/core-site.xml*: link to */etc/hadoop/conf/core-site.xml* file as workaround problems with HDFS configuration during login in some components (HDFS httpfs, Oozie), for example to use Kerberos mapping rules often needed in Kerberos cross-realm environment
 
 **Note**: Security files are NOT handled by this module. They needs to be copied to proper places for CESNET Hadoop puppet modules.
 

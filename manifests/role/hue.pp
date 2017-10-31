@@ -2,11 +2,22 @@
 #
 # Apache Hue web interface.
 #
+# Components installed:
+# * HDFS HttpFS
+# * Hue
+#
+# Actions performed:
+# * core-site.xml workaround for HDFS httpfs and Oozie (for login)
+# * MySQL/MariaDB databse setup
+#
 class site_hadoop::role::hue {
   include ::site_hadoop::role::common
 
   if $hadoop::zookeeper_deployed and ($hadoop::hdfs_hostname2 and !empty($hadoop::hdfs_hostname2)){
     include ::hadoop::httpfs
+    include ::site_hadoop::role::common::core_site_workaround
+
+    Class['site_hadoop::role::common::core_site_workaround'] -> Class['hadoop::httpfs::service']
   }
   if $hadoop::zookeeper_deployed and $hadoop::hdfs_deployed {
     include ::hue
