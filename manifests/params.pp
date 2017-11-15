@@ -26,6 +26,15 @@ class site_hadoop::params {
     default  => undef,
   }
 
+  $packages_hue_saml = $::osfamily ? {
+    /Debian/ => [
+      'libxmlsec1-openssl',
+      'xmlsec1',
+    ],
+    /RedHat/ => 'xmlsec1',
+    default  => undef,
+  }
+
   # version specific file
   $hive_schema = 'hive-schema-1.1.0.mysql.sql'
 

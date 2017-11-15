@@ -26,6 +26,12 @@ class site_hadoop::role::hue {
     #  include ::hbase::thriftserver
     #}
 
+    # dependencies for SAML authentication backend
+    if $::hue::auth == 'saml' and $::site_hadoop::packages_hue_saml {
+      ensure_packages($::site_hadoop::packages_hue_saml)
+      Package[$::site_hadoop::packages_hue_saml] -> Class['hue::service']
+    }
+
     if $::hue::db and ($::hue::db == 'mariadb' or $::hue::db == 'mysql') and $::site_hadoop::database_setup_enable {
       include ::mysql::server
 
