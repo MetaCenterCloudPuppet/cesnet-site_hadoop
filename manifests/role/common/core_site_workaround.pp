@@ -4,7 +4,7 @@
 #
 # For example there are often needed Kerberos mapping rules from core-site.xml in Kerberos cross-realm environment (hadoop.security.auth_to_local property).
 #
-# Note, the properties httpfs.authentication.kerberos.name.rules and oozie.authentication.kerberos.name.rules are still needed for authentization in the components themselfs.
+# Note, the properties httpfs.authentication.kerberos.name.rules and oozie.authentication.kerberos.name.rules are still needed for authentication in the components themselfs.
 #
 # Known issue:
 # * https://issues.apache.org/jira/browse/OOZIE-2704
