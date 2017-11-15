@@ -613,8 +613,6 @@ Requires many parameters (hostnames for each service, ...).
 
 To avoid puppet dependency hell some packages are installed in the stage *setup*.
 
-Only Puppet 3 is tested automatically by unit-tests. Puppet 4 can't use *site.pp* in the tests.
-
 <a name="development"></a>
 ##Development
 
