@@ -40,14 +40,15 @@ class site_hadoop::role::common::frontend {
     include ::spark::frontend
   }
 
-  # XXX: warning, when using pig (missing jar dependency in hive)
-  if $site_hadoop::hbase_enable and $site_hadoop::hive_enable and $site_hadoop::pig_enable {
-    file{'/usr/lib/hive/lib/slf4j-api-1.7.5.jar':
-      source => '/usr/lib/hbase/lib/slf4j-api-1.7.5.jar',
-    }
-    Class['hive::frontend::install'] -> File['/usr/lib/hive/lib/slf4j-api-1.7.5.jar']
-    Class['hbase::frontend::install'] -> File['/usr/lib/hive/lib/slf4j-api-1.7.5.jar']
-  }
+  ## warning, when using pig (missing jar dependency in hive in Cloudera)
+  # XXX: better not use the workaround unconditionally
+  #if $site_hadoop::hbase_enable and $site_hadoop::hive_enable and $site_hadoop::pig_enable {
+  #  file{'/usr/lib/hive/lib/slf4j-api-1.7.5.jar':
+  #    source => '/usr/lib/hbase/lib/slf4j-api-1.7.5.jar',
+  #  }
+  #  Class['hive::frontend::install'] -> File['/usr/lib/hive/lib/slf4j-api-1.7.5.jar']
+  #  Class['hbase::frontend::install'] -> File['/usr/lib/hive/lib/slf4j-api-1.7.5.jar']
+  #}
 
   $packages = $::osfamily ? {
     'debian'  => ['ant', 'maven'],
