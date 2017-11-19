@@ -1,11 +1,20 @@
-# == Class site_hadoop::cloudera
+# == Class site_hadoop::repo::cloudera
 #
 # Set-up Cloudera repository.
 #
-class site_hadoop::cloudera {
-  $cdh5_repopath = $site_hadoop::cdh5_repopath
-  $url = $site_hadoop::mirrors[$site_hadoop::mirror]
-  $version = $site_hadoop::version
+class site_hadoop::repo::cloudera(
+  $priority = $site_hadoop::priority,
+  $url = undef,
+){
+  $cdh5_repopath = $::operatingsystem ? {
+    'debian'  => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
+    'ubuntu'  => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
+    default => "/cdh5/redhat/${site_hadoop::majdistrelease}/${::architecture}/cdh",
+  }
+  $baseurl = $site_hadoop::cloudera_baseurl[$site_hadoop::_mirror]
+  $version = $site_hadoop::_version
+
+  $_url = pick($url, "${baseurl}${cdh5_repopath}")
 
   case $::osfamily {
     'Debian': {
@@ -13,18 +22,18 @@ class site_hadoop::cloudera {
 
       apt::key { 'cloudera':
         id     => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
-        source => "${url}${cdh5_repopath}/archive.key",
+        source => "${_url}/archive.key",
       }
       ->
       apt::pin { 'cloudera':
         originator => 'Cloudera',
-        priority   => 900,
+        priority   => $priority,
       }
       ->
       apt::source { 'cloudera':
         architecture => $::architecture,
         comment      => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${site_hadoop::majdistrelease} ${::architecture}",
-        location     => "${url}${cdh5_repopath}",
+        location     => $_url,
         release      => "${::lsbdistcodename}-cdh${version}",
         repos        => 'contrib',
         include      => {

@@ -11,7 +11,7 @@ describe 'site_hadoop::role::master', :type => 'class' do
       it { should contain_class('site_hadoop::role::master') }
       it { should contain_class('site_hadoop::accounting') }
       it { should contain_class('site_hadoop::bookkeeping') }
-      it { should contain_class('site_hadoop::cloudera') }
+      it { should contain_class('site_hadoop::repo::cloudera') }
       it { should contain_class('hadoop') }
       it { should contain_class('hadoop::namenode') }
       it { should contain_class('hadoop::resourcemanager') }

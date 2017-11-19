@@ -14,8 +14,24 @@ class site_hadoop::role::common {
   include ::site_hadoop::config
   include ::hadoop
 
-  class{'::site_hadoop::cloudera':
-    stage => 'setup',
+  case $::site_hadoop::distribution {
+    'bigtop': {
+      class{'::site_hadoop::repo::bigtop':
+        priority => $::site_hadoop::priority,
+        url      => $::site_hadoop::url,
+        stage    => 'setup',
+      }
+      -> Class['site_hadoop::install']
+    }
+    'cloudera': {
+      class{'::site_hadoop::repo::cloudera':
+        priority => $::site_hadoop::priority,
+        url      => $::site_hadoop::url,
+        stage    => 'setup',
+      }
+      -> Class['site_hadoop::install']
+    }
+    default: {}
   }
 
   class{'::site_hadoop::install':
@@ -65,6 +81,4 @@ class site_hadoop::role::common {
       }
     }
   }
-
-  Class['site_hadoop::cloudera'] -> Class['site_hadoop::install']
 }

@@ -73,13 +73,13 @@ With all job metadata in local database you will have detailed history informati
 
 * Packages: Java JRE, Kerberos client
 * Files modified:
- * */etc/apt/sources.list.d/cloudera.list*
- * */etc/apt/preferences.d/10\_cloudera.pref*
- * Cloudera apt gpg key
+ * */etc/apt/sources.list.d/*.list*
+ * */etc/apt/preferences.d/10\_*.pref*
+ * apt gpg keys
  * */usr/local/bin/launch* (when *scripts\_enable* parameter is *true*)
  * */usr/lib/bigtop-tomcat/lib/core-site.xml*: link to */etc/hadoop/conf/core-site.xml* file as workaround problems with HDFS configuration during login in some components (HDFS httpfs, Oozie), for example to use Kerberos mapping rules often needed in Kerberos cross-realm environment
 
-**Note**: Security files are NOT handled by this module. They needs to be copied to proper places for CESNET Hadoop puppet modules.
+**Note**: Security files are NOT handled by this module. They needs to be copied to proper places.
 
 <a name="usage"></a>
 ##Usage
@@ -251,10 +251,11 @@ It can be disabled by *accounting\_enable* parameter.
  * `site_hadoop::kdc::server`
 * [**`site_hadoop::server::accounting`**](#class-accounting): Custom Hadoop accounting scripts
 * [**`site_hadoop::server::bookkeeping`**](#class-bookkeeping): Custom Hadoop bookkeeping scripts
-* `site_hadoop::cloudera`: Set-up Cloudera repository
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
 * `site_hadoop::install`: Installation of packages required by site\_hadoop module
 * `site_hadoop::params`: Parameters and default values for site\_hadoop module
+* `site_hadoop::repo::cloudera`: Set-up Cloudera repository
+* `site_hadoop::repo::bigtop`: Set-up Bigtop repository
 * **`site_hadoop::role::common`**: Hadoop initialization and dependencies needed on all nodes
 * [**`site_hadoop::role::frontend`**](#role-frontend): Hadoop Frontend
 * **`site_hadoop::role::frontend_ext`**: Hadoop External Frontend
@@ -272,6 +273,16 @@ It can be disabled by *accounting\_enable* parameter.
 <a name="class-site_hadoop"></a>
 ###`site_hadoop`
 
+####`distribution`
+
+Hadoop distribution. Default: 'cloudera'.
+
+Values:
+
+* **bigtop**: Apache Bigtop
+* **cloudera**: Cloudera
+* *undef*: no repository setup
+
 ####`email`
 
 Email address to send errors from cron. Default: undef.
@@ -284,11 +295,24 @@ Name of the hive database schema file. Default: 'hive-schema-1.1.0.mysql.sql'.
 
 Cloudera mirror to use. Default: 'cloudera'.
 
-Values:
+1. Bigtop:
 
-* **cloudera**
-* **scientific**
-* **scientific/test**
+ * **amazon**
+ * **apache**
+
+2. Cloudera:
+
+ * **cloudera**
+ * **scientific**
+ * **scientific/test**
+
+####`priority`
+
+Debian repository priority. Default: 900.
+
+####`url`
+
+Override repository URL. Default: undef.
 
 ####`users`
 

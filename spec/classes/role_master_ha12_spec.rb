@@ -11,7 +11,7 @@ describe 'site_hadoop::role::master_ha1', :type => 'class' do
       it { should contain_class('site_hadoop::role::master_ha1') }
       it { should contain_class('site_hadoop::accounting') }
       it { should contain_class('site_hadoop::bookkeeping') }
-      it { should contain_class('site_hadoop::cloudera') }
+      it { should contain_class('site_hadoop::repo::cloudera') }
       it { should contain_class('hadoop') }
       it { should contain_class('hadoop::namenode') }
       it { should contain_class('hadoop::resourcemanager') }
@@ -29,7 +29,7 @@ describe 'site_hadoop::role::master_ha2', :type => 'class' do
       it { should compile.with_all_deps }
       it { should contain_class('site_hadoop::role::master_ha2') }
       it { should contain_class('java_ng') }
-      it { should contain_class('site_hadoop::cloudera') }
+      it { should contain_class('site_hadoop::repo::cloudera') }
       it { should contain_class('hadoop') }
       it { should contain_class('hadoop::namenode') }
       it { should contain_class('hadoop::resourcemanager') }

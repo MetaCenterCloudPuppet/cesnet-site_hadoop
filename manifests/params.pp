@@ -37,18 +37,13 @@ class site_hadoop::params {
 
   # version specific file
   $hive_schema = 'hive-schema-1.1.0.mysql.sql'
-
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 
   $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')
-  $cdh5_repopath = $::operatingsystem ? {
-    'debian'  => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
-    'ubuntu'  => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
-    default => "/cdh5/redhat/${majdistrelease}/${::architecture}/cdh",
-  }
 
-  $mirror = 'cloudera'
-  $mirrors = {
+  $cloudera_default_mirror = 'cloudera'
+  $cloudera_default_version = '5'
+  $cloudera_baseurl = {
     'cloudera' => 'http://archive.cloudera.com',
     # only Debian at scientific
     'scientific' => $::operatingsystem ? {
@@ -60,4 +55,7 @@ class site_hadoop::params {
       default => 'http://archive.cloudera.com',
     },
   }
+
+  $bigtop_default_mirror = 'apache'
+  $bigtop_default_version = '1.2.1'
 }
