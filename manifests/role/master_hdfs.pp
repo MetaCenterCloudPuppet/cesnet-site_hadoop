@@ -6,7 +6,7 @@
 #
 # services:
 # * HDFS namenode (+Spark, HBase, Hive)
-# * zookeeper
+# * Zookeeper server
 # * HBase master (optional)
 # * Hive metastore (optional)
 # * Hive server2 (optional)
@@ -18,7 +18,7 @@ class site_hadoop::role::master_hdfs {
   include ::hadoop
   include ::site_hadoop::role::common
   include ::site_hadoop::role::common::master_main
-  include ::zookeeper
+  include ::zookeeper::server
 
   if $hadoop::hdfs_deployed {
     if $site_hadoop::hbase_enable {

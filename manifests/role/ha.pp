@@ -11,5 +11,5 @@
 class site_hadoop::role::ha {
   include ::site_hadoop::role::common
   include ::hadoop::journalnode
-  include ::zookeeper
+  include ::zookeeper::server
 }

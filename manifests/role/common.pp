@@ -13,6 +13,7 @@ class site_hadoop::role::common {
   include ::site_hadoop
   include ::site_hadoop::config
   include ::hadoop
+  include ::zookeeper
 
   case $::site_hadoop::distribution {
     'bigtop': {
