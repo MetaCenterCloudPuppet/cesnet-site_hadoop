@@ -74,11 +74,13 @@ class site_hadoop::role::common::master_main {
         # ERROR at line 822: Failed to open file 'hive-txn-schema-0.13.0.mysql.sql', error: 2
         # (resurrection of HIVE-6559, https://issues.apache.org/jira/browse/HIVE-6559)
         #
+        # ERROR at line 827: Failed to open file '041-HIVE-16556.mysql.sql', error: 2
+        #
         Class['hive::metastore::install']
         ->
         exec{'hive-bug':
-          command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE hive,SOURCE ${hive_path}/hive,'",
-          unless  => "grep 'SOURCE ${hive_path}' ${hive_path}/${site_hadoop::hive_schema}",
+          command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE\(\s\+\)\([^/]\),SOURCE\1${hive_path}/\2,'",
+          onlyif  => "grep -q 'SOURCE\s\+[^/]' ${hive_path}/${site_hadoop::hive_schema}",
           path    => '/sbin:/usr/sbin:/bin:/usr/bin',
         }
         ->

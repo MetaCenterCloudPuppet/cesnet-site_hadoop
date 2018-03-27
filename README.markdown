@@ -35,7 +35,7 @@ This module provide roles. Roles are helper classes joining together external, h
 
 Supported:
 
-* **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0, 2.6.0)
+* **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0/2.6.0, CDH 5.14.0)
 * **Fedora**
 * **RHEL 6, 7 and clones**
 
