@@ -10,13 +10,17 @@
 # * https://issues.apache.org/jira/browse/OOZIE-2704
 #
 class site_hadoop::role::common::core_site_workaround {
-  $tomcat_dir = '/usr/lib/bigtop-tomcat/lib'
+  $tomcat_dir = '/usr/lib/bigtop-tomcat'
   file { $tomcat_dir:
     ensure  => 'directory',
     recurse => true,
   }
+  file { "${tomcat_dir}/lib":
+    ensure  => 'directory',
+    recurse => true,
+  }
   ->
-  file { "${tomcat_dir}/core-site.xml":
+  file { "${tomcat_dir}/lib/core-site.xml":
     ensure => 'link',
     target => "${hadoop::confdir}/core-site.xml",
   }
