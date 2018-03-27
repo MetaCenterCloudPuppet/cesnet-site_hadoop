@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -11,7 +11,8 @@
     "hadoop",
     "accounting",
 	"big-data",
-    "cloudera"
+    "cloudera",
+    "bigtop"
   ],
   "operatingsystem_support": [
     {
@@ -20,7 +21,7 @@
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": ["7", "8"]
+      "operatingsystemrelease": ["7", "8", "9"]
     },
     {
       "operatingsystem": "Fedora"

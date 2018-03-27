@@ -1,5 +1,5 @@
 name 'cesnet-site_hadoop'
-version '2.1.5'
+version '2.2.0'
 source 'https://github.com/MetaCenterCloudPuppet/cesnet-site_hadoop'
 author 'Frantisek Dvorak <valtri@civ.zcu.cz>'
 license 'MIT'
