@@ -39,7 +39,7 @@ class site_hadoop::params {
   $hive_schema = 'hive-schema-1.1.0.mysql.sql'
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 
-  $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+)','\1')
+  $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+).*','\1')
 
   $cloudera_default_mirror = 'cloudera'
   $cloudera_default_version = '5'
