@@ -79,8 +79,8 @@ class site_hadoop::role::common::master_main {
         Class['hive::metastore::install']
         ->
         exec{'hive-bug':
-          command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE\(\s\+\)\([^/]\),SOURCE\1${hive_path}/\2,'",
-          onlyif  => "grep -q 'SOURCE\s\+[^/]' ${hive_path}/${site_hadoop::hive_schema}",
+          command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE\\(\\s\\+\\)\\([^/]\\),SOURCE\\1${hive_path}/\\2,'",
+          onlyif  => "grep -q 'SOURCE\\s\\+[^/]' ${hive_path}/${site_hadoop::hive_schema}",
           path    => '/sbin:/usr/sbin:/bin:/usr/bin',
         }
         ->
