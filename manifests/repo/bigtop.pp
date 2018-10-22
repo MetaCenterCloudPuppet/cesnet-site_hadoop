@@ -21,7 +21,7 @@ class site_hadoop::repo::bigtop(
   $repopath = $::operatingsystem ? {
     'debian' => "/debian/${::lsbmajdistrelease}/${::hardwaremodel}",
     'ubuntu' => "/ubuntu/${::lsbdistrelease}/${::hardwaremodel}",
-    default  => "/centos/${site_hadoop::majdistrelease}/${::hardwaremodel}",
+    default  => "/centos/${site_hadoop::osver}/${::hardwaremodel}",
   }
 
   $_url = pick($url, "${baseurl}/${version}${repopath}")
@@ -58,7 +58,7 @@ class site_hadoop::repo::bigtop(
       }
 
       apt::source { 'bigtop':
-        comment  => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${site_hadoop::majdistrelease} ${::architecture}",
+        comment  => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${::operatingsystemmajrelease} ${::architecture}",
         location => $_url,
         release  => 'bigtop',
         repos    => 'contrib',
@@ -76,7 +76,7 @@ class site_hadoop::repo::bigtop(
     }
 
     'RedHat': {
-      $majdistrelease = $site_hadoop::majdistrelease
+      $majdistrelease = $site_hadoop::operatingsystemmajrelease
       file { '/etc/yum.repos.d/bigtop.repo':
         owner   => 'root',
         group   => 'root',

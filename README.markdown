@@ -291,6 +291,12 @@ Email address to send errors from cron. Default: undef.
 
 Name of the hive database schema file. Default: 'hive-schema-1.1.0.mysql.sql'.
 
+####`key`
+
+Repository key. Default: (auto)
+
+Used in *site\_hadoop::cloudera*.
+
 ####`mirror`
 
 Cloudera mirror to use. Default: 'cloudera'.
@@ -324,9 +330,9 @@ Realms to add to *.k5login* files. Default: undef.
 
 ####`version`
 
-Cloudera version to install. Default: '5'.
+Hadoop distribution version to install. Default: '5' (for Cloudera), '1.2.1' (for BigTop).
 
-Selects repository providing this version. The default is "5" - the latest version from CDH 5.
+Selects Hadoop distribution version.
 
 ####`accounting_enable`
 

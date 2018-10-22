@@ -6,6 +6,7 @@ class site_hadoop (
   $distribution = 'cloudera',
   $email = undef,
   $hive_schema = $site_hadoop::params::hive_schema,
+  $key = undef,
   $mirror = undef,
   $priority = 900,
   $url = undef,

@@ -1,6 +1,6 @@
 [cloudera-cdh<%= @version -%>]
 # Packages for Cloudera's Distribution for Hadoop, Version <%= @version -%>, on <%= @operatingsystem -%> <%= @majdistrelease -%> <%= @architecture %>
 name=Cloudera's Distribution for Hadoop, Version <%= @version %>
-baseurl=<%= @_url -%>/<%= @version -%>/
+baseurl=<%= @yum_baseurl %>
 gpgkey=<%= @_url -%>/RPM-GPG-KEY-cloudera
 gpgcheck=1

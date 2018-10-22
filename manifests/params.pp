@@ -39,12 +39,17 @@ class site_hadoop::params {
   $hive_schema = 'hive-schema-1.1.0.mysql.sql'
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 
-  $majdistrelease = regsubst($::operatingsystemrelease,'^(\d+)\.(\d+).*','\1')
+  $osname = downcase($::operatingsystem)
+  $osver = regsubst($::operatingsystemmajrelease,'\.','')
+  $repotype = $::osfamily ? {
+    'redhat' => 'yum',
+    default  => 'apt',
+  }
 
   $cloudera_default_mirror = 'cloudera'
   $cloudera_default_version = '5'
   $cloudera_baseurl = {
-    'cloudera' => 'http://archive.cloudera.com',
+    'cloudera' => 'https://archive.cloudera.com',
     # only Debian at scientific
     'scientific' => $::operatingsystem ? {
       'debian'  => 'http://scientific.zcu.cz/repos/hadoop',

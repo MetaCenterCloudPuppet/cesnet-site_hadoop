@@ -6,22 +6,38 @@ class site_hadoop::repo::cloudera(
   $priority = $site_hadoop::priority,
   $url = undef,
 ){
-  $cdh5_repopath = $::operatingsystem ? {
-    'debian'  => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
-    'ubuntu'  => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
-    default => "/cdh5/redhat/${site_hadoop::majdistrelease}/${::architecture}/cdh",
-  }
   $baseurl = $site_hadoop::cloudera_baseurl[$site_hadoop::_mirror]
   $version = $site_hadoop::_version
+  $cdh_major_version = regsubst("${version}.", '\..*', '')
 
-  $_url = pick($url, "${baseurl}${cdh5_repopath}")
+  $cdh5_repopath = $::operatingsystem ? {
+    'debian' => "/cdh5/debian/${::lsbdistcodename}/${::architecture}/cdh",
+    'ubuntu' => "/cdh5/ubuntu/${::lsbdistcodename}/${::architecture}/cdh",
+    default  => "/cdh5/redhat/${site_hadoop::osver}/${::architecture}/cdh",
+  }
+  $cdh6_repopath = $::operatingsystem ? {
+    /CentOs|Scientific/ => "/cdh6/${version}/redhat${site_hadoop::osver}/${site_hadoop::repotype}",
+    /OpenSuse/ => "/cdh6/${version}/sles${site_hadoop::osver}/${site_hadoop::repotype}",
+    default    => "/cdh6/${version}/${site_hadoop::osname}${site_hadoop::osver}/${site_hadoop::repotype}",
+  }
+  $cdh_repopath = $cdh_major_version ? {
+    5       => $cdh5_repopath,
+    default => $cdh6_repopath,
+  }
+  $cdh_key = $cdh_major_version ? {
+    5       => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
+    default => '0xCECDB80C4E9004B0CFE852962279662784415700',
+  }
+
+  $_url = pick($url, "${baseurl}${cdh_repopath}")
+  $_key = pick($site_hadoop::key, $cdh_key)
 
   case $::osfamily {
     'Debian': {
       include ::apt
 
       apt::key { 'cloudera':
-        id     => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
+        id     => $_key,
         source => "${_url}/archive.key",
       }
       ->
@@ -32,7 +48,7 @@ class site_hadoop::repo::cloudera(
       ->
       apt::source { 'cloudera':
         architecture => $::architecture,
-        comment      => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${site_hadoop::majdistrelease} ${::architecture}",
+        comment      => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${::operatingsystemmajrelease} ${::architecture}",
         location     => $_url,
         release      => "${::lsbdistcodename}-cdh${version}",
         repos        => 'contrib',
@@ -51,8 +67,23 @@ class site_hadoop::repo::cloudera(
 
     'RedHat': {
       if $::operatingsystem != 'Fedora' {
-        $majdistrelease = $site_hadoop::majdistrelease
-        file { '/etc/yum.repos.d/cloudera-cdh5.repo':
+        $majdistrelease = $::operatingsystemmajrelease
+        $prevrepos = $cdh_major_version ? {
+          5       => ['/etc/yum.repos.d/cloudera-cdh6.repo'],
+          default => ['/etc/yum.repos.d/cloudera-cdh5.repo'],
+        }
+        $newrepo = $cdh_major_version ? {
+          5       => '/etc/yum.repos.d/cloudera-cdh5.repo',
+          default => '/etc/yum.repos.d/cloudera-cdh6.repo',
+        }
+        $yum_baseurl = $cdh_major_version ? {
+          5 => "${_url}/${version}/",
+          default => "${_url}/",
+        }
+        file { $prevrepos:
+          ensure => absent,
+        }
+        file { $newrepo:
           owner   => 'root',
           group   => 'root',
           mode    => '0644',
