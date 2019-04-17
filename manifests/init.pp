@@ -27,8 +27,9 @@ class site_hadoop (
   $scripts_enable = true,
   $spark_enable = true,
   $spark_standalone_enable = false,
-  $yarn_enable = true,
 ) inherits site_hadoop::params {
+  include ::hadoop
+
   case $distribution {
     'bigtop': {
       $_mirror = pick($mirror, $site_hadoop::params::bigtop_default_mirror)
@@ -45,5 +46,16 @@ class site_hadoop (
     default: {
       error("Unknown distribution ${distribution}")
     }
+  }
+
+  if $hadoop::hdfs_hostname {
+    $hdfs_enable = true
+  } else {
+    $hdfs_enable = false
+  }
+  if $hadoop::yarn_hostname {
+    $yarn_enable = true
+  } else {
+    $yarn_enable = false
   }
 }

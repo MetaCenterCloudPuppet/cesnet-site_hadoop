@@ -24,7 +24,9 @@ class site_hadoop::role::master_hdfs {
     if $site_hadoop::hbase_enable {
       include ::hbase::master
 
-      Class['hadoop::namenode::service'] -> Class['hbase::master::service']
+      if $site_hadoop::hdfs_enable {
+        Class['hadoop::namenode::service'] -> Class['hbase::master::service']
+      }
     }
   }
 }

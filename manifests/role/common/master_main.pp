@@ -14,9 +14,12 @@
 #
 class site_hadoop::role::common::master_main {
   include ::hadoop
-  include ::hadoop::namenode
   include ::site_hadoop::role::common
   include ::site_hadoop::role::common::impala
+
+  if $site_hadoop::hdfs_enable {
+    include ::hadoop::namenode
+  }
 
   if $hadoop::zookeeper_deployed {
     # HDFS (non-data) required
@@ -101,7 +104,9 @@ class site_hadoop::role::common::master_main {
       Class['site_hadoop::accounting'] -> Mysql::Db['accounting']
       Class['site_hadoop::bookkeeping'] -> Mysql::Db['bookkeeping']
 
-      Class['hadoop::namenode::install'] -> Class['site_hadoop::accounting']
+      if $site_hadoop::hdfs_enable {
+        Class['hadoop::namenode::install'] -> Class['site_hadoop::accounting']
+      }
     }
   }
 }

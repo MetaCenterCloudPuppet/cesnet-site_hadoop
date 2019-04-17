@@ -401,10 +401,6 @@ Deploys Apache Spark. Default: true.
 
 Deploys complete standalone Apache Spark cluster. Default: false.
 
-####`yarn_enable`
-
-Enables Hadoop YARN. Default: true.
-
 <a name="class-accounting"></a>
 ###`site_hadoop::accounting` class
 
@@ -560,9 +556,10 @@ Use case: non-HA, single master, multiple nodes.
 
 Services:
 
-* HDFS Namenode (+ initialization for Spark, HBase, Hive, ...)
+* HDFS Namenode (optional, *hadoop::hdfs_hostname*)
+ * + initialization for Spark, HBase, Hive, ...
 * HDFS NFS Gateway (optional, *nfs\_yarn\_enable*)
-* YARN Resourcemanager (optional, *yarn\_enable*)
+* YARN Resourcemanager (optional, *hadoop::yarn\_hostname*)
 * MapRed Historyserver
 * HBase Master (optional, *hbase\_enable*)
 * Hive Metastore (optional, *hive\_enable*)

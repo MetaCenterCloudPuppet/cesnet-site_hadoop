@@ -10,6 +10,9 @@
 #
 class site_hadoop::role::ha {
   include ::site_hadoop::role::common
-  include ::hadoop::journalnode
   include ::zookeeper::server
+
+  if $site_hadoop::hdfs_enable {
+    include ::hadoop::journalnode
+  }
 }

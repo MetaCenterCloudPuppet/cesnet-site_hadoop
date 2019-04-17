@@ -7,7 +7,7 @@ class site_hadoop::role::master {
   include ::site_hadoop::role::master_yarn
 
   if $hadoop::hdfs_deployed {
-    if $site_hadoop::spark_enable {
+    if $site_hadoop::hdfs_enable and $site_hadoop::spark_enable {
       Class['hadoop::namenode::service'] -> Class['spark::historyserver::service']
     }
   }

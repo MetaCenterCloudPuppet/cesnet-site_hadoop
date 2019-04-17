@@ -18,9 +18,11 @@ class site_hadoop::role::master_ha2 {
   }
 
   include ::site_hadoop::role::common
-  include ::hadoop::namenode
-  if $zkfc_enable {
-    include ::hadoop::zkfc
+  if $site_hadoop::hdfs_enable {
+    include ::hadoop::namenode
+    if $zkfc_enable {
+      include ::hadoop::zkfc
+    }
   }
 
   if $site_hadoop::yarn_enable {
@@ -44,7 +46,9 @@ class site_hadoop::role::master_ha2 {
   }
 
   if $hadoop::hdfs_deployed {
-    include ::hadoop::historyserver
+    if $site_hadoop::yarn_enable {
+      include ::hadoop::historyserver
+    }
     if $site_hadoop::hbase_enable {
       include ::hbase
       if $hbase::backup_hostnames {
