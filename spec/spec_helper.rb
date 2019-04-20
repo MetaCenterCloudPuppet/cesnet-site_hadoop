@@ -20,24 +20,28 @@ $mysql_facts = {
   :staging_http_get => 'wget',
 }
 
+$hive_facts = {
+  'hive_schemas' => {'mysql' => '/TEST/schema.sql'},
+}
+
 $test_os={
     :supported_os => [
         {
           'osfamily' => 'Debian',
           'operatingsystem' => 'Debian',
-          'operatingsystemrelease' => ['7']
+          'operatingsystemrelease' => ['7'],
         }, {
           'osfamily' => 'Debian',
           'operatingsystem' => 'Ubuntu',
-          'operatingsystemrelease' => ['14.04']
+          'operatingsystemrelease' => ['14.04'],
         }, {
           'osfamily' => 'RedHat',
           'operatingsystem' => 'RedHat',
-          'operatingsystemrelease' => ['6']
+          'operatingsystemrelease' => ['6'],
         }, {
           'osfamily' => 'CentOS',
           'operatingsystem' => 'RedHat',
-          'operatingsystemrelease' => ['7']
+          'operatingsystemrelease' => ['7'],
         }
     ]
 }

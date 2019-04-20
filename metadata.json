@@ -56,7 +56,7 @@
     },
     {
       "name": "cesnet/hive",
-      "version_requirement": ">= 0.11.0 < 1.0.0"
+      "version_requirement": ">= 0.12.0 < 1.0.0"
     },
     {
       "name": "cesnet/impala",

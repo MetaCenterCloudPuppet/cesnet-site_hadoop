@@ -13,8 +13,6 @@
 #  * oozie::server
 #
 class site_hadoop::role::common::master_main {
-  $hive_path='/usr/lib/hive/scripts/metastore/upgrade/mysql'
-
   include ::hadoop
   include ::hadoop::namenode
   include ::site_hadoop::role::common
@@ -79,8 +77,8 @@ class site_hadoop::role::common::master_main {
         Class['hive::metastore::install']
         ->
         exec{'hive-bug':
-          command => "sed -i ${hive_path}/${site_hadoop::hive_schema} -e 's,^SOURCE\\(\\s\\+\\)\\([^/]\\),SOURCE\\1${hive_path}/\\2,'",
-          onlyif  => "grep -q 'SOURCE\\s\\+[^/]' ${hive_path}/${site_hadoop::hive_schema}",
+          command => "sed -i ${site_hadoop::_hive_schema} -e 's,^SOURCE\\(\\s\\+\\)\\([^/]\\),SOURCE\\1${site_hadoop::hive_path_mysql}/\\2,'",
+          onlyif  => "grep -q 'SOURCE\\s\\+[^/]' ${site_hadoop::_hive_schema}",
           path    => '/sbin:/usr/sbin:/bin:/usr/bin',
         }
         ->
@@ -88,7 +86,7 @@ class site_hadoop::role::common::master_main {
           user     => 'hive',
           password => $hive::db_password,
           grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-          sql      => "${hive_path}/${site_hadoop::hive_schema}",
+          sql      => $site_hadoop::_hive_schema,
         }
 
         Class['hive::hdfs'] -> Class['hive::metastore']

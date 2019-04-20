@@ -33,11 +33,14 @@ This is the main puppet module for Hadoop environment, which performs settings a
 
 This module provide roles. Roles are helper classes joining together external, hadoop, and hadoop addons puppet modules. They solve dependencies and hide complexity of putting all pieces together.
 
-Supported:
+Puppet configured with `stringify_facts=false` is recommended (see also #hive_schema parameter).
+
+Tested with:
 
 * **Debian 7/wheezy** + Cloudera distribution (tested on Hadoop 2.5.0/2.6.0, CDH 5.14.0)
-* **Fedora**
+* **Debian 8/jessie**
 * **RHEL 6, 7 and clones**
+* **Ubuntu 18.04**
 
 <a name="accounting"></a>
 ### Accounting
@@ -289,7 +292,9 @@ Email address to send errors from cron. Default: undef.
 
 ####`hive_schema`
 
-Name of the hive database schema file. Default: 'hive-schema-1.1.0.mysql.sql'.
+Name of the hive database schema file. Default: autodetect.
+
+Autodetection requires puppet configured with `stringify_facts=false`. But the value cen be set directly instead (for example `hive-schema-2.1.1.mysql.sql`).
 
 ####`key`
 
