@@ -81,7 +81,7 @@ CREATE TABLE quota (
 
 CREATE TABLE jobs (
 	id_measure INTEGER NOT NULL,
-	user CHAR(20) NULL,
+	user CHAR(20) NOT NULL,
 	jobs INTEGER,
 	fails INTEGER,
 	subjobs INTEGER,
