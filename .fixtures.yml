@@ -9,7 +9,10 @@ fixtures:
       # for tests with puppet < 4
       ref: "3.11.0"
     staging: "git://github.com/nanliu/puppet-staging"
-    stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+    stdlib:
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+      # for future parser tests with puppet < 4
+      ref: "4.25.1"
     alternatives: "git://github.com/puppet-community/puppet-alternatives"
     hadoop: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop"
     hadoop_lib: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop_lib"
