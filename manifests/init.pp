@@ -5,7 +5,6 @@
 class site_hadoop (
   $distribution = 'cloudera',
   $email = undef,
-  $hive_schema = $site_hadoop::params::hive_schema_mysql,
   $key = undef,
   $mirror = undef,
   $priority = 900,
@@ -45,11 +44,5 @@ class site_hadoop (
     default: {
       error("Unknown distribution ${distribution}")
     }
-  }
-
-  if ($hive_schema =~ /^\//) {
-    $_hive_schema = $hive_schema
-  } else {
-    $_hive_schema = "${site_hadoop::hive_path_mysql}/${hive_schema}"
   }
 }

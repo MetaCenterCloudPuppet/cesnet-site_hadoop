@@ -35,8 +35,6 @@ class site_hadoop::params {
     default  => undef,
   }
 
-  $hive_path_mysql = '/usr/lib/hive/scripts/metastore/upgrade/mysql'
-  $hive_schema_mysql = $::hive_schemas['mysql']
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
 
   $osname = downcase($::operatingsystem)

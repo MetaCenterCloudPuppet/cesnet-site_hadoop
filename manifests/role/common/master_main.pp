@@ -64,37 +64,6 @@ class site_hadoop::role::common::master_main {
         Class['hive::hdfs'] -> Class['hive::server2']
       }
 
-      if $hive::db and ($hive::db == 'mariadb' or $hive::db == 'mysql') and $site_hadoop::database_setup_enable {
-        include ::mysql::server
-        include ::mysql::bindings
-
-        #
-        # ERROR at line 822: Failed to open file 'hive-txn-schema-0.13.0.mysql.sql', error: 2
-        # (resurrection of HIVE-6559, https://issues.apache.org/jira/browse/HIVE-6559)
-        #
-        # ERROR at line 827: Failed to open file '041-HIVE-16556.mysql.sql', error: 2
-        #
-        Class['hive::metastore::install']
-        ->
-        exec{'hive-bug':
-          command => "sed -i ${site_hadoop::_hive_schema} -e 's,^SOURCE\\(\\s\\+\\)\\([^/]\\),SOURCE\\1${site_hadoop::hive_path_mysql}/\\2,'",
-          onlyif  => "grep -q 'SOURCE\\s\\+[^/]' ${site_hadoop::_hive_schema}",
-          path    => '/sbin:/usr/sbin:/bin:/usr/bin',
-        }
-        ->
-        mysql::db { 'metastore':
-          user     => 'hive',
-          password => $hive::db_password,
-          grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-          sql      => $site_hadoop::_hive_schema,
-        }
-
-        Class['hive::hdfs'] -> Class['hive::metastore']
-        Class['hive::metastore::install'] -> Mysql::Db['metastore']
-        Mysql::Db['metastore'] -> Class['hive::metastore::service']
-        Class['mysql::bindings'] -> Class['hive::metastore::config']
-      }
-
       if $site_hadoop::impala_enable {
         Class['hive::metastore::service'] -> Class['impala::catalog::service']
       }
