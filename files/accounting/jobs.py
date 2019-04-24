@@ -1,6 +1,7 @@
 #! /usr/bin/python2
 
-import pycurl, json
+import json
+import pycurl
 from io import BytesIO
 
 import time
@@ -13,8 +14,8 @@ import socket
 base_url = "http://" + socket.getfqdn() + ":19888"
 begin_rel = 24 * 3600
 end_rel = 0
-utc=0
-debug=0
+utc = 0
+debug = 0
 
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "hm:b:e:ud", ["help", "mapred-url=", "begin=", "end=", "utc", "debug"])
@@ -32,15 +33,15 @@ for opt, arg in opts:
 	elif opt in ('-e', '--end'):
 		end_rel = int(arg)
 	elif opt in ('-u', '--utc'):
-		utc=1
+		utc = 1
 	elif opt in ('-d', '--debug'):
-		debug=1
+		debug = 1
 	else:
 		print 'Args error'
 		sys.exit(2)
 
 # epoch time of local date
-#now = datetime.date.today().strftime('%s')
+# now = datetime.date.today().strftime('%s')
 
 now0 = datetime.date.today()
 if utc:
@@ -60,7 +61,7 @@ print '# ' + url
 b = BytesIO()
 c = pycurl.Curl()
 c.setopt(pycurl.URL, url)
-#c.setopt(pycurl.WRITEDATA, b)
+# c.setopt(pycurl.WRITEDATA, b)
 c.setopt(pycurl.WRITEFUNCTION, b.write)
 c.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
 c.setopt(pycurl.USERPWD, ":")
@@ -81,6 +82,7 @@ j = json.loads(s)
 if debug:
 	print json.dumps(j, indent=4)
 
+
 class User:
 	jobs = 0
 	fails = 0
@@ -90,6 +92,7 @@ class User:
 	time = 0
 	wait_min = -1
 	wait_max = -1
+
 
 users = dict()
 if j["jobs"]:
@@ -114,7 +117,7 @@ if j["jobs"]:
 		if user.wait_max == -1 or wait > user.wait_max:
 			user.wait_max = wait
 
-#		print '#[progress]', username, users[username].total, user.completed, user.wait, user.time
+		# print '#[progress]', username, users[username].total, user.completed, user.wait, user.time
 
 sql_begin = datetime.datetime.fromtimestamp(begin).strftime('%Y-%m-%d %H:%M:%S')
 sql_end = datetime.datetime.fromtimestamp(end).strftime('%Y-%m-%d %H:%M:%S')

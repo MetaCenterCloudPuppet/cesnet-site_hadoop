@@ -1,6 +1,7 @@
 #! /usr/bin/python2
 
-import pycurl, json
+import json
+import pycurl
 from io import BytesIO
 
 import getopt
@@ -10,6 +11,7 @@ import sys
 import socket
 
 import MySQLdb
+
 
 class Job:
 	name = None
@@ -21,36 +23,40 @@ class Job:
 	mapred = None
 	yarn = None
 
+
 class JobNode:
 	elapsed = 0
 	map = 0
 	reduce = 0
 
+
 class Node:
 	host = None
+
 
 class Counter:
 	group = None
 	counter = None
 
-base_mapred_url=''
-base_yarn_url=''
-base_yarn_urls=list()
+
+base_mapred_url = ''
+base_yarn_url = ''
+base_yarn_urls = list()
 db = None
 dbhost = 'localhost'
 dbname = 'bookkeeping'
 dbuser = 'bookkeeping'
 dbpassword = ''
-debug=0
-gss=None
-https=0
-query=''
-host=socket.getfqdn()
+debug = 0
+gss = None
+https = 0
+query = ''
+host = socket.getfqdn()
 id = None
 
 node_hosts = dict()
 node_ids = dict()
-counter_list=dict()
+counter_list = dict()
 jobs = dict()
 
 curl = pycurl.Curl()
@@ -62,7 +68,7 @@ def get_rest(base_url, url):
 
 	b = BytesIO()
 	curl.setopt(pycurl.URL, str(base_url + url))
-	#curl.setopt(pycurl.WRITEDATA, b)
+	# curl.setopt(pycurl.WRITEDATA, b)
 	curl.setopt(pycurl.WRITEFUNCTION, b.write)
 	curl.perform()
 	s = b.getvalue().decode('utf-8')
@@ -97,7 +103,7 @@ def get_cluster_status(base_url):
 		return None
 
 	ci = j['clusterInfo']
-	if not 'haState' in ci.keys():
+	if 'haState' not in ci.keys():
 		ci['haState'] = 'NONE'
 	if debug >= 3:
 		print '[YARN] state=%s, haState=%s' % (ci['state'], ci['haState'])
@@ -119,7 +125,7 @@ def gen_url(base_url, port_nossl, port_ssl):
 
 	if not base_url:
 		base_url = host
-	if not '://' in base_url:
+	if '://' not in base_url:
 		base_url = schema + base_url
 	if not re.match(r'.*:\d+$', base_url):
 		base_url = base_url + ':%d' % port
@@ -157,7 +163,7 @@ OPTIONS are:\n\
 	elif opt in ('-c', '--config'):
 		f = open(arg, 'r')
 		for line in f:
-			cfg=line.rstrip().split('=')
+			cfg = line.rstrip().split('=')
 			if cfg[0] == 'base':
 				host = cfg[1]
 			elif cfg[0] == 'dbhost':
@@ -201,9 +207,9 @@ OPTIONS are:\n\
 	elif opt in ('-y', '--yarn'):
 		base_yarn_urls.append(arg)
 	elif opt in ('-s', '--ssl'):
-		https=1
+		https = 1
 	elif opt in ('-q', '--query'):
-		query='?%s' % arg
+		query = '?%s' % arg
 	else:
 		print 'Args error'
 		sys.exit(2)
@@ -241,8 +247,10 @@ regJob = re.compile('^job_')
 regApp = re.compile('^application_')
 regAtt = re.compile('^attempt_')
 if id:
-	if regJob.match(id): id = regJob.sub('', id)
-	if regApp.match(id): id = regApp.sub('', id)
+	if regJob.match(id):
+		id = regJob.sub('', id)
+	if regApp.match(id):
+		id = regApp.sub('', id)
 
 	mapred_url = base_mapred_url + '/ws/v1/history/mapreduce/jobs/job_%s' % id
 	yarn_url = base_yarn_url + '/ws/v1/cluster/apps/application_%s' % id
@@ -260,24 +268,26 @@ if id:
 	jcounter = 0
 	if j1 and j1['job']:
 		if id not in jobs:
-			job  = Job()
+			job = Job()
 			jobs[id] = job
 		else:
 			job = jobs[id]
-		job.mapred = j1['job'];
+		job.mapred = j1['job']
 		jcounter += 1
-	if debug >= 2: print '[MR] %d jobs' % jcounter
+	if debug >= 2:
+		print '[MR] %d jobs' % jcounter
 
 	jcounter = 0
 	if j2 and j2['app']:
 		if id not in jobs:
-			job  = Job()
+			job = Job()
 			jobs[id] = job
 		else:
 			job = jobs[id]
-		job.yarn = j2['app'];
+		job.yarn = j2['app']
 		jcounter += 1
-	if debug >= 2: print '[YARN] %d jobs' % jcounter
+	if debug >= 2:
+		print '[YARN] %d jobs' % jcounter
 else:
 	mapred_url = base_mapred_url + '/ws/v1/history/mapreduce/jobs' + query
 	yarn_url = base_yarn_url + '/ws/v1/cluster/apps' + query
@@ -290,26 +300,28 @@ else:
 		for j in j1["jobs"]["job"]:
 			id = regJob.sub('', j['id'])
 			if id not in jobs:
-				job  = Job()
+				job = Job()
 				jobs[id] = job
 			else:
 				job = jobs[id]
-			job.mapred = j;
+			job.mapred = j
 			jcounter += 1
-	if debug >= 2: print '[MR] %d jobs' % jcounter
+	if debug >= 2:
+		print '[MR] %d jobs' % jcounter
 
 	jcounter = 0
 	if j2["apps"]:
 		for j in j2["apps"]["app"]:
 			id = regApp.sub('', j['id'])
 			if id not in jobs:
-				job  = Job()
+				job = Job()
 				jobs[id] = job
 			else:
 				job = jobs[id]
-			job.yarn = j;
+			job.yarn = j
 			jcounter += 1
-	if debug >= 2: print '[YARN] %d jobs' % jcounter
+	if debug >= 2:
+		print '[YARN] %d jobs' % jcounter
 
 if db:
 	db = MySQLdb.connect(dbhost, dbuser, dbpassword, dbname)
@@ -336,8 +348,8 @@ if db:
 		else:
 			break
 
-regHost = re.compile(':\d+')
-jcounter=0
+regHost = re.compile(':\\d+')
+jcounter = 0
 for id, job in jobs.iteritems():
 
 	jcounter += 1
@@ -353,18 +365,18 @@ for id, job in jobs.iteritems():
 	if db:
 		changed = 0
 		changed_counters = 0
-		ID=0
-		NAME=1
-		USER=2
-		STATUS=3
-		QUEUE=4
-		SUBMIT=5
-		START=6
-		FINISH=7
-		MEMORY=8
-		CPU=9
-		MAP=10
-		REDUCE=11
+		ID = 0
+		NAME = 1
+		USER = 2
+		STATUS = 3
+		QUEUE = 4
+		SUBMIT = 5
+		START = 6
+		FINISH = 7
+		MEMORY = 8
+		CPU = 9
+		MAP = 10
+		REDUCE = 11
 		st.execute("SELECT id, name, user, status, queue, submit, start, finish, memory_seconds, cpu_seconds, map, reduce FROM jobs WHERE id=%s", [id])
 		data = st.fetchone()
 		if data:
@@ -392,10 +404,12 @@ for id, job in jobs.iteritems():
 			job.queue = job.yarn['queue']
 		if not job.start:
 			job.start = job.yarn['startedTime']
-			if debug >= 2: print '[MR] missing start time of %s completed from YARN (%d)' % (id, job.start)
+			if debug >= 2:
+				print '[MR] missing start time of %s completed from YARN (%d)' % (id, job.start)
 		if not job.finish:
 			job.finish = job.yarn['finishedTime']
-			if debug >= 2: print '[MR] missing finish time of %s completed from YARN (%d)' % (id, job.finish)
+			if debug >= 2:
+				print '[MR] missing finish time of %s completed from YARN (%d)' % (id, job.finish)
 
 	if debug >= 1:
 		print 'job %s (%d):' % (id, jcounter)
@@ -416,28 +430,35 @@ for id, job in jobs.iteritems():
 	if db:
 		if data:
 			if data[NAME] == job.name and data[USER] == job.user and data[STATUS] == job.status and data[QUEUE] == job.queue and data[START] == job.start and data[FINISH] == job.finish:
-				if debug >= 3: print '[db] job %s found' % id
+				if debug >= 3:
+					print '[db] job %s found' % id
 			else:
 				st.execute("UPDATE jobs SET name=%s, user=%s, status=%s, queue=%s, start=%s, finish=%s WHERE id=%s", (job.name, job.user, job.status, job.queue, job.start, job.finish, id))
-				if debug >= 3: print '[db] job %s updated' % id
+				if debug >= 3:
+					print '[db] job %s updated' % id
 				changed = 1
 		else:
 			st.execute("INSERT INTO jobs (id, name, user, status, queue, start, finish) VALUES(%s, %s, %s, %s, %s, %s, %s)", (id, job.name, job.user, job.status, job.queue, job.start, job.finish))
-			if debug >= 3: print '[db] job %s inserted' % id
+			if debug >= 3:
+				print '[db] job %s inserted' % id
 			changed = 1
 		if job.mapred:
 			if data and data[SUBMIT] == job.mapred['submitTime'] and data[MAP] == job.mapred['mapsTotal'] and data[REDUCE] == job.mapred['reducesTotal']:
-				if debug >= 3: print '[db] job %s mapred is actual' % id
+				if debug >= 3:
+					print '[db] job %s mapred is actual' % id
 			else:
 				st.execute("UPDATE jobs SET submit=%s, map=%s, reduce=%s WHERE id=%s", (job.mapred['submitTime'], job.mapred['mapsTotal'], job.mapred['reducesTotal'], [id]))
-				if debug >= 3: print '[db] job %s mapred updated' % id
+				if debug >= 3:
+					print '[db] job %s mapred updated' % id
 				changed = 1
 		if job.yarn and 'memorySeconds' in job.yarn.keys():
 			if data and data[MEMORY] == job.yarn['memorySeconds'] and data[CPU] == job.yarn['vcoreSeconds']:
-				if debug >= 3: print '[db] job %s yarn is actual' % id
+				if debug >= 3:
+					print '[db] job %s yarn is actual' % id
 			else:
 				st.execute("UPDATE jobs SET memory_seconds=%s, cpu_seconds=%s WHERE id=%s", (job.yarn['memorySeconds'], job.yarn['vcoreSeconds'], [id]))
-				if debug >= 3: print '[db] job %s yarn updated' % id
+				if debug >= 3:
+					print '[db] job %s yarn updated' % id
 				changed = 1
 
 		# check for details in DB, set changed flag if missing
@@ -460,14 +481,15 @@ for id, job in jobs.iteritems():
 	if job.mapred and (not db or changed):
 		t = get_rest(base_mapred_url, '/ws/v1/history/mapreduce/jobs/job_%s/tasks' % id)
 		if t['tasks']:
-			aggregate=0
+			aggregate = 0
 			for task in t['tasks']['task']:
-#				print 'taskid: %s, elapsed: %d' % (task['id'], task['elapsedTime'])
+				# print 'taskid: %s, elapsed: %d' % (task['id'], task['elapsedTime'])
 				aggregate += task['elapsedTime']
 				a = get_rest(base_mapred_url, '/ws/v1/history/mapreduce/jobs/job_%s/tasks/%s/attempts' % (id, task['id']))
 				if a['taskAttempts']:
 					for attempt in a['taskAttempts']['taskAttempt']:
-						if regAtt.match(attempt['id']): attempt['id'] = regAtt.sub('', attempt['id'])
+						if regAtt.match(attempt['id']):
+							attempt['id'] = regAtt.sub('', attempt['id'])
 
 						nodeHost = regHost.sub('', attempt['nodeHttpAddress'])
 						attempt['nodeHttpAddress'] = nodeHost
@@ -479,13 +501,14 @@ for id, job in jobs.iteritems():
 						elif attempt['type'] == 'REDUCE':
 							jobnodes[nodeHost].reduce += 1
 						else:
-							raise Exception('unknown type %s' %  attempt['type'])
-#			print 'tasks elapsed: %d' % aggregate
+							raise Exception('unknown type %s' % attempt['type'])
+			# print 'tasks elapsed: %d' % aggregate
 					subjobs.append(attempt)
 
-		aggregate=0
+		aggregate = 0
 		for nodename, jobnode in jobnodes.iteritems():
-			if debug >= 1: print '  node %s: %d' % (nodename, jobnode.elapsed)
+			if debug >= 1:
+				print '  node %s: %d' % (nodename, jobnode.elapsed)
 			aggregate += jobnode.elapsed
 		if debug >= 1:
 			print '  subjobs: %d' % len(subjobs)
@@ -510,7 +533,7 @@ for id, job in jobs.iteritems():
 	if jobnodes and db:
 		st.execute("DELETE FROM jobnodes WHERE jobid=%s", [id])
 		for nodename, jobnode in jobnodes.iteritems():
-			if not nodename in node_hosts.keys():
+			if nodename not in node_hosts.keys():
 				st.execute('INSERT INTO nodes (host) VALUES (%s)', [nodename])
 				node = Node()
 				node.id = db.insert_id()
@@ -518,34 +541,38 @@ for id, job in jobs.iteritems():
 				node_hosts[nodename] = node
 				node_ids[node.id] = node
 			st.execute("INSERT INTO jobnodes (jobid, nodeid, elapsed, map, reduce) VALUES (%s, %s, %s, %s, %s)", (id, node_hosts[nodename].id, jobnode.elapsed, jobnode.map, jobnode.reduce))
-		if debug >= 3: print '[db] job %s nodes updated' % id
+		if debug >= 3:
+			print '[db] job %s nodes updated' % id
 
 		st.execute("DELETE FROM subjobs WHERE jobid=%s", [id])
 		for subjob in subjobs:
 			nodename = subjob['nodeHttpAddress']
 			st.execute('INSERT INTO subjobs (id, jobid, nodeid, state, type, start, finish) VALUES (%s, %s, %s, %s, %s, %s, %s)', (subjob['id'], id, node_hosts[nodename].id, subjob['state'], subjob['type'], subjob['startTime'], subjob['finishTime']))
-		if debug >= 3: print '[db] job %s subjobs updated' % id
+		if debug >= 3:
+			print '[db] job %s subjobs updated' % id
 
 	if counters and db:
 		st.execute('DELETE FROM jobcounters WHERE jobid=%s', [id])
 		for counter in counters:
 			counter_name = '%s/%s' % (counter.group, counter.counter['name'])
-			if not counter_name in counter_list.keys():
+			if counter_name not in counter_list.keys():
 				st.execute('INSERT INTO counters (groupName, name) VALUES (%s, %s)', (counter.group, counter.counter['name']))
 				counter_list[counter_name] = db.insert_id()
-				if debug >= 3: print '[db] new counter %s inserted' % counter_name
+				if debug >= 3:
+					print '[db] new counter %s inserted' % counter_name
 			st.execute('INSERT INTO jobcounters (jobid, counterid, reduce, map, total) VALUES (%s, %s, %s, %s, %s)', (id, counter_list[counter_name], counter.counter['reduceCounterValue'], counter.counter['mapCounterValue'], counter.counter['totalCounterValue']))
-		if debug >= 3: print '[db] job %s counters updated' % id
+		if debug >= 3:
+			print '[db] job %s counters updated' % id
 
 	# better to update timestamp again explicitly on the end of the transaction
 	if db and (jobnodes or counters):
-		st.execute('UPDATE jobs SET changed=NOW() WHERE id=%s', [id]);
-
+		st.execute('UPDATE jobs SET changed=NOW() WHERE id=%s', [id])
 
 	if db:
 		db.commit()
 
-	if debug >= 1: print
+	if debug >= 1:
+		print
 
 if db:
 	db.close()
