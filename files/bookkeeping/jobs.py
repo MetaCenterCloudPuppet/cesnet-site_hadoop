@@ -365,7 +365,7 @@ for id, job in jobs.iteritems():
 		CPU=9
 		MAP=10
 		REDUCE=11
-		st.execute("SELECT id, name, user, status, queue, submit, start, finish, memory_seconds, cpu_seconds, map, reduce FROM jobs WHERE id=%s", id)
+		st.execute("SELECT id, name, user, status, queue, submit, start, finish, memory_seconds, cpu_seconds, map, reduce FROM jobs WHERE id=%s", [id])
 		data = st.fetchone()
 		if data:
 			if not job.name:
@@ -429,27 +429,27 @@ for id, job in jobs.iteritems():
 			if data and data[SUBMIT] == job.mapred['submitTime'] and data[MAP] == job.mapred['mapsTotal'] and data[REDUCE] == job.mapred['reducesTotal']:
 				if debug >= 3: print '[db] job %s mapred is actual' % id
 			else:
-				st.execute("UPDATE jobs SET submit=%s, map=%s, reduce=%s WHERE id=%s", (job.mapred['submitTime'], job.mapred['mapsTotal'], job.mapred['reducesTotal'], id))
+				st.execute("UPDATE jobs SET submit=%s, map=%s, reduce=%s WHERE id=%s", (job.mapred['submitTime'], job.mapred['mapsTotal'], job.mapred['reducesTotal'], [id]))
 				if debug >= 3: print '[db] job %s mapred updated' % id
 				changed = 1
 		if job.yarn and 'memorySeconds' in job.yarn.keys():
 			if data and data[MEMORY] == job.yarn['memorySeconds'] and data[CPU] == job.yarn['vcoreSeconds']:
 				if debug >= 3: print '[db] job %s yarn is actual' % id
 			else:
-				st.execute("UPDATE jobs SET memory_seconds=%s, cpu_seconds=%s WHERE id=%s", (job.yarn['memorySeconds'], job.yarn['vcoreSeconds'], id))
+				st.execute("UPDATE jobs SET memory_seconds=%s, cpu_seconds=%s WHERE id=%s", (job.yarn['memorySeconds'], job.yarn['vcoreSeconds'], [id]))
 				if debug >= 3: print '[db] job %s yarn updated' % id
 				changed = 1
 
 		# check for details in DB, set changed flag if missing
-		st.execute('SELECT * FROM jobnodes WHERE jobid=%s', id)
+		st.execute('SELECT * FROM jobnodes WHERE jobid=%s', [id])
 		data = st.fetchone()
 		if data:
-			st.execute('SELECT * FROM subjobs WHERE jobid=%s', id)
+			st.execute('SELECT * FROM subjobs WHERE jobid=%s', [id])
 			data = st.fetchone()
 		if not data:
 			changed = 1
 
-		st.execute('SELECT * FROM jobcounters WHERE jobid=%s', id)
+		st.execute('SELECT * FROM jobcounters WHERE jobid=%s', [id])
 		data = st.fetchone()
 		if not data:
 			changed_counters = 1
@@ -508,10 +508,10 @@ for id, job in jobs.iteritems():
 			print '  counters: ' + ''.join(counters_print)
 
 	if jobnodes and db:
-		st.execute("DELETE FROM jobnodes WHERE jobid=%s", id)
+		st.execute("DELETE FROM jobnodes WHERE jobid=%s", [id])
 		for nodename, jobnode in jobnodes.iteritems():
 			if not nodename in node_hosts.keys():
-				st.execute('INSERT INTO nodes (host) VALUES (%s)', nodename)
+				st.execute('INSERT INTO nodes (host) VALUES (%s)', [nodename])
 				node = Node()
 				node.id = db.insert_id()
 				node.host = nodename
@@ -520,14 +520,14 @@ for id, job in jobs.iteritems():
 			st.execute("INSERT INTO jobnodes (jobid, nodeid, elapsed, map, reduce) VALUES (%s, %s, %s, %s, %s)", (id, node_hosts[nodename].id, jobnode.elapsed, jobnode.map, jobnode.reduce))
 		if debug >= 3: print '[db] job %s nodes updated' % id
 
-		st.execute("DELETE FROM subjobs WHERE jobid=%s", id)
+		st.execute("DELETE FROM subjobs WHERE jobid=%s", [id])
 		for subjob in subjobs:
 			nodename = subjob['nodeHttpAddress']
 			st.execute('INSERT INTO subjobs (id, jobid, nodeid, state, type, start, finish) VALUES (%s, %s, %s, %s, %s, %s, %s)', (subjob['id'], id, node_hosts[nodename].id, subjob['state'], subjob['type'], subjob['startTime'], subjob['finishTime']))
 		if debug >= 3: print '[db] job %s subjobs updated' % id
 
 	if counters and db:
-		st.execute('DELETE FROM jobcounters WHERE jobid=%s', id)
+		st.execute('DELETE FROM jobcounters WHERE jobid=%s', [id])
 		for counter in counters:
 			counter_name = '%s/%s' % (counter.group, counter.counter['name'])
 			if not counter_name in counter_list.keys():
@@ -539,7 +539,7 @@ for id, job in jobs.iteritems():
 
 	# better to update timestamp again explicitly on the end of the transaction
 	if db and (jobnodes or counters):
-		st.execute('UPDATE jobs SET changed=NOW() WHERE id=%s', id);
+		st.execute('UPDATE jobs SET changed=NOW() WHERE id=%s', [id]);
 
 
 	if db:
