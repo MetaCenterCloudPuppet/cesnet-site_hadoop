@@ -447,7 +447,7 @@ for id, job in jobs.iteritems():
 				if debug >= 3:
 					print '[db] job %s mapred is actual' % id
 			else:
-				st.execute("UPDATE jobs SET submit=%s, map=%s, reduce=%s WHERE id=%s", (job.mapred['submitTime'], job.mapred['mapsTotal'], job.mapred['reducesTotal'], [id]))
+				st.execute("UPDATE jobs SET submit=%s, map=%s, reduce=%s WHERE id=%s", (job.mapred['submitTime'], job.mapred['mapsTotal'], job.mapred['reducesTotal'], id))
 				if debug >= 3:
 					print '[db] job %s mapred updated' % id
 				changed = 1
@@ -456,7 +456,7 @@ for id, job in jobs.iteritems():
 				if debug >= 3:
 					print '[db] job %s yarn is actual' % id
 			else:
-				st.execute("UPDATE jobs SET memory_seconds=%s, cpu_seconds=%s WHERE id=%s", (job.yarn['memorySeconds'], job.yarn['vcoreSeconds'], [id]))
+				st.execute("UPDATE jobs SET memory_seconds=%s, cpu_seconds=%s WHERE id=%s", (job.yarn['memorySeconds'], job.yarn['vcoreSeconds'], id))
 				if debug >= 3:
 					print '[db] job %s yarn updated' % id
 				changed = 1
