@@ -33,6 +33,9 @@ class site_hadoop::role::common::frontend {
   if $site_hadoop::hbase_enable and $site_hadoop::hive_enable {
     include ::hive::hbase
   }
+  if $site_hadoop::oozie_enable {
+    include ::oozie::client
+  }
   if $site_hadoop::pig_enable {
     include ::pig
   }

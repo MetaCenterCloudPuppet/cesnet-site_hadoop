@@ -73,21 +73,8 @@ class site_hadoop::role::common::master_main {
       include ::oozie::server
       include ::site_hadoop::role::common::core_site_workaround
 
-      if ($oozie::db == 'mariadb' or $oozie::db == 'mysql') and $site_hadoop::database_setup_enable {
-        include ::mysql::server
-        include ::mysql::bindings
-
-        mysql::db { 'oozie':
-          user     => 'oozie',
-          password => $oozie::db_password,
-          grant    => ['CREATE', 'INDEX', 'SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-        }
-
-        Class['mysql::bindings'] -> Class['oozie::server::config']
-        Mysql::Db['oozie'] -> Class['oozie::server::service']
-        Class['oozie::hdfs'] -> Class['oozie::server::config']
-        Class['site_hadoop::role::common::core_site_workaround'] -> Class['oozie::server::config']
-      }
+      Class['site_hadoop::role::common::core_site_workaround'] -> Class['oozie::server::service']
+      Class['oozie::hdfs'] -> Class['oozie::server::service']
     }
   }
 
