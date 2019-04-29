@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -32,7 +32,7 @@
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": ["14.04", "16.04"]
+      "operatingsystemrelease": ["14.04", "16.04", "18.04"]
     },
     {
       "operatingsystem": "Scientific",
@@ -68,7 +68,7 @@
     },
     {
       "name": "cesnet/oozie",
-      "version_requirement": ">= 0.10.0 < 1.0.0"
+      "version_requirement": ">= 0.12.0 < 1.0.0"
     },
     {
       "name": "cesnet/pig",
