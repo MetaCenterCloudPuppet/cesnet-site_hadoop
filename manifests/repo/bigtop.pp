@@ -19,9 +19,9 @@ class site_hadoop::repo::bigtop(
   }
   $version = $site_hadoop::_version
   $repopath = $::operatingsystem ? {
-    'debian' => "/debian/${::lsbmajdistrelease}/${::hardwaremodel}",
-    'ubuntu' => "/ubuntu/${::lsbdistrelease}/${::hardwaremodel}",
-    default  => "/centos/${site_hadoop::osver}/${::hardwaremodel}",
+    'debian' => "/debian/${::lsbmajdistrelease}/${::architecture}",
+    'ubuntu' => "/ubuntu/${::lsbdistrelease}/${::architecture}",
+    default  => "/centos/${site_hadoop::osver}/${::architecture}",
   }
 
   $_url = pick($url, "${baseurl}/${version}${repopath}")
@@ -31,24 +31,30 @@ class site_hadoop::repo::bigtop(
       include ::apt
 
       # source  => "https://dist.apache.org/repos/dist/release/bigtop/KEYS",
+      $gpg_server='pool.sks-keyservers.net'
       apt::key { 'bigtop-rvs':
         id     => '0xE8966520DA24E9642E119A5F13971DA39475BD5D',
-        server => 'pgp.mit.edu',
+        server => $gpg_server,
         before => Apt::Source['bigtop'],
       }
       apt::key { 'bigtop-abayer':
         id     => '0xE2F318071F656A62F88F252CB12E3E253ADD02D6',
-        server => 'pgp.mit.edu',
+        server => $gpg_server,
         before => Apt::Source['bigtop'],
       }
       apt::key { 'bigtop-cos':
         id     => '0x2CAC83124870D88586166115220F69801F27E622',
-        server => 'pgp.mit.edu',
+        server => $gpg_server,
         before => Apt::Source['bigtop'],
       }
       apt::key { 'bigtop-evansye':
         id     => '0x31E5AD30C48BD8BC320E2AE78A6F51C98C10EE0A',
-        server => 'pgp.mit.edu',
+        server => $gpg_server,
+        before => Apt::Source['bigtop'],
+      }
+      apt::key { 'bigtop-junhe':
+        id     => '0x8452C57BBD6289FF7F83FB193FD4C6CB5F26908B',
+        server => $gpg_server,
         before => Apt::Source['bigtop'],
       }
       apt::pin { 'bigtop':
@@ -58,7 +64,7 @@ class site_hadoop::repo::bigtop(
       }
 
       apt::source { 'bigtop':
-        comment  => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${::operatingsystemmajrelease} ${::architecture}",
+        comment  => "Packages for BigTop Distribution for Hadoop, Version ${version}",
         location => $_url,
         release  => 'bigtop',
         repos    => 'contrib',

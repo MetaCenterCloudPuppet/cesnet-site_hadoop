@@ -60,5 +60,5 @@ class site_hadoop::params {
   }
 
   $bigtop_default_mirror = 'apache'
-  $bigtop_default_version = '1.2.1'
+  $bigtop_default_version = '1.3.0'
 }
