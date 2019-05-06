@@ -1,10 +1,11 @@
-# == Class site_hadoop::accounting
+# == Class site_hadoop::bookkeeping
 #
 # Custom Hadoop bookkeeping scripts. It clones job metadata from Hadoop to local MySQL database.
 #
 # Requires:
 # * database
 # * keytabs, when security enabled
+# * hadoop::yarn_hostname set
 #
 class site_hadoop::bookkeeping(
   $db_name = undef,
@@ -13,15 +14,15 @@ class site_hadoop::bookkeeping(
   $db_password = undef,
   $email = undef,
   $freq = '*/12 * * * *',
-  $historyserver_hostname = $::fqdn,
+  $historyserver_hostname = $::hadoop::historyserver_hostname,
   $https = false,
   $interval = undef,
   $keytab = undef,
   $principal = undef,
   $realm = undef,
   $refresh = '0 */4 * * *',
-  $resourcemanager_hostname = $::fqdn,
-  $resourcemanager_hostname2 = undef,
+  $resourcemanager_hostname = $::hadoop::yarn_hostname,
+  $resourcemanager_hostname2 = $::hadoop::yarn_hostname2,
 ) {
   include ::stdlib
 
@@ -81,7 +82,7 @@ class site_hadoop::bookkeeping(
     content => template('site_hadoop/bookkeeping/refresh.sh.erb'),
     require => File["${prefix}/share/hadoop"],
   }
-  if $freq {
+  if $site_hadoop::yarn_enable and $freq {
     file{'/etc/cron.d/hadoop-bookkeeping':
       owner   => 'root',
       group   => 'root',

@@ -39,7 +39,7 @@ class site_hadoop::accounting(
   $db_user = undef,
   $db_password = undef,
   $email = undef,
-  $mapred_hostname = $::fqdn,
+  $mapred_hostname = $::hadoop::historyserver_hostname,
   $mapred_url = undef,
   $principal = undef,
 ) {
@@ -84,7 +84,7 @@ class site_hadoop::accounting(
     source  => 'puppet:///modules/site_hadoop/accounting/hdfs.awk',
     require => File["${prefix}/share/hadoop"],
   }
-  if $accounting_hdfs {
+  if $site_hadoop::hdfs_enable and $accounting_hdfs {
     file{'/etc/cron.d/accounting-hdfs':
       owner   => 'root',
       group   => 'root',
@@ -111,7 +111,7 @@ class site_hadoop::accounting(
     source  => 'puppet:///modules/site_hadoop/accounting/quota.awk',
     require => File["${prefix}/share/hadoop"],
   }
-  if $accounting_quota {
+  if $site_hadoop::hdfs_enable and $accounting_quota {
     file{'/etc/cron.d/accounting-quota':
       owner   => 'root',
       group   => 'root',
@@ -147,7 +147,7 @@ class site_hadoop::accounting(
     source  => 'puppet:///modules/site_hadoop/accounting/jobs.py',
     require => File["${prefix}/share/hadoop"],
   }
-  if $accounting_jobs {
+  if $site_hadoop::yarn_enable and $accounting_jobs {
     file{'/etc/cron.d/accounting-jobs':
       owner   => 'root',
       group   => 'root',

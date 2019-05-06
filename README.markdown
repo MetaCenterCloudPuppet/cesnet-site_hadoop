@@ -178,6 +178,12 @@ This is already included in the "primary master" roles:
 
 It can be disabled by *accounting\_enable* parameter.
 
+    class { 'hadoop':
+        ...
+        $yarn_hostname = rm.example.com
+        $historyserver_hostname = jhs.example.com
+        ...
+    }
     class { '::mysql::server':
       root_password => 'strongpassword',
     }
@@ -217,6 +223,11 @@ This is already included in the "primary master" roles:
 
 It can be disabled by *accounting\_enable* parameter.
 
+    class{'hadoop':
+        ...
+        $yarn_hostname = rm.example.com
+        ...
+    }
     class{'mysql::server':
       root_password => 'strong_password',
     }
