@@ -33,8 +33,6 @@ class site_hadoop::role::hue {
     }
 
     if $::hue::db and ($::hue::db == 'mariadb' or $::hue::db == 'mysql') and $::site_hadoop::database_setup_enable {
-      include ::mysql::server
-
       mysql::db { 'hue':
         user     => $::hue::db_user,
         password => $::hue::db_password,

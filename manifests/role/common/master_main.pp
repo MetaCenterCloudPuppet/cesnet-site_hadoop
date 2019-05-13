@@ -79,7 +79,6 @@ class site_hadoop::role::common::master_main {
   }
 
   if $site_hadoop::accounting_enable {
-    include ::mysql::server
     include ::mysql::server::mysqltuner
 
     if $hadoop::hdfs_deployed {
