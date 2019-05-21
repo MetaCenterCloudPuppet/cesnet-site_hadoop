@@ -3,6 +3,8 @@
 # Set-up Bigtop repository.
 #
 class site_hadoop::repo::bigtop(
+  $gpg_server = undef,
+  $keys_url = 'https://dist.apache.org/repos/dist/release/bigtop/KEYS',
   $priority = $site_hadoop::priority,
   $url = undef,
 ){
@@ -14,7 +16,7 @@ class site_hadoop::repo::bigtop(
       $baseurl = 'http://repos.bigtop.apache.org/releases'
     }
     default: {
-      error('Unknown mirror')
+      $baseurl = 'http://repos.bigtop.apache.org/releases'
     }
   }
   $version = $site_hadoop::_version
@@ -29,33 +31,44 @@ class site_hadoop::repo::bigtop(
   case $::osfamily {
     'Debian': {
       include ::apt
+      include ::stdlib
 
-      # source  => "https://dist.apache.org/repos/dist/release/bigtop/KEYS",
-      $gpg_server='pool.sks-keyservers.net'
-      apt::key { 'bigtop-rvs':
-        id     => '0xE8966520DA24E9642E119A5F13971DA39475BD5D',
-        server => $gpg_server,
-        before => Apt::Source['bigtop'],
+      # both unreliable: gpg servers (DNS), and apt puppet module (https source)
+      # ==> trying to import keys manually (it can be disabled using $key_url parameter)
+      if ($keys_url) {
+        ensure_packages('wget')
+        exec { "wget ${keys_url} -O - | apt-key add -":
+          path    => '/sbin:/usr/sbin:/bin:/usr/bin',
+          creates => '/etc/apt/sources.d/bigtop.list',
+        }
       }
-      apt::key { 'bigtop-abayer':
-        id     => '0xE2F318071F656A62F88F252CB12E3E253ADD02D6',
-        server => $gpg_server,
-        before => Apt::Source['bigtop'],
-      }
-      apt::key { 'bigtop-cos':
-        id     => '0x2CAC83124870D88586166115220F69801F27E622',
-        server => $gpg_server,
-        before => Apt::Source['bigtop'],
-      }
-      apt::key { 'bigtop-evansye':
-        id     => '0x31E5AD30C48BD8BC320E2AE78A6F51C98C10EE0A',
-        server => $gpg_server,
-        before => Apt::Source['bigtop'],
-      }
-      apt::key { 'bigtop-junhe':
-        id     => '0x8452C57BBD6289FF7F83FB193FD4C6CB5F26908B',
-        server => $gpg_server,
-        before => Apt::Source['bigtop'],
+      #$gpg_server='pool.sks-keyservers.net'
+      if ($gpg_server) {
+        apt::key { 'bigtop-rvs':
+          id     => '0xE8966520DA24E9642E119A5F13971DA39475BD5D',
+          server => $gpg_server,
+          before => Apt::Source['bigtop'],
+        }
+        apt::key { 'bigtop-abayer':
+          id     => '0xE2F318071F656A62F88F252CB12E3E253ADD02D6',
+          server => $gpg_server,
+          before => Apt::Source['bigtop'],
+        }
+        apt::key { 'bigtop-cos':
+          id     => '0x2CAC83124870D88586166115220F69801F27E622',
+          server => $gpg_server,
+          before => Apt::Source['bigtop'],
+        }
+        apt::key { 'bigtop-evansye':
+          id     => '0x31E5AD30C48BD8BC320E2AE78A6F51C98C10EE0A',
+          server => $gpg_server,
+          before => Apt::Source['bigtop'],
+        }
+        apt::key { 'bigtop-junhe':
+          id     => '0x8452C57BBD6289FF7F83FB193FD4C6CB5F26908B',
+          server => $gpg_server,
+          before => Apt::Source['bigtop'],
+        }
       }
       apt::pin { 'bigtop':
         originator => 'Bigtop',
