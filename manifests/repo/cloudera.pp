@@ -16,7 +16,7 @@ class site_hadoop::repo::cloudera(
     default  => "/cdh5/redhat/${site_hadoop::osver}/${::architecture}/cdh",
   }
   $cdh6_repopath = $::operatingsystem ? {
-    /CentOs|Scientific/ => "/cdh6/${version}/redhat${site_hadoop::osver}/${site_hadoop::repotype}",
+    /CentOS|Scientific/ => "/cdh6/${version}/redhat${site_hadoop::osver}/${site_hadoop::repotype}",
     /OpenSuse/ => "/cdh6/${version}/sles${site_hadoop::osver}/${site_hadoop::repotype}",
     default    => "/cdh6/${version}/${site_hadoop::osname}${site_hadoop::osver}/${site_hadoop::repotype}",
   }
