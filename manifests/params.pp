@@ -10,11 +10,10 @@ class site_hadoop::params {
 
   $packages = $::osfamily ? {
     'debian'  => [
-      'acl', 'heimdal-clients', 'procps',
+      'acl', 'procps',
       'python-scipy',
     ],
     'redhat'  => [
-      'krb5-workstation',
       'scipy',
     ],
     default => undef,
