@@ -74,7 +74,7 @@ With all job metadata in local database you will have detailed history informati
 <a name="what-hadoop-affects"></a>
 ###What cesnet-hadoop module affects
 
-* Packages: Java JRE, Kerberos client
+* Packages: Java JRE
 * Files modified:
  * */etc/apt/sources.list.d/*.list*
  * */etc/apt/preferences.d/10\_*.pref*
@@ -248,10 +248,6 @@ It can be disabled by *accounting\_enable* parameter.
 * [**`site_hadoop`**](#class-site_hadoop): The main class
 * `site_hadoop::devel`:
  * **`site_hadoop::devel::hadoop`**: Local post-installation steps for Hadoop for testing in Vagrant
-* `site_hadoop::kdc`: Experiments with KDC
- * `site_hadoop::kdc::client`
- * `site_hadoop::kdc::params`
- * `site_hadoop::kdc::server`
 * [**`site_hadoop::server::accounting`**](#class-accounting): Custom Hadoop accounting scripts
 * [**`site_hadoop::server::bookkeeping`**](#class-bookkeeping): Custom Hadoop bookkeeping scripts
 * `site_hadoop::config`: Configuration of Hadoop cluster machines
