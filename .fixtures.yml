@@ -8,17 +8,17 @@ fixtures:
       repo: "https://github.com/puppetlabs/puppetlabs-mysql.git"
       # for tests with puppet < 4
       ref: "3.11.0"
-    staging: "git://github.com/nanliu/puppet-staging"
+    staging: "https://github.com/nanliu/puppet-staging"
     stdlib:
-      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib"
       # for future parser tests with puppet < 4
       ref: "4.25.1"
-    alternatives: "git://github.com/puppet-community/puppet-alternatives"
-    hadoop: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop"
-    hadoop_lib: "git://github.com/MetaCenterCloudPuppet/cesnet-hadoop_lib"
-    hue: "git://github.com/MetaCenterCloudPuppet/cesnet-hue"
-    java_ng: "git://github.com/MetaCenterCloudPuppet/cesnet-java_ng"
-    oozie: "git://github.com/MetaCenterCloudPuppet/cesnet-oozie"
-    zookeeper: "git://github.com/MetaCenterCloudPuppet/cesnet-zookeeper"
+    alternatives: "https://github.com/puppet-community/puppet-alternatives"
+    hadoop: "https://github.com/MetaCenterCloudPuppet/cesnet-hadoop"
+    hadoop_lib: "https://github.com/MetaCenterCloudPuppet/cesnet-hadoop_lib"
+    hue: "https://github.com/MetaCenterCloudPuppet/cesnet-hue"
+    java_ng: "https://github.com/MetaCenterCloudPuppet/cesnet-java_ng"
+    oozie: "https://github.com/MetaCenterCloudPuppet/cesnet-oozie"
+    zookeeper: "https://github.com/MetaCenterCloudPuppet/cesnet-zookeeper"
   symlinks:
     site_hadoop: "#{source_dir}"
