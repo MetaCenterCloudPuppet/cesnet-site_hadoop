@@ -19,7 +19,6 @@ class site_hadoop (
   $hive_enable = true,
   $hue_enable = false,
   $impala_enable = false,
-  $java_enable = true,
   $nfs_frontend_enable = true,
   $nfs_yarn_enable = false,
   $oozie_enable = false,

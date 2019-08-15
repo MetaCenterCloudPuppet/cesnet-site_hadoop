@@ -5,7 +5,6 @@
 # Actions:
 # * repository setup
 # * include all cesnet puppet modules config classes
-# * java installation
 # * creating user accounts
 #
 class site_hadoop::role::common {
@@ -39,19 +38,6 @@ class site_hadoop::role::common {
 
   class{'::site_hadoop::install':
     stage => 'setup',
-  }
-
-  if $site_hadoop::java_enable {
-    if member($hadoop::frontends, $::fqdn) {
-      $java_flavor = 'jdk'
-    } else {
-      $java_flavor = 'headless'
-    }
-    class{'::java_ng':
-      flavor      => $java_flavor,
-      set_default => member($hadoop::frontends, $::fqdn),
-      stage       => 'setup',
-    }
   }
 
   if $site_hadoop::hbase_enable { include ::hbase }

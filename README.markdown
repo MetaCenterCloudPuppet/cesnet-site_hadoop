@@ -378,10 +378,6 @@ Deploys Cloudera Impala addon. Default: false.
 
 Disabled by default because of crashes with security (IMPALA-2645).
 
-####`java_enable`
-
-Installs Java automatically. Default: true.
-
 ####`nfs_frontend_enable`
 
 Launches HDFS NFS Gateway and mounts HDFS on the frontend. Default: true.
