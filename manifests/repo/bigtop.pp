@@ -7,6 +7,7 @@ class site_hadoop::repo::bigtop(
   $keys_url = 'https://dist.apache.org/repos/dist/release/bigtop/KEYS',
   $priority = $site_hadoop::priority,
   $url = undef,
+  $release = undef,
 ){
   case $site_hadoop::_mirror {
     'amazon': {
@@ -32,6 +33,8 @@ class site_hadoop::repo::bigtop(
     'Debian': {
       include ::apt
       include ::stdlib
+
+      $_release = pick($release, 'bigtop')
 
       # both unreliable: gpg servers (DNS), and apt puppet module (https source)
       # ==> trying to import keys manually (it can be disabled using $key_url parameter)
@@ -79,7 +82,7 @@ class site_hadoop::repo::bigtop(
       apt::source { 'bigtop':
         comment  => "Packages for BigTop Distribution for Hadoop, Version ${version}",
         location => $_url,
-        release  => 'bigtop',
+        release  => $_release,
         repos    => 'contrib',
         include  => {
           deb => true,

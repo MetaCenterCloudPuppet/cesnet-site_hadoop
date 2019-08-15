@@ -5,6 +5,7 @@
 class site_hadoop::repo::cloudera(
   $priority = $site_hadoop::priority,
   $url = undef,
+  $release = undef,
 ){
   $baseurl = $site_hadoop::cloudera_baseurl[$site_hadoop::_mirror]
   $version = $site_hadoop::_version
@@ -36,6 +37,8 @@ class site_hadoop::repo::cloudera(
     'Debian': {
       include ::apt
 
+      $_release = pick($release, "${::lsbdistcodename}-cdh${version}")
+
       apt::key { 'cloudera':
         id     => $_key,
         source => "${_url}/archive.key",
@@ -50,7 +53,7 @@ class site_hadoop::repo::cloudera(
         architecture => $::architecture,
         comment      => "Packages for Cloudera's Distribution for Hadoop, Version ${version}, on ${::operatingsystem} ${::operatingsystemmajrelease} ${::architecture}",
         location     => $_url,
-        release      => "${::lsbdistcodename}-cdh${version}",
+        release      => $_release,
         repos        => 'contrib',
         include      => {
           deb => true,

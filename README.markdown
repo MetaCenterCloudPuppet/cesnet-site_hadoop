@@ -315,6 +315,10 @@ Cloudera mirror to use. Default: 'cloudera'.
 
 Debian repository priority. Default: 900.
 
+####`release`
+
+Apt release for Debian platforms. Default: undef (automatic).
+
 ####`url`
 
 Override repository URL. Default: undef.

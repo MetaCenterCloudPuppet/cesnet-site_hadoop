@@ -8,6 +8,7 @@ class site_hadoop (
   $key = undef,
   $mirror = undef,
   $priority = 900,
+  $release = undef,
   $url = undef,
   $users = undef,
   $user_realms = undef,

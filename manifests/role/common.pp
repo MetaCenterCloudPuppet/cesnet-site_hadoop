@@ -20,6 +20,7 @@ class site_hadoop::role::common {
       class{'::site_hadoop::repo::bigtop':
         priority => $::site_hadoop::priority,
         url      => $::site_hadoop::url,
+        release  => $::site_hadoop::release,
         stage    => 'setup',
       }
       -> Class['site_hadoop::install']
@@ -28,6 +29,7 @@ class site_hadoop::role::common {
       class{'::site_hadoop::repo::cloudera':
         priority => $::site_hadoop::priority,
         url      => $::site_hadoop::url,
+        release  => $::site_hadoop::release,
         stage    => 'setup',
       }
       -> Class['site_hadoop::install']
