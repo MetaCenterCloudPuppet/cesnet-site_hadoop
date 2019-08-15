@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -21,7 +21,7 @@
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": ["7", "8", "9"]
+      "operatingsystemrelease": ["7", "8", "9", "10"]
     },
     {
       "operatingsystem": "Fedora"
