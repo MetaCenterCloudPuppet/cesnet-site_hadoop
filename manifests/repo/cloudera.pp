@@ -22,11 +22,11 @@ class site_hadoop::repo::cloudera(
     default    => "/cdh6/${version}/${site_hadoop::osname}${site_hadoop::osver}/${site_hadoop::repotype}",
   }
   $cdh_repopath = $cdh_major_version ? {
-    5       => $cdh5_repopath,
+    /^5/    => $cdh5_repopath,
     default => $cdh6_repopath,
   }
   $cdh_key = $cdh_major_version ? {
-    5       => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
+    /^5/    => '0xF36A89E33CC1BD0F71079007327574EE02A818DD',
     default => '0xCECDB80C4E9004B0CFE852962279662784415700',
   }
 
@@ -72,15 +72,15 @@ class site_hadoop::repo::cloudera(
       if $::operatingsystem != 'Fedora' {
         $majdistrelease = $::operatingsystemmajrelease
         $prevrepos = $cdh_major_version ? {
-          5       => ['/etc/yum.repos.d/cloudera-cdh6.repo'],
+          /^5/    => ['/etc/yum.repos.d/cloudera-cdh6.repo'],
           default => ['/etc/yum.repos.d/cloudera-cdh5.repo'],
         }
         $newrepo = $cdh_major_version ? {
-          5       => '/etc/yum.repos.d/cloudera-cdh5.repo',
+          /^5/    => '/etc/yum.repos.d/cloudera-cdh5.repo',
           default => '/etc/yum.repos.d/cloudera-cdh6.repo',
         }
         $yum_baseurl = $cdh_major_version ? {
-          5 => "${_url}/${version}/",
+          /^5/    => "${_url}/${version}/",
           default => "${_url}/",
         }
         file { $prevrepos:
