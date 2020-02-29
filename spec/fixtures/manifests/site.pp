@@ -1,3 +1,7 @@
+class {'::hadoop':
+  hdfs_hostname => $::fqdn,
+  yarn_hostname => $::fqdn,
+}
 class {'::hue':
   hdfs_hostname => $::fqdn,
 }

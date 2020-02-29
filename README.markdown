@@ -167,6 +167,8 @@ Note: all the classes with parameters can be replaced by hiera.
 
 Note 2: all classes with parameters there are configuration only classes, except the zookeeper class. Zookeeper must be specified only on the proper nodes, or there can be used hiera instead.
 
+Note 3: some parameters are taken from the other (configuration) classes. For example HDFS and YARN parts are optional, and they are enaled according to the *::hadoop::hdfs_hostname* and *::hadoop::yarn_hostname* parameters.
+
 <a name="usage-accounting"></a>
 ### Hadoop accounting
 
