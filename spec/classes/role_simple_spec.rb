@@ -9,7 +9,6 @@ describe 'site_hadoop::role::simple', :type => 'class' do
           .merge($mysql_facts)
       end
       it { should compile.with_all_deps }
-      it { should contain_class('java_ng') }
       it { should contain_class('site_hadoop::role::simple') }
       it { should contain_class('site_hadoop::accounting') }
       it { should contain_class('site_hadoop::bookkeeping') }

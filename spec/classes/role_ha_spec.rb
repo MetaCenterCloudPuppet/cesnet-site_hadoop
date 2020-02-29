@@ -8,7 +8,6 @@ describe 'site_hadoop::role::ha', :type => 'class' do
       end
       it { should compile.with_all_deps }
       it { should contain_class('site_hadoop::role::ha') }
-      it { should contain_class('java_ng') }
       it { should contain_class('site_hadoop::repo::cloudera') }
       it { should contain_class('hadoop') }
       it { should contain_class('hadoop::journalnode') }
