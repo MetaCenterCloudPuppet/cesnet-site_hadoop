@@ -57,7 +57,7 @@ BEGIN {
 #/^Cache Remaining:.*/		{cache_free=$3}
 
 /^$/ {
-	if (name != "(none)" && ip !~ /^10\./) {
+	if (name != "(none)" && state != 2) {
 		print "INSERT INTO hdfs (id_measure, hostname, state, full, disk, disk_free, disk_used, block_under, block_corrupt, block_missing) VALUES (last_insert_id(), " dbstr(name) ", " dbi(state) ", " dbi(full) ", IFNULL(" dbi(disk) ", " dbi(disk_free) " + " dbi(disk_used) "), " dbi(disk_free) ", " dbi(disk_used) ", " dbi(block_under) ", " dbi(block_corrupt) ", " dbi(block_missing) ");";
 	}
 	reset()
