@@ -64,7 +64,7 @@
     },
     {
       "name": "cesnet/oozie",
-      "version_requirement": ">= 0.12.0 < 1.0.0"
+      "version_requirement": ">= 0.12.0 < 2.0.0"
     },
     {
       "name": "cesnet/pig",
@@ -72,7 +72,7 @@
     },
     {
       "name": "cesnet/spark",
-      "version_requirement": ">= 1.0.0 < 2.0.0"
+      "version_requirement": ">= 1.0.0 < 3.0.0"
     },
     {
       "name": "cesnet/zookeeper",

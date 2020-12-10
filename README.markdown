@@ -133,7 +133,7 @@ Hadoop module addons modules still needs to be configured:
     }
 
     class { '::spark':
-      hdfs_hostname          => $master,
+      # defaultFS is taken from hadoop class
       historyserver_hostname => $master,
     }
 
