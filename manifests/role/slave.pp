@@ -22,10 +22,10 @@ class site_hadoop::role::slave {
         include ::impala::server
         include ::hadoop::common::hdfs::config
 
-        Class['::hadoop::common::hdfs::config'] -> Class['::impala::common::config']
+        Class['hadoop::common::hdfs::config'] -> Class['impala::common::config']
         if $site_hadoop::hbase_enable {
           include ::hbase::common::config
-          Class['::hbase::common::config'] -> Class['::impala::common::config']
+          Class['hbase::common::config'] -> Class['impala::common::config']
         }
       }
     }

@@ -21,10 +21,10 @@ class site_hadoop::role::common::frontend {
   }
   if $site_hadoop::impala_enable {
     include ::impala::frontend
-    Class['::hadoop::common::hdfs::config'] -> Class['::impala::common::config']
+    Class['hadoop::common::hdfs::config'] -> Class['impala::common::config']
   }
   if $site_hadoop::hbase_enable and $site_hadoop::impala_enable {
-    Class['::hbase::common::config'] -> Class['::impala::common::config']
+    Class['hbase::common::config'] -> Class['impala::common::config']
   }
   if $site_hadoop::hive_enable {
     include ::hive::frontend
