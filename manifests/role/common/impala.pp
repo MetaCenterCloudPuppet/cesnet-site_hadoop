@@ -12,8 +12,8 @@ class site_hadoop::role::common::impala {
   if hiera('impala::realm', '') != '' and $site_hadoop::packages_sasl {
     if hiera('site_hadoop::impala_enable', false) and !member(hiera('hadoop::hue_hostnames', []), $::fqdn) {
       ensure_packages($site_hadoop::packages_sasl)
-      if defined(Class['::impala::common::config']) {
-        Package[$site_hadoop::packages_sasl] -> Class['::impala::common::config']
+      if defined(Class['impala::common::config']) {
+        Package[$site_hadoop::packages_sasl] -> Class['impala::common::config']
       }
     }
   }
