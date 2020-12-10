@@ -35,7 +35,7 @@ class site_hadoop::role::slave {
     include ::hive::worker
   }
 
-  if $site_hadoop::spark_standalone_enable {
+  if $site_hadoop::spark_enable and $site_hadoop::spark_standalone_enable {
     include ::spark::worker
   }
 }

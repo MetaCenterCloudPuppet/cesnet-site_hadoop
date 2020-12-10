@@ -43,7 +43,7 @@ class site_hadoop::role::common::master_main {
     }
   }
 
-  if $site_hadoop::spark_standalone_enable {
+  if $site_hadoop::spark_enable and $site_hadoop::spark_standalone_enable {
     include ::spark::master
   }
 
