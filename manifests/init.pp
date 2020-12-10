@@ -47,14 +47,6 @@ class site_hadoop (
     }
   }
 
-  if $hadoop::hdfs_hostname {
-    $hdfs_enable = true
-  } else {
-    $hdfs_enable = false
-  }
-  if $hadoop::yarn_hostname {
-    $yarn_enable = true
-  } else {
-    $yarn_enable = false
-  }
+  $hdfs_enable = $hadoop::hdfs_enable
+  $yarn_enable = $hadoop::yarn_enable
 }

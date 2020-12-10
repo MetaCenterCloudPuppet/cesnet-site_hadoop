@@ -31,7 +31,7 @@ class site_hadoop::role::slave {
     }
   }
 
-  if $site_hadoop::hive_enable {
+  if $site_hadoop::yarn_enable and $site_hadoop::hive_enable {
     include ::hive::worker
   }
 

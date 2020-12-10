@@ -48,7 +48,7 @@ class site_hadoop::role::common {
 
   if $site_hadoop::users and $hadoop::zookeeper_deployed {
     $touchfile = 'hdfs-users-created'
-    $is_hdfs_namenode = ($hadoop::hdfs_hostname == $::fqdn)
+    $is_hdfs_namenode = $hadoop::hdfs_enable and $hadoop::hdfs_hostname == $::fqdn
     $is_frontend = member($hadoop::frontends, $::fqdn)
 
     hadoop::user{$site_hadoop::users:
