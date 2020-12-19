@@ -26,6 +26,7 @@ class site_hadoop::role::master_hdfs {
 
       if $site_hadoop::hdfs_enable {
         Class['hadoop::namenode::service'] -> Class['hbase::master::service']
+        Class['zookeeper::server::service'] -> Class['hbase::master::service']
       }
     }
   }

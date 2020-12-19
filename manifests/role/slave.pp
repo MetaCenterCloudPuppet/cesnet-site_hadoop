@@ -8,7 +8,9 @@ class site_hadoop::role::slave {
   include ::site_hadoop::role::common::impala
 
   if $hadoop::zookeeper_deployed {
-    include ::hadoop::datanode
+    if $site_hadoop::hdfs_enable {
+      include ::hadoop::datanode
+    }
     if $site_hadoop::yarn_enable {
       include ::hadoop::nodemanager
     }

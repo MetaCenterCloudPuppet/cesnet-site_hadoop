@@ -21,4 +21,16 @@ class site_hadoop::role::simple {
   include ::site_hadoop::role::master
   include ::site_hadoop::role::frontend
   include ::site_hadoop::role::slave
+
+  if $hadoop::zookeeper_deployed {
+    if $site_hadoop::hdfs_enable {
+      Class['hadoop::namenode::service'] -> Class['hadoop::datanode::service']
+    }
+    if $site_hadoop::yarn_enable {
+      Class['hadoop::resourcemanager::service'] -> Class['hadoop::nodemanager::service']
+    }
+  }
+  if $site_hadoop::hbase_enable {
+    Class['hbase::master::service'] -> Class['hbase::master::regionserver']
+  }
 }
