@@ -31,6 +31,6 @@ class site_hadoop::role::simple {
     }
   }
   if $site_hadoop::hbase_enable {
-    Class['hbase::master::service'] -> Class['hbase::master::regionserver']
+    Class['hbase::master::service'] -> Class['hbase::regionserver::service']
   }
 }
