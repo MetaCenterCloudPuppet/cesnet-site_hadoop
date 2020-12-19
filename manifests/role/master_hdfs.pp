@@ -25,8 +25,9 @@ class site_hadoop::role::master_hdfs {
       include ::hbase::master
 
       if $site_hadoop::hdfs_enable {
-        Class['hadoop::namenode::service'] -> Class['hbase::master::service']
-        Class['zookeeper::server::service'] -> Class['hbase::master::service']
+        # workaround insane packaging practices on Debian
+        Class['hadoop::namenode::service'] -> Class['hbase::master::install']
+        Class['zookeeper::server::service'] -> Class['hbase::master::install']
       }
     }
   }
