@@ -42,7 +42,7 @@ class site_hadoop::repo::bigtop(
         ensure_packages('wget')
         exec { "wget ${keys_url} -O - | apt-key add -":
           path    => '/sbin:/usr/sbin:/bin:/usr/bin',
-          creates => '/etc/apt/sources.d/bigtop.list',
+          creates => '/etc/apt/sources.list.d/bigtop.list',
         }
       }
       #$gpg_server='pool.sks-keyservers.net'
