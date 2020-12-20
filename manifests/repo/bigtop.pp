@@ -40,9 +40,13 @@ class site_hadoop::repo::bigtop(
       # ==> trying to import keys manually (it can be disabled using $key_url parameter)
       if ($keys_url) {
         ensure_packages('wget')
-        exec { "wget ${keys_url} -O - | apt-key add -":
+        Package['wget']
+        ->
+        exec { 'fetch-apt-key-bigtop':
+          command => "wget ${keys_url} -O - | apt-key add -",
           path    => '/sbin:/usr/sbin:/bin:/usr/bin',
           creates => '/etc/apt/sources.list.d/bigtop.list',
+          before  => Apt::Source['bigtop'],
         }
       }
       #$gpg_server='pool.sks-keyservers.net'
