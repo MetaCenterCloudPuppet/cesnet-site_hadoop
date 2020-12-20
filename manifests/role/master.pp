@@ -9,6 +9,7 @@ class site_hadoop::role::master {
   if $hadoop::hdfs_deployed {
     if $site_hadoop::hdfs_enable and $site_hadoop::spark_enable {
       Class['hadoop::namenode::service'] -> Class['spark::historyserver::service']
+      Class['spark::hdfs'] -> Class['spark::historyserver::service']
     }
   }
 }
