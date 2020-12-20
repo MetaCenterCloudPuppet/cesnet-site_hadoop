@@ -30,7 +30,9 @@ class site_hadoop::role::simple {
       Class['hadoop::resourcemanager::service'] -> Class['hadoop::nodemanager::service']
     }
   }
-  if $site_hadoop::hbase_enable {
-    Class['hbase::master::service'] -> Class['hbase::regionserver::service']
+  if $hadoop::hdfs_deployed {
+    if $site_hadoop::hbase_enable {
+      Class['hbase::master::service'] -> Class['hbase::regionserver::service']
+    }
   }
 }
