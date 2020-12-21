@@ -73,7 +73,7 @@
       "name": "puppetlabs/apt", "version_requirement": "< 8.0.0"
     },
     {
-      "name": "puppetlabs/mysql", "version_requirement": "< 4.0.0"
+      "name": "puppetlabs/mysql", "version_requirement": "< 11.0.0"
     },
     {
       "name": "puppetlabs/stdlib", "version_requirement": ">= 1.0.0 < 7.0.0"
