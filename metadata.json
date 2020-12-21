@@ -41,54 +41,42 @@
   ],
   "requirements": [
     {
-      "name": "puppet",
-      "version_requirement": ">= 3.4.0"
+      "name": "puppet", "version_requirement": ">= 3.4.0"
     }
   ],
   "dependencies": [
     {
-      "name": "cesnet/hadoop",
-      "version_requirement": ">= 3.1.0 < 4.0.0"
+      "name": "cesnet/hadoop", "version_requirement": ">= 3.1.0 < 4.0.0"
     },
     {
-      "name": "cesnet/hbase",
-      "version_requirement": "< 2.0.0"
+      "name": "cesnet/hbase", "version_requirement": "< 2.0.0"
     },
     {
-      "name": "cesnet/hive",
-      "version_requirement": ">= 0.13.0 < 1.0.0"
+      "name": "cesnet/hive", "version_requirement": ">= 0.13.0 < 1.0.0"
     },
     {
-      "name": "cesnet/impala",
-      "version_requirement": "< 2.0.0"
+      "name": "cesnet/impala", "version_requirement": "< 2.0.0"
     },
     {
-      "name": "cesnet/oozie",
-      "version_requirement": ">= 0.12.0 < 2.0.0"
+      "name": "cesnet/oozie", "version_requirement": ">= 0.12.0 < 2.0.0"
     },
     {
-      "name": "cesnet/pig",
-      "version_requirement": "< 1.0.0"
+      "name": "cesnet/pig", "version_requirement": "< 1.0.0"
     },
     {
-      "name": "cesnet/spark",
-      "version_requirement": ">= 1.0.0 < 3.0.0"
+      "name": "cesnet/spark", "version_requirement": ">= 1.0.0 < 3.0.0"
     },
     {
-      "name": "cesnet/zookeeper",
-      "version_requirement": ">= 1.0.0 < 2.0.0"
+      "name": "cesnet/zookeeper", "version_requirement": ">= 1.0.0 < 2.0.0"
     },
     {
-      "name": "puppetlabs/apt",
-      "version_requirement": "< 3.0.0"
+      "name": "puppetlabs/apt", "version_requirement": "< 3.0.0"
     },
     {
-      "name": "puppetlabs/mysql",
-      "version_requirement": "< 4.0.0"
+      "name": "puppetlabs/mysql", "version_requirement": "< 4.0.0"
     },
     {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 1.0.0 < 5.0.0"
+      "name": "puppetlabs/stdlib", "version_requirement": ">= 1.0.0 < 7.0.0"
     }
   ]
 }
