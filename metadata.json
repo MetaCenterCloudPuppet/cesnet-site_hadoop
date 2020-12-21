@@ -70,7 +70,7 @@
       "name": "cesnet/zookeeper", "version_requirement": ">= 1.0.0 < 2.0.0"
     },
     {
-      "name": "puppetlabs/apt", "version_requirement": "< 3.0.0"
+      "name": "puppetlabs/apt", "version_requirement": "< 8.0.0"
     },
     {
       "name": "puppetlabs/mysql", "version_requirement": "< 4.0.0"
