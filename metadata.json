@@ -1,6 +1,6 @@
 {
   "name": "cesnet-site_hadoop",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Hadoop Site-Specific Module",
   "license": "MIT",
@@ -10,7 +10,7 @@
   "tags": [
     "hadoop",
     "accounting",
-	"big-data",
+    "big-data",
     "cloudera",
     "bigtop"
   ],
